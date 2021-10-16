@@ -12,7 +12,9 @@ int print_stop() {
 }
 
 int print_usage() {
-    printf("usage: ./njvm [option] [option] ...\n  --version\t\tshow version and exit\n  --help   \t\tshow this help and exit\n");
+    printf("usage: ./njvm [option] [option] ...\n");
+    printf("  --version\t\tshow version and exit\n");
+    printf("  --help   \t\tshow this help and exit\n");
     return 0;
 }
 
