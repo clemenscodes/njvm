@@ -1,3 +1,5 @@
+#ifndef _STACK_C
+#define _STACK_C
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,33 +31,12 @@ void print_stack(void) {
     printf(".-------+-------.\n");
     for (int i = sp; i >= 0; i--) {
         if (i == sp) {
-            printf("|sp->%3d| %6d |\n", i, stack[i]);
+            printf("|sp->%3d|%7d|\n", i, stack[i]);
         } else {
-            printf("|%7d|  %5d |\n", i, stack[i]);
+            printf("|%7d|%7d|\n", i, stack[i]);
         }
     }
     printf("'-------+-------'\n\n");
 }
 
-int main(int argc, char *argv[]) {
-    print_stack();
-    push(5);
-    print_stack();
-    push(3);
-    print_stack();
-    push(4);
-    print_stack();
-    push(7);
-    print_stack();
-    push(10);
-    print_stack();
-    pop();
-    print_stack();
-    pop();
-    print_stack();
-    pop();
-    print_stack();
-    push(7);
-    print_stack();
-    return 0;
-}
+#endif
