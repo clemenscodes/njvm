@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "program_memory.c"
+#include "control_unit.c"
 
 void print_start() {
     printf("Ninja Virtual Machine started\n");
@@ -45,6 +46,7 @@ void program_1() {
     register_instruction(wrchr, 0);
     register_instruction(halt, 0);
     print_memory();
+    work();
 }
 
 void program_2() {
@@ -59,6 +61,7 @@ void program_2() {
     register_instruction(wrchr, 0);
     register_instruction(halt, 0);
     print_memory();
+    work();
 }
 
 void program_3() {
@@ -69,6 +72,7 @@ void program_3() {
     register_instruction(wrint, 0);
     register_instruction(halt, 0);
     print_memory();
+    work();
 }
 
 int check_args(char *argv[]) {
