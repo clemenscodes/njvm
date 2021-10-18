@@ -25,7 +25,7 @@ enum Opcode {
     add = ADD,
     sub = SUB,
     mul = MUL,
-    div = DIV,
+    divide = DIV,
     mod = MOD,
     rdint = RDINT,
     wrint = WRINT,
@@ -38,21 +38,20 @@ typedef struct {
     int immediate;
 } Instruction;
 
-uint32_t encode_instruction(Instruction instruction) {
-    uint32_t inst;
-    enum Opcode opcode = instruction.opcode;
-    int immediate = instruction.immediate;
-    inst = (opcode << 24) | IMMEDIATE(immediate);
+uint32_t encode_instruction(enum Opcode opcode, int immediate) {
+    uint32_t instruction;
+    instruction = (opcode << 24) | IMMEDIATE(immediate);
     printf("0x%08x -> Opcode [%d] Immediate [%d]\n", instruction, opcode, immediate);
-    return inst;
+    return instruction;
 }
 
 Instruction decode_instruction(uint32_t instruction) {
     Instruction inst;
     enum Opcode opcode = instruction >> 24;
     int immediate = SIGN_EXTEND(IMMEDIATE(instruction));
-    strcpy(inst.opcode, opcode);
-    strcpy(inst.immediate, immediate);
+    inst.opcode = opcode;
+    inst.immediate = immediate;
+    printf("0x%08x -> Opcode [%d] Immediate [%d]\n", instruction, opcode, immediate);
     return inst;
 }
 
