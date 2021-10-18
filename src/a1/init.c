@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "program_memory.c"
+
 void print_start() {
     printf("Ninja Virtual Machine started\n");
 }
@@ -31,6 +33,18 @@ void print_err(char *arg) {
 
 void program_1() {
     printf("Executing program 1\n");
+    register_instruction(pushc, 3);
+    register_instruction(pushc, 4);
+    register_instruction(add, 0);
+    register_instruction(pushc, 10);
+    register_instruction(pushc, 6);
+    register_instruction(sub, 0);
+    register_instruction(mul, 0);
+    register_instruction(wrint, 0);
+    register_instruction(pushc, 10);
+    register_instruction(wrchr, 0);
+    register_instruction(halt, 0);
+    print_memory();
 }
 
 void program_2() {

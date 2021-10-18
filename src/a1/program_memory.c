@@ -6,14 +6,10 @@
 #include "instructions.c"
 #include "stack.c"
 
-int pc = 4;
+int pc = 0;
 
 uint32_t program_memory[MAXITEMS] = {
-    0x01000000,
-    0x01000001,
-    0x01000002,
-    0x01000003,
-    0x01fffff6
+    0x00000000,
 };
 
 void print_memory() {
