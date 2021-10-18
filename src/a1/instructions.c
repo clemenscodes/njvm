@@ -50,7 +50,7 @@ Instruction decode_instruction(uint32_t instruction) {
     int immediate = SIGN_EXTEND(IMMEDIATE(instruction));
     inst.opcode = opcode;
     inst.immediate = immediate;
-    printf("0x%08x -> Opcode [%d] Immediate [%d]\n", instruction, opcode, immediate);
+    printf("0x%08X -> Opcode [%d] Immediate [%d]\n", instruction, opcode, immediate);
     return inst;
 }
 

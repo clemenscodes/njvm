@@ -49,10 +49,26 @@ void program_1() {
 
 void program_2() {
     printf("Executing program 2\n");
+    register_instruction(pushc, -2);
+    register_instruction(rdint, 0);
+    register_instruction(mul, 0);
+    register_instruction(pushc, 3);
+    register_instruction(add, 0);
+    register_instruction(wrint, 0);
+    register_instruction(pushc, '\n');
+    register_instruction(wrchr, 0);
+    register_instruction(halt, 0);
+    print_memory();
 }
 
 void program_3() {
     printf("Executing program 3\n");
+    register_instruction(rdchr, 0);
+    register_instruction(wrint, 0);
+    register_instruction(pushc, '\n');
+    register_instruction(wrint, 0);
+    register_instruction(halt, 0);
+    print_memory();
 }
 
 int check_args(char *argv[]) {
