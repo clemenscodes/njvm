@@ -41,7 +41,6 @@ typedef struct {
 uint32_t encode_instruction(enum Opcode opcode, int immediate) {
     uint32_t instruction;
     instruction = (opcode << 24) | IMMEDIATE(immediate);
-    printf("0x%08x -> Opcode [%d] Immediate [%d]\n", instruction, opcode, immediate);
     return instruction;
 }
 

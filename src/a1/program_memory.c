@@ -8,13 +8,10 @@
 
 int pc = 0;
 
-uint32_t program_memory[MAXITEMS] = {
-    0x00000000,
-};
+uint32_t program_memory[MAXITEMS];
 
 void print_memory() {
-    printf("Printing memory\n");
-    for (int i = pc; i >= 0; i--) {
+    for (int i = 0; i < pc; i++) {
         decode_instruction(program_memory[i]);
     }
 }
