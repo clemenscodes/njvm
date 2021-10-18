@@ -39,9 +39,7 @@ typedef struct Instruction {
 } Instruction;
 
 uint32_t encode_instruction(Opcode opcode, int immediate) {
-    uint32_t instruction;
-    instruction = (opcode << 24) | IMMEDIATE(immediate);
-    return instruction;
+    return (opcode << 24) | IMMEDIATE(immediate);
 }
 
 Instruction decode_instruction(uint32_t instruction) {
