@@ -4,7 +4,7 @@
 #include "program_memory.c"
 
 void execute(Instruction instruction) {
-    enum Opcode opcode = instruction.opcode;
+    Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
     uint32_t bytecode = encode_instruction(opcode, immediate);  // Nur für Debugzwecke
     printf("Executing instruction [0x%08X] -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);

@@ -19,7 +19,7 @@ void print_memory() {
     }
 }
 
-void register_instruction(enum Opcode opcode, int immediate) {
+void register_instruction(Opcode opcode, int immediate) {
     uint32_t instruction = encode_instruction(opcode, immediate);
     program_memory[pc] = instruction;
     pc++;

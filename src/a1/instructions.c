@@ -19,7 +19,7 @@
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
 
-enum Opcode {
+typedef enum Opcode {
     halt = HALT,
     pushc = PUSHC,
     add = ADD,
@@ -31,14 +31,14 @@ enum Opcode {
     wrint = WRINT,
     rdchr = RDCHR,
     wrchr = WRCHR
-};
+} Opcode;
 
 typedef struct Instruction {
-    enum Opcode opcode;
+    Opcode opcode;
     int immediate;
 } Instruction;
 
-uint32_t encode_instruction(enum Opcode opcode, int immediate) {
+uint32_t encode_instruction(Opcode opcode, int immediate) {
     uint32_t instruction;
     instruction = (opcode << 24) | IMMEDIATE(immediate);
     return instruction;
@@ -46,7 +46,7 @@ uint32_t encode_instruction(enum Opcode opcode, int immediate) {
 
 Instruction decode_instruction(uint32_t instruction) {
     Instruction inst;
-    enum Opcode opcode = instruction >> 24;
+    Opcode opcode = instruction >> 24;
     int immediate = SIGN_EXTEND(IMMEDIATE(instruction));
     inst.opcode = opcode;
     inst.immediate = immediate;
