@@ -42,10 +42,10 @@ uint32_t encode_instruction(Opcode opcode, int immediate) {
     return (opcode << 24) | IMMEDIATE(immediate);
 }
 
-Instruction decode_instruction(uint32_t instruction) {
+Instruction decode_instruction(uint32_t bytecode) {
     Instruction inst;
-    Opcode opcode = instruction >> 24;
-    int immediate = SIGN_EXTEND(IMMEDIATE(instruction));
+    Opcode opcode = bytecode >> 24;
+    int immediate = SIGN_EXTEND(IMMEDIATE(bytecode));
     inst.opcode = opcode;
     inst.immediate = immediate;
     return inst;
