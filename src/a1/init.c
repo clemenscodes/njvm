@@ -14,8 +14,11 @@ void print_stop() {
 
 void print_usage() {
     printf("usage: ./njvm [option] [option] ...\n");
-    printf("  --version\t\tshow version and exit\n");
-    printf("  --help   \t\tshow this help and exit\n");
+    printf("  --prog1          select program 1 to execute\n");
+    printf("  --prog2          select program 2 to execute\n");
+    printf("  --prog2          select program 3 to execute\n");
+    printf("  --version        show version and exit\n");
+    printf("  --help           show this help and exit\n");
 }
 
 void print_version() {
@@ -26,13 +29,34 @@ void print_err(char *arg) {
     printf("unknown command line argument '%s', try './njvm --help'\n", arg);
 }
 
+void program_1() {
+    printf("Executing program 1\n");
+}
+
+void program_2() {
+    printf("Executing program 2\n");
+}
+
+void program_3() {
+    printf("Executing program 3\n");
+}
+
 int check_args(char *argv[]) {
     int help_result = strcmp(argv[1], "--help");
     int version_result = strcmp(argv[1], "--version");
+    int prog1 = strcmp(argv[1], "--prog1");
+    int prog2 = strcmp(argv[1], "--prog2");
+    int prog3 = strcmp(argv[1], "--prog3");
     if (help_result == 0) {
         print_usage();
     } else if (version_result == 0) {
         print_version();
+    } else if (prog1 == 0) {
+        program_1();
+    } else if (prog2 == 0) {
+        program_2();
+    } else if (prog3 == 0) { 
+        program_3();
     } else {
         print_err(argv[1]);
     }
