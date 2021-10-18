@@ -12,7 +12,6 @@ int main(int argc, char *argv[]) {
         check_args(argv);
     } else {
         print_start();
-        print_memory();
         print_stop();
     }
     return 0;
