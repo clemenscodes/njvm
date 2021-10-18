@@ -7,7 +7,6 @@
 #include "stack.c"
 
 int pc = 0;
-
 uint32_t program_memory[MAXITEMS];
 
 void print_memory() {

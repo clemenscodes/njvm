@@ -3,16 +3,15 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "stack.c"
+#include "control_unit.c"
 #include "init.c"
-#include "program_memory.c"
 
 int main(int argc, char *argv[]) {
     if (argc > 1) {
         check_args(argv);
     } else {
-        print_start();
-        print_stop();
+        init();
+        shutdown();
     }
     return 0;
 }

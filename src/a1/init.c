@@ -7,14 +7,6 @@
 #include "program_memory.c"
 #include "control_unit.c"
 
-void print_start() {
-    printf("Ninja Virtual Machine started\n");
-}
-
-void print_stop() {
-    printf("Ninja Virtual Machine stopped\n");
-}
-
 void print_usage() {
     printf("usage: ./njvm [option] [option] ...\n");
     printf("  --prog1          select program 1 to execute\n");
@@ -30,10 +22,11 @@ void print_version() {
 
 void print_err(char *arg) {
     printf("unknown command line argument '%s', try './njvm --help'\n", arg);
+    exit(1);
 }
 
 void program_1() {
-    printf("Executing program 1\n");
+    init();
     register_instruction(pushc, 3);
     register_instruction(pushc, 4);
     register_instruction(add, 0);
@@ -50,7 +43,7 @@ void program_1() {
 }
 
 void program_2() {
-    printf("Executing program 2\n");
+    init();
     register_instruction(pushc, -2);
     register_instruction(rdint, 0);
     register_instruction(mul, 0);
@@ -65,7 +58,7 @@ void program_2() {
 }
 
 void program_3() {
-    printf("Executing program 3\n");
+    init();
     register_instruction(rdchr, 0);
     register_instruction(wrint, 0);
     register_instruction(pushc, '\n');
