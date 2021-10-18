@@ -33,7 +33,7 @@ enum Opcode {
     wrchr = WRCHR
 };
 
-typedef struct {
+typedef struct Instruction {
     enum Opcode opcode;
     int immediate;
 } Instruction;
