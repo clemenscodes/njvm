@@ -6,9 +6,6 @@
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
-    for (int i = 0; i < 200; i++) {
-        push(42);
-    }
 }
 
 void shutdown(void) {
