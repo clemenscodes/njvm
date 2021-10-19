@@ -20,6 +20,8 @@ void execute(uint32_t bytecode) {
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
     printf("Executing instruction [0x%08X] -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
+    int n2;
+    int n1;
     switch (opcode) {
         case halt:
             shutdown();
@@ -28,37 +30,39 @@ void execute(uint32_t bytecode) {
             push(immediate);
             break;
         case add:
-            int n2 = pop();
-            int n1 = pop();
+            n2 = pop();
+            n1 = pop();
             push(n1 + n2);
             break;
         case sub:
-            int n2 = pop();
-            int n1 = pop();
+            n2 = pop();
+            n1 = pop();
             push(n1 - n2);
             break;
         case mul:
-            int n2 = pop();
-            int n1 = pop();
+            n2 = pop();
+            n1 = pop();
             push(n1 * n2);
             break;
         case divide:
-            int n2 = pop();
-            int n1 = pop();
+            n2 = pop();
+            n1 = pop();
             push(n1 / n2);
             break;
         case mod:
-            int n2 = pop();
-            int n1 = pop();
+            n2 = pop();
+            n1 = pop();
             push(n1 % n2);
             break;
         case rdint:
             break;
         case wrint:
+            printf("%d\n", pop());
             break;
         case rdchr:
             break;
         case wrchr:
+            printf("%c\n", pop());
             break;
         default:
             shutdown();
