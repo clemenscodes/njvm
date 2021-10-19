@@ -19,13 +19,12 @@ void print_stack(void) {
 }
 
 void push(int immediate) {
-    if ((sp > MAXITEMS)) {
+    if (sp > MAXITEMS) {
         printf("Stack overflow: Stack is full, not more than %d items allowed\n", MAXITEMS);
         exit(1);
     }
     stack[sp] = immediate;
     sp++;
-
 }
 
 int pop(void) {
