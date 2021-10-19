@@ -1,8 +1,8 @@
 #ifndef _PROGRAM_MEMORY_H
 #define _PROGRAM_MEMORY_H
 
-#include "stack.h"
-#include "instructions.h"
+#include "../stack/stack.h"
+#include "../cpu/instructions.h"
 
 extern int pc;
 extern uint32_t program_memory[MAXITEMS];
