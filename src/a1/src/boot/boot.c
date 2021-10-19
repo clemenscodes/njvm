@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "boot.h"
-#include "program_memory.h"
-#include "control_unit.h"
+#include "../ram/program_memory.h"
+#include "../cpu/control_unit.h"
 
 void print_usage(void) {
     printf("usage: ./njvm [option] [option] ...\n");

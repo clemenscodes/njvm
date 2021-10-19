@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "control_unit.h"
-#include "stack.h"
+#include "../stack/stack.h"
+#include "../ram/program_memory.h"
 #include "instructions.h"
-#include "program_memory.h"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
