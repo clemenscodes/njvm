@@ -1,10 +1,9 @@
-#ifndef _INIT_C
-#define _INIT_C
-
 #include <stdio.h>
 #include <string.h>
-#include "program_memory.c"
-#include "control_unit.c"
+#include <stdlib.h>
+#include "boot.h"
+#include "program_memory.h"
+#include "control_unit.h"
 
 void print_usage(void) {
     printf("usage: ./njvm [option] [option] ...\n");
@@ -88,5 +87,3 @@ int check_args(char *argv[]) {
     }
     return 0;
 }
-
-#endif

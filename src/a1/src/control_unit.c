@@ -1,8 +1,9 @@
-#ifndef _CONTROL_UNIT_C
-#define _CONTROL_UNIT_C
-
-#include "program_memory.c"
-#include "stack.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include "control_unit.h"
+#include "stack.h"
+#include "instructions.h"
+#include "program_memory.h"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
@@ -85,5 +86,3 @@ void work(void) {
         execute(program_memory[i]);
     }
 }
-
-#endif

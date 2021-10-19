@@ -1,8 +1,7 @@
-#ifndef _INSTRUCTIONS_C
-#define _INSTRUCTIONS_C
+#ifndef _INSTRUCTIONS_H
+#define _INSTRUCTIONS_H
 
 #include <stdint.h>
-#include <string.h>
 
 #define HALT 0
 #define PUSHC 1
@@ -38,15 +37,7 @@ typedef struct Instruction {
     int immediate;
 } Instruction;
 
-uint32_t encode_instruction(Opcode opcode, int immediate) {
-    return (opcode << 24) | IMMEDIATE(immediate);
-}
-
-Instruction decode_instruction(uint32_t bytecode) {
-    Instruction instruction;
-    instruction.opcode = bytecode >> 24;
-    instruction.immediate = SIGN_EXTEND(IMMEDIATE(bytecode));
-    return instruction;
-}
+uint32_t encode_instruction(Opcode opcode, int immediate);
+Instruction decode_instruction(uint32_t bytecode);
 
 #endif

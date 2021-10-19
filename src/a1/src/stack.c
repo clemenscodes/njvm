@@ -1,9 +1,6 @@
-#ifndef _STACK_C
-#define _STACK_C
 #include <stdio.h>
 #include <stdlib.h>
-
-#define MAXITEMS 100
+#include "stack.h"
 
 int sp = 0;
 int stack[MAXITEMS];
@@ -41,5 +38,3 @@ int pop(void) {
     stack[sp] = 0;
     return tmp;
 }
-
-#endif
