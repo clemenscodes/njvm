@@ -19,7 +19,7 @@ void print_memory(void) {
                 printf("%03d:\thalt\n", i);
                 break;
             case pushc:
-                printf("%03d:\tpushc   %d\n", i, immediate);
+                printf("%03d:\tpushc%d\n", i, immediate);
                 break;
             case add:
                 printf("%03d:\tadd\n", i);
