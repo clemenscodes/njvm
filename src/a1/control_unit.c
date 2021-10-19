@@ -13,13 +13,10 @@ void shutdown(void) {
     exit(0);
 }
 
-
-
 void execute(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
-    // printf("Executing instruction [0x%08X] -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
     int n2;
     int n1;
     char c;
