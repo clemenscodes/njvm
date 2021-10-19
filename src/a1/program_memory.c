@@ -13,11 +13,48 @@ void print_instruction(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
-    printf("0x%08X -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
+    switch (opcode) {
+        case halt:
+            printf("halt\n");
+            break;
+        case pushc:
+            printf("pushc   %d\n", immediate);
+            break;
+        case add:
+            printf("add\n");
+            break;
+        case sub:
+            printf("sub\n");
+            break;
+        case mul:
+            printf("mul\n");
+            break;
+        case divide:
+            printf("div\n");
+            break;
+        case mod:
+            printf("mod\n");
+            break;
+        case rdint:
+            printf("rdint\n");
+            break;
+        case wrint:
+            printf("wrint\n");
+            break;
+        case rdchr:
+            printf("rdchr\n");
+            break;
+        case wrchr:
+            printf("wrchr\n");
+            break;
+        default:
+            break;
+    }
 }
 
 void print_memory(void) {
     for (int i = 0; i < pc; i++) {
+        printf("%03d:\t", i);
         print_instruction(program_memory[i]);
     }
 }
