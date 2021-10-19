@@ -6,6 +6,9 @@
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
+    for (int i = 0; i < 200; i++) {
+        push(42);
+    }
 }
 
 void shutdown(void) {
@@ -45,11 +48,19 @@ void execute(uint32_t bytecode) {
         case divide:
             n2 = pop();
             n1 = pop();
+            if (n2 == 0) {
+                printf("Division by zero error\n");
+                exit(1);
+            }
             push(n1 / n2);
             break;
         case mod:
             n2 = pop();
             n1 = pop();
+            if (n2 == 0) {
+                printf("Division by zero error\n");
+                exit(1);
+            }
             push(n1 % n2);
             break;
         case rdint:

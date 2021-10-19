@@ -22,11 +22,20 @@ void print_stack(void) {
 }
 
 void push(int immediate) {
+    if ((sp > MAXITEMS)) {
+        printf("Stack overflow: Stack is full, not more than %d items allowed\n", MAXITEMS);
+        exit(1);
+    }
     stack[sp] = immediate;
     sp++;
+
 }
 
 int pop(void) {
+    if ((sp == 0) && stack[sp] == 0) {
+        printf("Stack underflow: popped from empty stack\n");
+        exit(1);
+    }
     sp--;
     int tmp = stack[sp];
     stack[sp] = 0;
