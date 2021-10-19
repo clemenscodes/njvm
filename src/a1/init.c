@@ -61,7 +61,7 @@ void program_3(void) {
     register_instruction(rdchr, 0);
     register_instruction(wrint, 0);
     register_instruction(pushc, '\n');
-    register_instruction(wrint, 0);
+    register_instruction(wrchr, 0);
     register_instruction(halt, 0);
     print_memory();
     work();

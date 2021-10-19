@@ -53,11 +53,15 @@ void execute(uint32_t bytecode) {
             push(n1 % n2);
             break;
         case rdint:
+            scanf("%d", &n2);
+            push(n2);
             break;
         case wrint:
             printf("%d", pop());
             break;
         case rdchr:
+            scanf("%c", &c);
+            push(c);
             break;
         case wrchr:
             c = pop();
