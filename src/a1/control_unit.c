@@ -2,6 +2,7 @@
 #define _CONTROL_UNIT_C
 
 #include "program_memory.c"
+#include "stack.c"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
@@ -11,6 +12,8 @@ void shutdown(void) {
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
+
+
 
 void execute(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
@@ -22,34 +25,40 @@ void execute(uint32_t bytecode) {
             shutdown();
             break;
         case pushc:
-            // pushc(immediate);
+            push(immediate);
             break;
         case add:
-            // add();
+            int n2 = pop();
+            int n1 = pop();
+            push(n1 + n2);
             break;
         case sub:
-            // sub();
+            int n2 = pop();
+            int n1 = pop();
+            push(n1 - n2);
             break;
         case mul:
-            // mul();
+            int n2 = pop();
+            int n1 = pop();
+            push(n1 * n2);
             break;
         case divide:
-            // divide();
+            int n2 = pop();
+            int n1 = pop();
+            push(n1 / n2);
             break;
         case mod:
-            // mod();
+            int n2 = pop();
+            int n1 = pop();
+            push(n1 % n2);
             break;
         case rdint:
-            // rdint();
             break;
         case wrint:
-            // wrint();
             break;
         case rdchr:
-            // rdchr();
             break;
         case wrchr:
-            // wrchr();
             break;
         default:
             shutdown();
