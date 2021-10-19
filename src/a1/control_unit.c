@@ -3,11 +3,11 @@
 
 #include "program_memory.c"
 
-void init() {
+void init(void) {
     printf("Ninja Virtual Machine started\n");
 }
 
-void shutdown() {
+void shutdown(void) {
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
@@ -56,7 +56,7 @@ void execute(uint32_t bytecode) {
     }
 }
 
-void work() {
+void work(void) {
     for (int i = 0; i < pc; i++) {
         execute(program_memory[i]);
     }

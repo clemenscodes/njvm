@@ -16,7 +16,7 @@ void print_instruction(uint32_t bytecode) {
     printf("0x%08X -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
 }
 
-void print_memory() {
+void print_memory(void) {
     for (int i = 0; i < pc; i++) {
         print_instruction(program_memory[i]);
     }

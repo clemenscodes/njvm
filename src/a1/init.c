@@ -6,7 +6,7 @@
 #include "program_memory.c"
 #include "control_unit.c"
 
-void print_usage() {
+void print_usage(void) {
     printf("usage: ./njvm [option] [option] ...\n");
     printf("  --prog1          select program 1 to execute\n");
     printf("  --prog2          select program 2 to execute\n");
@@ -15,7 +15,7 @@ void print_usage() {
     printf("  --help           show this help and exit\n");
 }
 
-void print_version() {
+void print_version(void) {
     printf("Ninja Virtual Machine version 0 (compiled Sep 23 2015, 10:36:52\n");
 }
 
@@ -24,7 +24,7 @@ void print_err(char *arg) {
     exit(1);
 }
 
-void program_1() {
+void program_1(void) {
     init();
     register_instruction(pushc, 3);
     register_instruction(pushc, 4);
@@ -41,7 +41,7 @@ void program_1() {
     work();
 }
 
-void program_2() {
+void program_2(void) {
     init();
     register_instruction(pushc, -2);
     register_instruction(rdint, 0);
@@ -56,7 +56,7 @@ void program_2() {
     work();
 }
 
-void program_3() {
+void program_3(void) {
     init();
     register_instruction(rdchr, 0);
     register_instruction(wrint, 0);
