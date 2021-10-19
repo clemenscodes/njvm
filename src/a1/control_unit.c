@@ -19,9 +19,10 @@ void execute(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
-    printf("Executing instruction [0x%08X] -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
+    // printf("Executing instruction [0x%08X] -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
     int n2;
     int n1;
+    char c;
     switch (opcode) {
         case halt:
             shutdown();
@@ -57,12 +58,13 @@ void execute(uint32_t bytecode) {
         case rdint:
             break;
         case wrint:
-            printf("%d\n", pop());
+            printf("%d", pop());
             break;
         case rdchr:
             break;
         case wrchr:
-            printf("%c\n", pop());
+            c = pop();
+            printf("%c", c);
             break;
         default:
             shutdown();

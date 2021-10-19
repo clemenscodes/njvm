@@ -22,19 +22,19 @@ void print_stack(void) {
 }
 
 void push(int immediate) {
-    printf("- [%4s] -> pushing [%d] onto stack @sp [%d]\n", __func__, immediate, sp);
+    // printf("- [%4s] -> pushing [%d] onto stack @sp [%d]\n", __func__, immediate, sp);
     stack[sp] = immediate;
-    printf("- [%4s] -> inc stack pointer [%d -> ", __func__, sp);
+    // printf("- [%4s] -> inc stack pointer [%d -> ", __func__, sp);
     sp++;
-    printf("%d]\n", sp);
+    // printf("%d]\n", sp);
 }
 
 int pop(void) {
-    printf("- [%3s] -> dec stack pointer [%d -> ", __func__, sp);
+    // printf("- [%3s] -> dec stack pointer [%d -> ", __func__, sp);
     sp--;
-    printf("%d]\n", sp);
+    // printf("%d]\n", sp);
     int tmp = stack[sp];
-    printf("- [%3s] -> popping [%d] from stack @sp [%d]\n", __func__, tmp, sp);
+    // printf("- [%3s] -> popping [%d] from stack @sp [%d]\n", __func__, tmp, sp);
     stack[sp] = 0;
     return tmp;
 }
