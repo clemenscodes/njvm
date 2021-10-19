@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "program_memory.h": "c",
+        "stack.h": "c"
+    }
+}
