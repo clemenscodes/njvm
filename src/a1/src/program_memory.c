@@ -1,10 +1,8 @@
-#ifndef _MEMORY_C
-#define _MEMORY_C
-
+#include <stdio.h>
 #include <string.h>
-
-#include "instructions.c"
-#include "stack.c"
+#include "program_memory.h"
+#include "instructions.h"
+#include "stack.h"
 
 int pc = 0;
 uint32_t program_memory[MAXITEMS];
@@ -59,5 +57,3 @@ void register_instruction(Opcode opcode, int immediate) {
     program_memory[pc] = instruction;
     pc++;
 }
-
-#endif
