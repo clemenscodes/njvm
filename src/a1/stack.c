@@ -8,7 +8,7 @@
 int sp = 0;
 int stack[MAXITEMS];
 
-void print_stack() {
+void print_stack(void) {
     printf("\n\tStack\n");
     printf(".-------+-------.\n");
     for (int i = sp; i >= 0; i--) {
@@ -29,7 +29,7 @@ void push(int immediate) {
     printf("%d]\n", sp);
 }
 
-int pop() {
+int pop(void) {
     printf("- [%3s] -> dec stack pointer [%d -> ", __func__, sp);
     sp--;
     printf("%d]\n", sp);
