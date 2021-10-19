@@ -1,3 +1,7 @@
 #!/bin/sh
 
-gcc -g -Wall -std=c99 -pedantic -o src/a1/njvm src/a1/njvm.c && src/a1/njvm --prog1
+rm -rf src/a1/build
+mkdir src/a1/build && cd src/a1/build || exit
+cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS="-g -Wall -std=c99 -pedantic" .. 
+make
+./njvm
