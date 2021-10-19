@@ -8,4 +8,5 @@ then
     echo "PASSED" 
 else
     echo "FAILED" 
+    exit 1
 fi
