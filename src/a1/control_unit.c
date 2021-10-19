@@ -17,8 +17,42 @@ void execute(uint32_t bytecode) {
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
     printf("Executing instruction [0x%08X] -> Opcode [%d] Immediate [%d]\n", bytecode, opcode, immediate);
-    if (opcode == halt) {
-        shutdown();
+    switch (opcode) {
+        case halt:
+            shutdown();
+            break;
+        case pushc:
+            // pushc(immediate);
+            break;
+        case add:
+            // add();
+            break;
+        case sub:
+            // sub();
+            break;
+        case mul:
+            // mul();
+            break;
+        case divide:
+            // divide();
+            break;
+        case mod:
+            // mod();
+            break;
+        case rdint:
+            // rdint();
+            break;
+        case wrint:
+            // wrint();
+            break;
+        case rdchr:
+            // rdchr();
+            break;
+        case wrchr:
+            // wrchr();
+            break;
+        default:
+            shutdown();
     }
 }
 
