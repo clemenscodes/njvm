@@ -14,37 +14,47 @@ void print_memory(void) {
         int immediate = instruction.immediate;
         switch (opcode) {
             case halt:
-                printf("%03d:\thalt\n", i);
+                printf("%03d:\t", i);
+                printf("halt\n");
                 break;
             case pushc:
-                printf("%03d:\tpushc   %d\n", i, immediate);
+                printf("%03d:\tpushc\t%d\n", i, immediate);
                 break;
             case add:
-                printf("%03d:\tadd\n", i);
+                printf("%03d:\t", i);
+                printf("add\n");
                 break;
             case sub:
-                printf("%03d:\tsub\n", i);
+                printf("%03d:\t", i);
+                printf("sub\n");
                 break;
             case mul:
-                printf("%03d:\tmul\n", i);
+                printf("%03d:\t", i);
+                printf("mul\n");
                 break;
             case divide:
-                printf("%03d:\tdiv\n", i);
+                printf("%03d:\t", i);
+                printf("div\n");
                 break;
             case mod:
-                printf("%03d:\tmod\n", i);
+                printf("%03d:\t", i);
+                printf("mod\n");
                 break;
             case rdint:
-                printf("%03d:\trdint\n", i);
+                printf("%03d:\t", i);
+                printf("rdint\n");
                 break;
             case wrint:
-                printf("%03d:\twrint\n", i);
+                printf("%03d:\t", i);
+                printf("wrint\n");
                 break;
             case rdchr:
-                printf("%03d:\trdchr\n", i);
+                printf("%03d:\t", i);
+                printf("rdchr\n");
                 break;
             case wrchr:
-                printf("%03d:\twrchr\n", i);
+                printf("%03d:\t", i);
+                printf("wrchr\n");
                 break;
             default:
                 break;
