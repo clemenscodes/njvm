@@ -1,9 +1,7 @@
-#include "control_unit.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "control_unit.h"
 #include "../ram/program_memory.h"
 #include "../stack/stack.h"
 #include "instructions.h"
@@ -31,16 +29,61 @@ FILE *open_file(char *arg) {
     return fp;
 }
 
+bool check_ninja_binary_format(FILE *fp) {
+    int ninja_binary_format = 0x46424a4e;
+    int start = 0;
+    uint32_t bytecode;
+    fseek(fp, start, SEEK_SET);
+    fread(&bytecode, sizeof(uint32_t), 1, fp);
+    printf("bytecode = [0x%08x]\n", bytecode);
+    return bytecode == ninja_binary_format;
+}
+
+bool check_ninja_version(FILE *fp) {
+    int ninja_binary_version = 0x00000002;
+    int start = 4;
+    uint32_t bytecode;
+    fseek(fp, start, SEEK_SET);
+    fread(&bytecode, sizeof(uint32_t), 1, fp);
+    printf("bytecode = [0x%08x]\n", bytecode);
+    return bytecode == ninja_binary_version;
+}
+
+int check_ninja_instruction_count(FILE *fp) {
+    int start = 8;
+    uint32_t bytecode;
+    fseek(fp, start, SEEK_SET);
+    fread(&bytecode, sizeof(uint32_t), 1, fp);
+    printf("bytecode = [0x%08x]\n", bytecode);
+    return bytecode;
+}
+
+int check_ninja_variable_count(FILE *fp) {
+    int start = 12;
+    uint32_t bytecode;
+    fseek(fp, start, SEEK_SET);
+    fread(&bytecode, sizeof(uint32_t), 1, fp);
+    printf("bytecode = [0x%08x]\n", bytecode);
+    return bytecode;
+}
+
 void read_file(char *arg) {
+    int read_len = 0;
+    uint32_t bytecode;
     FILE *fp = open_file(arg);
     if (!check_ninja_binary_format(fp)) {
         printf("Error: file '%s' is not a Ninja binary\n", arg);
         exit(1);
     }
-    // int instruction_count = get_ninja_instruction_count(fp);
-    uint32_t bytecode;
-    int read_len = 0;
-    fseek(fp, 0, SEEK_SET);
+    if (!check_ninja_version(fp)) {
+        printf("Error: file '%s' does not have the correct Ninja version\n", arg);
+        exit(1);
+    }
+    int instruction_count = check_ninja_instruction_count(fp);
+    int variable_count = check_ninja_variable_count(fp);
+    printf("Instruction count: %d\n", instruction_count);
+    printf("Variable count: %d\n", variable_count);
+    fseek(fp, 16, SEEK_SET);
     while ((read_len = fread(&bytecode, sizeof(uint32_t), 1, fp)) != 0) {
         Instruction instruction = decode_instruction(bytecode);
         register_instruction(instruction.opcode, instruction.immediate);
@@ -51,16 +94,6 @@ void read_file(char *arg) {
         perror("Error (fclose)");
     }
     print_memory();
-}
-
-bool check_ninja_binary_format(FILE *fp) {
-    int ninja_binary_format = 0x46424a4e;
-    int start = 0;
-    uint32_t bytecode;
-    fseek(fp, start, SEEK_SET);
-    fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("bytecode = [0x%08x]\n", bytecode);
-    return bytecode == ninja_binary_format;
 }
 
 void execute(uint32_t bytecode) {
