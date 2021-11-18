@@ -1,26 +1,19 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "boot.h"
-#include "../ram/program_memory.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "../cpu/control_unit.h"
+#include "../ram/program_memory.h"
 
 void print_usage(void) {
     printf("usage: ./njvm [option] [option] ...\n");
-    printf("  --prog1          select program 1 to execute\n");
-    printf("  --prog2          select program 2 to execute\n");
-    printf("  --prog2          select program 3 to execute\n");
     printf("  --version        show version and exit\n");
     printf("  --help           show this help and exit\n");
 }
 
 void print_version(void) {
     printf("Ninja Virtual Machine version 0 (compiled Sep 23 2015, 10:36:52\n");
-}
-
-void print_err(char *arg) {
-    printf("unknown command line argument '%s', try './njvm --help'\n", arg);
-    exit(1);
 }
 
 void program_1(void) {
@@ -66,24 +59,33 @@ void program_3(void) {
     work();
 }
 
-int check_args(char *argv[]) {
+void read_file(char *arg) {
+    FILE *fp = fopen(arg, "r");
+    if (!fp) {
+        printf("Error: cannot open code file '%s'\n", arg);
+        exit(1);
+    }
+    printf("%s\n", arg);
+}
+
+int check_args(int argc, char *argv[]) {
+    if (strncmp("-", argv[1], strlen("-")) == 0) {
+        printf("unknown command line argument '%s', try '%s --help'\n", argv[1], argv[0]);
+        exit(1);
+    }
     int help_result = strcmp(argv[1], "--help");
     int version_result = strcmp(argv[1], "--version");
-    int prog1 = strcmp(argv[1], "--prog1");
-    int prog2 = strcmp(argv[1], "--prog2");
-    int prog3 = strcmp(argv[1], "--prog3");
     if (help_result == 0) {
         print_usage();
     } else if (version_result == 0) {
         print_version();
-    } else if (prog1 == 0) {
-        program_1();
-    } else if (prog2 == 0) {
-        program_2();
-    } else if (prog3 == 0) { 
         program_3();
     } else {
-        print_err(argv[1]);
+        if (argc > 2) {
+            printf("Error: more than one code file specified\n");
+            exit(1);
+        }
+        read_file(argv[1]);
     }
     return 0;
 }

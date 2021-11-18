@@ -1,6 +1,7 @@
 {
     "cmake.configureOnOpen": false,
     "files.associations": {
-        "boot.h": "c"
+        "boot.h": "c",
+        "control_unit.h": "c"
     }
 }
