@@ -5,6 +5,8 @@
 
 void init(void);
 void shutdown(void);
+void read_file(char *filename);
+void execute_binary(char *filename);
 void execute(uint32_t bytecode);
 void work(void);
 
