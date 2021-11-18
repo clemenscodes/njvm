@@ -7,6 +7,6 @@ void program_1(void);
 void program_2(void);
 void program_3(void);
 void print_err(char *arg);
-int check_args(char *argv[]);
+int check_args(int argc, char *argv[]);
 
 #endif
