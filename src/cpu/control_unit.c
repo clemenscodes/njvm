@@ -1,8 +1,10 @@
+#include "control_unit.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "control_unit.h"
-#include "../stack/stack.h"
+
 #include "../ram/program_memory.h"
+#include "../stack/stack.h"
 #include "instructions.h"
 
 void init(void) {
@@ -18,13 +20,23 @@ void execute_binary(char *arg) {
     read_file(arg);
 }
 
-void read_file(char *arg) {
-    FILE *fp = fopen(arg, "r");
+FILE *open_file(char *arg) {
+    FILE *fp = fopen(arg, "r+");
     if (!fp) {
         printf("Error: cannot open code file '%s'\n", arg);
         exit(1);
     }
-    printf("%s\n", arg);
+    return fp;
+}
+
+void read_file(char *arg) {
+    FILE *fp = open_file(arg);
+    char c;
+    while ((c = fgetc(fp)) != EOF) {
+        printf("%c", c);
+    }
+    printf("\n");
+    fclose(fp);
 }
 
 void execute(uint32_t bytecode) {
