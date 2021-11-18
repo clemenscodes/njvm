@@ -14,6 +14,10 @@ void shutdown(void) {
     exit(0);
 }
 
+void execute_binary(char *arg) {
+    read_file(arg);
+}
+
 void read_file(char *arg) {
     FILE *fp = fopen(arg, "r");
     if (!fp) {
@@ -21,10 +25,6 @@ void read_file(char *arg) {
         exit(1);
     }
     printf("%s\n", arg);
-}
-
-void execute_binary(char *arg) {
-    read_file(arg);
 }
 
 void execute(uint32_t bytecode) {
