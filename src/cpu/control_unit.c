@@ -14,6 +14,19 @@ void shutdown(void) {
     exit(0);
 }
 
+void read_file(char *arg) {
+    FILE *fp = fopen(arg, "r");
+    if (!fp) {
+        printf("Error: cannot open code file '%s'\n", arg);
+        exit(1);
+    }
+    printf("%s\n", arg);
+}
+
+void execute_binary(char *arg) {
+    read_file(arg);
+}
+
 void execute(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
@@ -82,6 +95,7 @@ void execute(uint32_t bytecode) {
 }
 
 void work(void) {
+    init();
     for (int i = 0; i < pc; i++) {
         execute(program_memory[i]);
     }
