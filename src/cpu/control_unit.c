@@ -1,5 +1,6 @@
 #include "control_unit.h"
 
+#include "stdbool.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -21,7 +22,7 @@ void execute_binary(char *arg) {
 }
 
 FILE *open_file(char *arg) {
-    FILE *fp = fopen(arg, "r+");
+    FILE *fp = fopen(arg, "r");
     if (!fp) {
         printf("Error: cannot open code file '%s'\n", arg);
         exit(1);
@@ -31,13 +32,27 @@ FILE *open_file(char *arg) {
 
 void read_file(char *arg) {
     FILE *fp = open_file(arg);
-    char c;
-    while ((c = fgetc(fp)) != EOF) {
-        printf("%c", c);
+    // check_ninja_binary_format(fp);
+    // int instruction_count = get_ninja_instruction_count(fp);
+    uint32_t bytecode;
+    int read_len = 0;
+    fseek(fp, 0, SEEK_SET);
+    while ((read_len = fread(&bytecode, sizeof(uint32_t), 1, fp)) != 0) {
+        Instruction instruction = decode_instruction(bytecode);
+        register_instruction(instruction.opcode, instruction.immediate);
+        printf("read %d object [%ld bytes]: bytecode = [0x%08x]\n", 
+                read_len, read_len*sizeof(uint32_t),bytecode);
     }
-    printf("\n");
-    fclose(fp);
+    if (fclose(fp) != 0) {
+        perror("Error (fclose)");
+    }
+    print_memory();
 }
+
+// bool check_ninja_instruction_format(FILE *fp) {
+    
+    
+// }
 
 void execute(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
