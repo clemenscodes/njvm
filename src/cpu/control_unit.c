@@ -1,12 +1,13 @@
 #include "control_unit.h"
 
-#include "stdbool.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../ram/program_memory.h"
 #include "../stack/stack.h"
 #include "instructions.h"
+#include "stdbool.h"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
@@ -32,7 +33,10 @@ FILE *open_file(char *arg) {
 
 void read_file(char *arg) {
     FILE *fp = open_file(arg);
-    // check_ninja_binary_format(fp);
+    if (!check_ninja_binary_format(fp)) {
+        printf("Error: file '%s' is not a Ninja binary\n", arg);
+        exit(1);
+    }
     // int instruction_count = get_ninja_instruction_count(fp);
     uint32_t bytecode;
     int read_len = 0;
@@ -40,8 +44,8 @@ void read_file(char *arg) {
     while ((read_len = fread(&bytecode, sizeof(uint32_t), 1, fp)) != 0) {
         Instruction instruction = decode_instruction(bytecode);
         register_instruction(instruction.opcode, instruction.immediate);
-        printf("read %d object [%ld bytes]: bytecode = [0x%08x]\n", 
-                read_len, read_len*sizeof(uint32_t),bytecode);
+        printf("read %d object [%ld bytes]: bytecode = [0x%08x]\n",
+               read_len, read_len * sizeof(uint32_t), bytecode);
     }
     if (fclose(fp) != 0) {
         perror("Error (fclose)");
@@ -49,10 +53,15 @@ void read_file(char *arg) {
     print_memory();
 }
 
-// bool check_ninja_instruction_format(FILE *fp) {
-    
-    
-// }
+bool check_ninja_binary_format(FILE *fp) {
+    int ninja_binary_format = 0x46424a4e;
+    int start = 0;
+    uint32_t bytecode;
+    fseek(fp, start, SEEK_SET);
+    fread(&bytecode, sizeof(uint32_t), 1, fp);
+    printf("bytecode = [0x%08x]\n", bytecode);
+    return bytecode == ninja_binary_format;
+}
 
 void execute(uint32_t bytecode) {
     Instruction instruction = decode_instruction(bytecode);
