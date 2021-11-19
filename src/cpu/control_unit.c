@@ -90,6 +90,7 @@ void read_file(char *arg) {
     pc = instruction_count;
     if (fclose(fp) != 0) {
         perror("Error (fclose)");
+        exit(1);
     }
 }
 
