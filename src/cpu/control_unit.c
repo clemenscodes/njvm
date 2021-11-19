@@ -1,10 +1,12 @@
+#include "control_unit.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "control_unit.h"
-#include "instructions.h"
+
 #include "../memory/program_memory.h"
 #include "../memory/stack.h"
+#include "instructions.h"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
@@ -177,6 +179,12 @@ void execute(uint32_t bytecode, int i) {
             printf("wrchr\n");
             c = pop();
             printf("%c", c);
+            break;
+        case pushg:
+            printf("%03d:\tpushg\t%d\n", i, immediate);
+            break;
+        case popg:
+            printf("%03d:\tpopg\t%d\n", i, immediate);
             break;
         default:
             printf("Unknown opcode %d\n", opcode);

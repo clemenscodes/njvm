@@ -1,8 +1,10 @@
+#include "program_memory.h"
+
 #include <stdio.h>
 #include <string.h>
+
 #include "../cpu/instructions.h"
 #include "stack.h"
-#include "program_memory.h"
 
 int pc = 0;
 uint32_t program_memory[MAXITEMS];
@@ -55,6 +57,12 @@ void print_memory(void) {
             case wrchr:
                 printf("%03d:\t", i);
                 printf("wrchr\n");
+                break;
+            case pushg:
+                printf("%03d:\tpushg\t%d\n", i, immediate);
+                break;
+            case popg:
+                printf("%03d:\tpopg\t%d\n", i, immediate);
                 break;
             default:
                 printf("Unknown opcode %d\n", opcode);
