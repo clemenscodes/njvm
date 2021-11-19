@@ -35,7 +35,7 @@ bool check_ninja_binary_format(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("bytecode = [0x%08x]\n", bytecode);
+    printf("ninja_binary_format = [0x%08x]\n", bytecode);
     return bytecode == ninja_binary_format;
 }
 
@@ -45,7 +45,7 @@ bool check_ninja_version(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("bytecode = [0x%08x]\n", bytecode);
+    printf("ninja_version = [0x%08x]\n", bytecode);
     return bytecode == ninja_binary_version;
 }
 
@@ -54,7 +54,7 @@ int check_ninja_instruction_count(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("bytecode = [0x%08x]\n", bytecode);
+    printf("ninja_instruction_count = [0x%08x]\n", bytecode);
     return bytecode;
 }
 
@@ -63,13 +63,12 @@ int check_ninja_variable_count(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("bytecode = [0x%08x]\n", bytecode);
+    printf("ninja_variable_count = [0x%08x]\n", bytecode);
     return bytecode;
 }
 
 void read_file(char *arg) {
-    int read_len = 0;
-    uint32_t bytecode;
+    size_t read_objects = 0;
     FILE *fp = open_file(arg);
     if (!check_ninja_binary_format(fp)) {
         printf("Error: file '%s' is not a Ninja binary\n", arg);
@@ -84,12 +83,11 @@ void read_file(char *arg) {
     printf("Instruction count: %d\n", instruction_count);
     printf("Variable count: %d\n", variable_count);
     fseek(fp, 16, SEEK_SET);
-    while ((read_len = fread(&bytecode, sizeof(uint32_t), 1, fp)) != 0) {
-        Instruction instruction = decode_instruction(bytecode);
-        register_instruction(instruction.opcode, instruction.immediate);
-        printf("read %d object [%ld bytes]: bytecode = [0x%08x]\n",
-               read_len, read_len * sizeof(uint32_t), bytecode);
+    read_objects = fread(&program_memory, sizeof(uint32_t), instruction_count, fp);
+    if (read_objects != instruction_count) {
+        printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
     }
+    pc = instruction_count;
     if (fclose(fp) != 0) {
         perror("Error (fclose)");
     }
