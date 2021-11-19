@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "control_unit.h"
-#include "../ram/program_memory.h"
-#include "../stack/stack.h"
 #include "instructions.h"
-#include "stdbool.h"
+#include "../memory/program_memory.h"
+#include "../memory/stack.h"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
@@ -32,22 +31,20 @@ FILE *open_file(char *arg) {
 }
 
 bool check_ninja_binary_format(FILE *fp) {
-    int ninja_binary_format = 0x46424a4e;
     int start = 0;
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    return bytecode == ninja_binary_format;
+    return bytecode == NINJA_BINARY_FORMAT;
 }
 
 bool check_ninja_version(FILE *fp) {
-    int ninja_binary_version = 0x00000002;
     int start = 4;
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
     // printf("ninja_version = [0x%08x]\n", bytecode);
-    return bytecode == ninja_binary_version;
+    return bytecode == NINJA_BINARY_VERSION;
 }
 
 int check_ninja_instruction_count(FILE *fp) {
@@ -88,6 +85,10 @@ void read_file(char *arg) {
         exit(1);
     }
     pc = instruction_count;
+    close(fp);
+}
+
+void close(FILE *fp) {
     if (fclose(fp) != 0) {
         perror("Error (fclose)");
         exit(1);
