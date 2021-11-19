@@ -6,6 +6,7 @@
 
 #include "../memory/program_memory.h"
 #include "../memory/stack.h"
+#include "../memory/static_data_area.h"
 #include "instructions.h"
 
 void init(void) {
@@ -19,8 +20,7 @@ void shutdown(void) {
 
 void execute_binary(char *arg) {
     read_file(arg);
-    print_memory();
-    // work();
+    work();
 }
 
 FILE *open_file(char *arg) {
@@ -106,38 +106,26 @@ void execute(uint32_t bytecode, int i) {
     char c;
     switch (opcode) {
         case halt:
-            printf("%03d:\t", i);
-            printf("halt\n");
             shutdown();
-            break;
         case pushc:
-            printf("%03d:\tpushc\t%d\n", i, immediate);
             push(immediate);
             break;
         case add:
-            printf("%03d:\t", i);
-            printf("add\n");
             n2 = pop();
             n1 = pop();
             push(n1 + n2);
             break;
         case sub:
-            printf("%03d:\t", i);
-            printf("sub\n");
             n2 = pop();
             n1 = pop();
             push(n1 - n2);
             break;
         case mul:
-            printf("%03d:\t", i);
-            printf("mul\n");
             n2 = pop();
             n1 = pop();
             push(n1 * n2);
             break;
         case divide:
-            printf("%03d:\t", i);
-            printf("div\n");
             n2 = pop();
             n1 = pop();
             if (n2 == 0) {
@@ -147,8 +135,6 @@ void execute(uint32_t bytecode, int i) {
             push(n1 / n2);
             break;
         case mod:
-            printf("%03d:\t", i);
-            printf("mod\n");
             n2 = pop();
             n1 = pop();
             if (n2 == 0) {
@@ -158,42 +144,35 @@ void execute(uint32_t bytecode, int i) {
             push(n1 % n2);
             break;
         case rdint:
-            printf("%03d:\t", i);
-            printf("rdint\n");
             scanf("%d", &n2);
             push(n2);
             break;
         case wrint:
-            printf("%03d:\t", i);
-            printf("wrint\n");
             printf("%d", pop());
             break;
         case rdchr:
-            printf("%03d:\t", i);
-            printf("rdchr\n");
             scanf("%c", &c);
             push(c);
             break;
         case wrchr:
-            printf("%03d:\t", i);
-            printf("wrchr\n");
             c = pop();
             printf("%c", c);
             break;
         case pushg:
-            printf("%03d:\tpushg\t%d\n", i, immediate);
+            push_global(immediate);
             break;
         case popg:
-            printf("%03d:\tpopg\t%d\n", i, immediate);
+            pop_global(immediate);
             break;
         default:
             printf("Unknown opcode %d\n", opcode);
-            break;
+            shutdown();
     }
 }
 
 void work(void) {
     init();
+    print_memory();
     for (int i = 0; i < pc; i++) {
         execute(program_memory[i], i);
     }

@@ -6,6 +6,7 @@
         "program_memory.h": "c",
         "instructions.h": "c",
         "stdbool.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "stack.h": "c"
     }
 }
