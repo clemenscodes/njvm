@@ -4,6 +4,8 @@
         "boot.h": "c",
         "control_unit.h": "c",
         "program_memory.h": "c",
-        "instructions.h": "c"
+        "instructions.h": "c",
+        "stdbool.h": "c",
+        "stdint.h": "c"
     }
 }

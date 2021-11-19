@@ -18,7 +18,8 @@ void shutdown(void) {
 
 void execute_binary(char *arg) {
     read_file(arg);
-    work();
+    print_memory();
+    // work();
 }
 
 FILE *open_file(char *arg) {
@@ -36,7 +37,6 @@ bool check_ninja_binary_format(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("ninja_binary_format = [0x%08x]\n", bytecode);
     return bytecode == ninja_binary_format;
 }
 
@@ -46,7 +46,7 @@ bool check_ninja_version(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("ninja_version = [0x%08x]\n", bytecode);
+    // printf("ninja_version = [0x%08x]\n", bytecode);
     return bytecode == ninja_binary_version;
 }
 
@@ -55,7 +55,7 @@ int check_ninja_instruction_count(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("ninja_instruction_count = [0x%08x]\n", bytecode);
+    // printf("ninja_instruction_count = [0x%08x]\n", bytecode);
     return bytecode;
 }
 
@@ -64,7 +64,7 @@ int check_ninja_variable_count(FILE *fp) {
     uint32_t bytecode;
     fseek(fp, start, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
-    printf("ninja_variable_count = [0x%08x]\n", bytecode);
+    // printf("ninja_variable_count = [0x%08x]\n", bytecode);
     return bytecode;
 }
 
@@ -80,7 +80,7 @@ void read_file(char *arg) {
         exit(1);
     }
     int instruction_count = check_ninja_instruction_count(fp);
-    int variable_count = check_ninja_variable_count(fp);
+    // int variable_count = check_ninja_variable_count(fp);
     fseek(fp, 16, SEEK_SET);
     read_objects = fread(&program_memory, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
@@ -93,7 +93,7 @@ void read_file(char *arg) {
     }
 }
 
-void execute(uint32_t bytecode) {
+void execute(uint32_t bytecode, int i) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
@@ -102,27 +102,38 @@ void execute(uint32_t bytecode) {
     char c;
     switch (opcode) {
         case halt:
+            printf("%03d:\t", i);
+            printf("halt\n");
             shutdown();
             break;
         case pushc:
+            printf("%03d:\tpushc\t%d\n", i, immediate);
             push(immediate);
             break;
         case add:
+            printf("%03d:\t", i);
+            printf("add\n");
             n2 = pop();
             n1 = pop();
             push(n1 + n2);
             break;
         case sub:
+            printf("%03d:\t", i);
+            printf("sub\n");
             n2 = pop();
             n1 = pop();
             push(n1 - n2);
             break;
         case mul:
+            printf("%03d:\t", i);
+            printf("mul\n");
             n2 = pop();
             n1 = pop();
             push(n1 * n2);
             break;
         case divide:
+            printf("%03d:\t", i);
+            printf("div\n");
             n2 = pop();
             n1 = pop();
             if (n2 == 0) {
@@ -132,6 +143,8 @@ void execute(uint32_t bytecode) {
             push(n1 / n2);
             break;
         case mod:
+            printf("%03d:\t", i);
+            printf("mod\n");
             n2 = pop();
             n1 = pop();
             if (n2 == 0) {
@@ -141,28 +154,37 @@ void execute(uint32_t bytecode) {
             push(n1 % n2);
             break;
         case rdint:
+            printf("%03d:\t", i);
+            printf("rdint\n");
             scanf("%d", &n2);
             push(n2);
             break;
         case wrint:
+            printf("%03d:\t", i);
+            printf("wrint\n");
             printf("%d", pop());
             break;
         case rdchr:
+            printf("%03d:\t", i);
+            printf("rdchr\n");
             scanf("%c", &c);
             push(c);
             break;
         case wrchr:
+            printf("%03d:\t", i);
+            printf("wrchr\n");
             c = pop();
             printf("%c", c);
             break;
         default:
-            shutdown();
+            printf("Unknown opcode %d\n", opcode);
+            break;
     }
 }
 
 void work(void) {
     init();
     for (int i = 0; i < pc; i++) {
-        execute(program_memory[i]);
+        execute(program_memory[i], i);
     }
 }

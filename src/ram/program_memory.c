@@ -57,6 +57,7 @@ void print_memory(void) {
                 printf("wrchr\n");
                 break;
             default:
+                printf("Unknown opcode %d\n", opcode);
                 break;
         }
     }
