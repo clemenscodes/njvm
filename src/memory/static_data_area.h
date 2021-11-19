@@ -3,7 +3,7 @@
 
 #include "stack.h"
 
-extern int static_data[MAXITEMS];
+extern uint32_t sda[MAXITEMS];
 
 int push_global(int n);
 void pop_global(int n);
