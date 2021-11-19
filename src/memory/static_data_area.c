@@ -1,6 +1,7 @@
+#include <stdint.h>
 #include "stack.h"
 
-int sda[MAXITEMS];
+uint32_t sda[MAXITEMS];
 
 void push_global(int n) {
     push(sda[n]);

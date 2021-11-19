@@ -9,5 +9,5 @@ test/prog1.sh
 echo
 echo "Testing prog2.bin ..."
 echo
-# test/prog2.sh
+test/prog2.sh
 echo
