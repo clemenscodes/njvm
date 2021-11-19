@@ -5,4 +5,7 @@
 
 extern int static_data[MAXITEMS];
 
+int push_global(int n);
+void pop_global(int n);
+
 #endif
