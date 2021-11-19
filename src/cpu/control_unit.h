@@ -6,12 +6,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define NINJA_BINARY_FORMAT 0x46424a4e;
+#define NINJA_BINARY_VERSION 0x00000002
+
 void init(void);
 void shutdown(void);
-void read_file(char *filename);
-FILE *open_file(char *filename);
+void read_file(char *file_name);
+FILE *open_file(char *file_name);
 bool check_ninja_binary_format(FILE *fp);
-void execute_binary(char *filename);
+void execute_binary(char *file_name);
+void close(FILE *fp);
 void execute(uint32_t bytecode, int i);
 void work(void);
 bool check_ninja_binary_format(FILE *fp);

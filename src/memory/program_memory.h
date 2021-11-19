@@ -1,7 +1,7 @@
 #ifndef _PROGRAM_MEMORY_H
 #define _PROGRAM_MEMORY_H
 
-#include "../stack/stack.h"
+#include "stack.h"
 #include "../cpu/instructions.h"
 
 extern int pc;

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../cpu/instructions.h"
-#include "../stack/stack.h"
+#include "stack.h"
 #include "program_memory.h"
 
 int pc = 0;
