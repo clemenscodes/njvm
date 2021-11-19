@@ -2,6 +2,8 @@
     "cmake.configureOnOpen": false,
     "files.associations": {
         "boot.h": "c",
-        "control_unit.h": "c"
+        "control_unit.h": "c",
+        "program_memory.h": "c",
+        "instructions.h": "c"
     }
 }
