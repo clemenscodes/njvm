@@ -18,6 +18,7 @@ void shutdown(void) {
 
 void execute_binary(char *arg) {
     read_file(arg);
+    work();
 }
 
 FILE *open_file(char *arg) {
@@ -80,18 +81,16 @@ void read_file(char *arg) {
     }
     int instruction_count = check_ninja_instruction_count(fp);
     int variable_count = check_ninja_variable_count(fp);
-    printf("Instruction count: %d\n", instruction_count);
-    printf("Variable count: %d\n", variable_count);
     fseek(fp, 16, SEEK_SET);
     read_objects = fread(&program_memory, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
+        exit(1);
     }
     pc = instruction_count;
     if (fclose(fp) != 0) {
         perror("Error (fclose)");
     }
-    print_memory();
 }
 
 void execute(uint32_t bytecode) {
