@@ -18,11 +18,6 @@ void shutdown(void) {
     exit(0);
 }
 
-void execute_binary(char *arg) {
-    read_file(arg);
-    work();
-}
-
 FILE *open_file(char *arg) {
     FILE *fp = fopen(arg, "r");
     if (!fp) {
@@ -67,6 +62,11 @@ int check_ninja_variable_count(FILE *fp) {
     return bytecode;
 }
 
+void execute_binary(char *arg) {
+    read_file(arg);
+    work();
+}
+
 void read_file(char *arg) {
     size_t read_objects = 0;
     FILE *fp = open_file(arg);
@@ -79,19 +79,19 @@ void read_file(char *arg) {
         exit(1);
     }
     int instruction_count = check_ninja_instruction_count(fp);
-    int variable_count = check_ninja_variable_count(fp);
-    *program_memory = *(uint32_t *)malloc(sizeof(uint32_t) * instruction_count);
-    *sda = *(uint32_t *)malloc(sizeof(uint32_t) * variable_count);
-    if (program_memory == NULL || sda == NULL ) {
-        perror("malloc");
-        exit(1);
-    }
-    for (int i = 0; i < instruction_count; i++) {
-        program_memory[i] = 0;
-    }
-    for (int i = 0; i < variable_count; i++) {
-        sda[i] = 0;
-    }
+    // int variable_count = check_ninja_variable_count(fp);
+    // *program_memory = *(uint32_t *)malloc(sizeof(uint32_t) * instruction_count);
+    // *sda = *(uint32_t *)malloc(sizeof(uint32_t) * variable_count);
+    // if (program_memory == NULL || sda == NULL ) {
+    //     perror("malloc");
+    //     exit(1);
+    // }
+    // for (int i = 0; i < instruction_count; i++) {
+    //     program_memory[i] = 0;
+    // }
+    // for (int i = 0; i < variable_count; i++) {
+    //     sda[i] = 0;
+    // }
     fseek(fp, 16, SEEK_SET);
     read_objects = fread(&program_memory, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
