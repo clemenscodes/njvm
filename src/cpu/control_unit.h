@@ -16,7 +16,7 @@ FILE *open_file(char *file_name);
 bool check_ninja_binary_format(FILE *fp);
 void execute_binary(char *file_name);
 void close(FILE *fp);
-void execute(uint32_t bytecode, int i);
+void execute_instruction(uint32_t bytecode, int i);
 void work(void);
 bool check_ninja_binary_format(FILE *fp);
 bool check_ninja_version(FILE *fp);

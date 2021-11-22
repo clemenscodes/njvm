@@ -1,19 +1,19 @@
-#include "control_unit.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "control_unit.h"
+#include "instructions.h"
 #include "../memory/program_memory.h"
 #include "../memory/stack.h"
 #include "../memory/static_data_area.h"
-#include "instructions.h"
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
 }
 
 void shutdown(void) {
+    free_sda();
+    free_ram();
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
@@ -36,27 +36,27 @@ bool check_ninja_binary_format(FILE *fp) {
 }
 
 bool check_ninja_version(FILE *fp) {
-    int start = 4;
+    int start_of_version = 4;
     uint32_t bytecode;
-    fseek(fp, start, SEEK_SET);
+    fseek(fp, start_of_version, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
     // printf("ninja_version = [0x%08x]\n", bytecode);
     return bytecode == NINJA_BINARY_VERSION;
 }
 
 int check_ninja_instruction_count(FILE *fp) {
-    int start = 8;
+    int start_of_instruction_count = 8;
     uint32_t bytecode;
-    fseek(fp, start, SEEK_SET);
+    fseek(fp, start_of_instruction_count, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
     // printf("ninja_instruction_count = [0x%08x]\n", bytecode);
     return bytecode;
 }
 
 int check_ninja_variable_count(FILE *fp) {
-    int start = 12;
+    int start_of_variable_count = 12;
     uint32_t bytecode;
-    fseek(fp, start, SEEK_SET);
+    fseek(fp, start_of_variable_count, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
     // printf("ninja_variable_count = [0x%08x]\n", bytecode);
     return bytecode;
@@ -69,6 +69,7 @@ void execute_binary(char *arg) {
 
 void read_file(char *arg) {
     size_t read_objects = 0;
+    int start_of_instructions = 16;
     FILE *fp = open_file(arg);
     if (!check_ninja_binary_format(fp)) {
         printf("Error: file '%s' is not a Ninja binary\n", arg);
@@ -86,7 +87,7 @@ void read_file(char *arg) {
         perror("malloc");
         exit(1);
     }
-    fseek(fp, 16, SEEK_SET);
+    fseek(fp, start_of_instructions, SEEK_SET);
     read_objects = fread(program_memory, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
@@ -103,7 +104,7 @@ void close(FILE *fp) {
     }
 }
 
-void execute(uint32_t bytecode, int i) {
+void execute_instruction(uint32_t bytecode, int i) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
     int immediate = instruction.immediate;
@@ -180,8 +181,6 @@ void work(void) {
     init();
     print_memory();
     for (int i = 0; i < pc; i++) {
-        execute(program_memory[i], i);
+        execute_instruction(program_memory[i], i);
     }
-    free_sda();
-    free_ram();
 }
