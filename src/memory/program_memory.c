@@ -10,6 +10,10 @@ uint32_t *program_memory;
 
 void initialize_ram(uint32_t instruction_count) {
     program_memory = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
+    if (program_memory == NULL) {
+        perror("malloc(program_memory)");
+        exit(1);
+    }
 }
 
 void print_memory(void) {
