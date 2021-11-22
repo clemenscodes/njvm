@@ -1,9 +1,9 @@
-#include "program_memory.h"
 #include "stdlib.h"
 #include <stdio.h>
 #include <string.h>
-#include "../cpu/instructions.h"
 #include "stack.h"
+#include "program_memory.h"
+#include "../cpu/instructions.h"
 
 int pc = 0;
 uint32_t *program_memory;
