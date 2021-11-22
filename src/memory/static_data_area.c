@@ -1,11 +1,12 @@
+#include <stdint.h>
 #include <stdio.h>
 #include "stack.h"
 #include "stdlib.h"
 
-size_t sda_size;
+uint32_t sda_size;
 int* sda;
 
-void initialize_sda(size_t variable_count) {
+void initialize_sda(uint32_t variable_count) {
     sda_size = variable_count;
     sda = (int *)calloc(variable_count, sizeof(int));
 }
