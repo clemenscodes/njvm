@@ -41,7 +41,23 @@ typedef struct Instruction {
     int immediate;
 } Instruction;
 
+extern int n1, n2;
+extern char c;
+
 uint32_t encode_instruction(Opcode opcode, int immediate);
 Instruction decode_instruction(uint32_t bytecode);
-
+void shutdown(void);
+void halt_instruction(void);
+void pushc_instruction(int immediate);
+void add_instruction(void);
+void sub_instruction(void);
+void mul_instruction(void);
+void div_instruction(void);
+void mod_instruction(void);
+void wrchr_instruction(void);
+void rdchr_instruction(void);
+void rdint_instruction(void);
+void wrint_instruction(void);
+void pushg_instruction(int immediate);
+void popg_instruction(int immediate);
 #endif

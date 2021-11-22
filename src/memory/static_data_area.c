@@ -9,6 +9,10 @@ int* sda;
 void initialize_sda(uint32_t variable_count) {
     sda_size = variable_count;
     sda = (int *)calloc(variable_count, sizeof(int));
+    if (sda == NULL) {
+        perror("malloc(sda)");
+        exit(1);
+    }
 }
 
 void push_global(int n) {

@@ -1,6 +1,7 @@
 #ifndef _STATIC_DATA_AREA_H
 #define _STATIC_DATA_AREA_H
 
+#include <stdint.h>
 #include "stack.h"
 
 extern int *sda;
