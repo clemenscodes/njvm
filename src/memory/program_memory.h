@@ -5,8 +5,10 @@
 #include "../cpu/instructions.h"
 
 extern int pc;
-extern uint32_t program_memory[MAXITEMS];
+extern uint32_t *program_memory;
+void initialize_ram(uint32_t instruction_count);
 void print_memory(void);
 void register_instruction(Opcode opcode, int immediate);
+void free_ram(void);
 
 #endif

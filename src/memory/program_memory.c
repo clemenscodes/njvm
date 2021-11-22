@@ -1,13 +1,16 @@
 #include "program_memory.h"
-
+#include "stdlib.h"
 #include <stdio.h>
 #include <string.h>
-
 #include "../cpu/instructions.h"
 #include "stack.h"
 
 int pc = 0;
-uint32_t program_memory[MAXITEMS];
+uint32_t *program_memory;
+
+void initialize_ram(uint32_t instruction_count) {
+    program_memory = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
+}
 
 void print_memory(void) {
     for (int i = 0; i < pc; i++) {
@@ -75,4 +78,8 @@ void register_instruction(Opcode opcode, int immediate) {
     uint32_t instruction = encode_instruction(opcode, immediate);
     program_memory[pc] = instruction;
     pc++;
+}
+
+void free_ram(void) {
+    free(program_memory);
 }
