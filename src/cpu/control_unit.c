@@ -14,6 +14,7 @@ void init(void) {
 void shutdown(void) {
     free_sda();
     free_ram();
+    free_stack();
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
