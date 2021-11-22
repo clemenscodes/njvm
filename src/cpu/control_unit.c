@@ -179,6 +179,7 @@ void execute(uint32_t bytecode, int i) {
 void work(void) {
     init();
     print_memory();
+    print_sda();
     for (int i = 0; i < pc; i++) {
         execute(program_memory[i], i);
     }
