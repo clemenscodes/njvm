@@ -79,21 +79,15 @@ void read_file(char *arg) {
         exit(1);
     }
     int instruction_count = check_ninja_instruction_count(fp);
-    // int variable_count = check_ninja_variable_count(fp);
-    // *program_memory = *(uint32_t *)malloc(sizeof(uint32_t) * instruction_count);
-    // *sda = *(uint32_t *)malloc(sizeof(uint32_t) * variable_count);
-    // if (program_memory == NULL || sda == NULL ) {
-    //     perror("malloc");
-    //     exit(1);
-    // }
-    // for (int i = 0; i < instruction_count; i++) {
-    //     program_memory[i] = 0;
-    // }
-    // for (int i = 0; i < variable_count; i++) {
-    //     sda[i] = 0;
-    // }
+    int variable_count = check_ninja_variable_count(fp);
+    initialize_ram(instruction_count);
+    initialize_sda(variable_count);
+    if (program_memory == NULL || sda == NULL) {
+        perror("malloc");
+        exit(1);
+    }
     fseek(fp, 16, SEEK_SET);
-    read_objects = fread(&program_memory, sizeof(uint32_t), instruction_count, fp);
+    read_objects = fread(program_memory, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
         exit(1);
@@ -188,4 +182,6 @@ void work(void) {
     for (int i = 0; i < pc; i++) {
         execute(program_memory[i], i);
     }
+    free_sda();
+    free_ram();
 }
