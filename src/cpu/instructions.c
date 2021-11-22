@@ -94,3 +94,14 @@ void pushg_instruction(int immediate) {
 void popg_instruction(int immediate) {
     pop_global(immediate);
 }
+
+void asf_instruction(int immediate) {
+    push(fp);
+    fp = sp;
+    sp = sp + immediate;
+}
+
+void rsf_instruction(void) {
+    sp = fp;
+    fp = pop();
+}

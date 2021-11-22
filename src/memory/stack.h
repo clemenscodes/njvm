@@ -6,6 +6,7 @@
 #define MAXITEMS 10000
 
 extern int sp;
+extern int fp;
 extern int *stack;
 extern size_t stack_size;
 

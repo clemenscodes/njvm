@@ -4,6 +4,7 @@
 
 size_t stack_size = 0;
 int sp = 0;
+int fp = 0;
 int *stack;
 
 void push(int immediate) {

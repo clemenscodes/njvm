@@ -16,6 +16,8 @@
 #define WRCHR 10
 #define PUSHG 11
 #define POPG 12
+#define ASF 13
+#define RSF 14
 
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
@@ -33,7 +35,9 @@ typedef enum Opcode {
     rdchr = RDCHR,
     wrchr = WRCHR,
     pushg = PUSHG,
-    popg = POPG
+    popg = POPG,
+    asf = ASF,
+    rsf = RSF,
 } Opcode;
 
 typedef struct Instruction {
@@ -60,4 +64,6 @@ void rdint_instruction(void);
 void wrint_instruction(void);
 void pushg_instruction(int immediate);
 void popg_instruction(int immediate);
+void asf_instruction(int immediate);
+void rsf_instruction(void);
 #endif
