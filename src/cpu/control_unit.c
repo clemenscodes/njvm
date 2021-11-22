@@ -147,6 +147,12 @@ void execute_instruction(uint32_t bytecode) {
         case popg:
             popg_instruction(immediate);
             break;
+        case asf:
+            asf_instruction(immediate);
+            break;
+        case rsf:
+            rsf_instruction();
+            break;
         default:
             printf("Unknown opcode %d\n", opcode);
             halt_instruction();
