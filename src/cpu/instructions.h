@@ -18,6 +18,8 @@
 #define POPG 12
 #define ASF 13
 #define RSF 14
+#define PUSHL 15
+#define POPL 16
 
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
@@ -38,6 +40,8 @@ typedef enum Opcode {
     popg = POPG,
     asf = ASF,
     rsf = RSF,
+    pushl = PUSHL,
+    popl = POPL,
 } Opcode;
 
 typedef struct Instruction {
@@ -66,4 +70,6 @@ void pushg_instruction(int immediate);
 void popg_instruction(int immediate);
 void asf_instruction(int immediate);
 void rsf_instruction(void);
+void pushl_instruction(int immediate);
+void popl_instruction(int immediate);
 #endif

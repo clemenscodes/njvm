@@ -71,6 +71,18 @@ void print_memory(void) {
             case popg:
                 printf("%03d:\tpopg\t%d\n", i, immediate);
                 break;
+            case asf:
+                printf("%03d:\tasf\t%d\n", i, immediate);
+                break;
+            case rsf:
+                printf("%03d:\trsf\n", i);
+                break;
+            case pushl:
+                printf("%03d:\tpushl\t%d\n", i, immediate);
+                break;
+            case popl:
+                printf("%03d:\tpopl\t%d\n", i, immediate);
+                break;
             default:
                 printf("Unknown opcode %d\n", opcode);
                 break;
