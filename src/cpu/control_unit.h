@@ -20,7 +20,7 @@ void execute_instruction(uint32_t bytecode, int i);
 void work(void);
 bool check_ninja_binary_format(FILE *fp);
 bool check_ninja_version(FILE *fp);
-int check_ninja_instruction_count(FILE *fp);
-int check_ninja_variable_count(FILE *fp);
+uint32_t check_ninja_instruction_count(FILE *fp);
+uint32_t check_ninja_variable_count(FILE *fp);
 
 #endif

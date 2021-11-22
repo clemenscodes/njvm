@@ -2,21 +2,16 @@
 #include <stdlib.h>
 #include "stack.h"
 
+size_t stack_size = 0;
 int sp = 0;
-size_t stack_size;
 int *stack;
 
-void initialize_stack(void) {
-    stack_size = 1;
-    stack = (int *)malloc(stack_size * sizeof(int));
-}
-
 void push(int immediate) {
-    stack_size++;
-    if (sp > stack_size) {
-        printf("Stack overflow: Stack is full, not more than %ld items allowed\n", stack_size);
+    if (sp > MAXITEMS) {
+        printf("Stack overflow: Stack is full, not more than %d items allowed\n", MAXITEMS);
         exit(1);
     }
+    stack_size++;
     stack = (int *)realloc(stack, stack_size*sizeof(int));
     stack[sp] = immediate;
     sp++;
@@ -28,13 +23,10 @@ int pop(void) {
         exit(1);
     }
     sp--;
+    stack_size--;
     int tmp = stack[sp];
-    stack[sp] = 0;
+    stack = (int *)realloc(stack, stack_size*sizeof(int));
     return tmp;
-}
-
-void free_stack() {
-    free(stack);
 }
 
 void print_stack(void) {

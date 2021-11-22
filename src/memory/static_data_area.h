@@ -1,15 +1,14 @@
 #ifndef _STATIC_DATA_AREA_H
 #define _STATIC_DATA_AREA_H
 
-#include <stdint.h>
 #include "stack.h"
 
-extern uint32_t *sda;
-extern uint32_t size;
+extern int *sda;
+extern int size;
 
-int push_global(int n);
+void push_global(int n);
 void pop_global(int n);
-void initialize_sda(uint32_t bytes);
+void initialize_sda(size_t variable_count);
 void free_sda(void);
 void print_sda(void);
 

@@ -1,6 +1,7 @@
 #ifndef _STACK_H
 #define _STACK_H
 
+#define MAXITEMS 10000
 
 extern int sp;
 extern int *stack;
