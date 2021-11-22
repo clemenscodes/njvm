@@ -1,15 +1,13 @@
-#include <stdint.h>
 #include <stdio.h>
-
 #include "stack.h"
 #include "stdlib.h"
 
-uint32_t size;
-uint32_t* sda;
+size_t sda_size;
+int* sda;
 
-void initialize_sda(uint32_t variable_count) {
-    size = variable_count;
-    sda = (uint32_t*)calloc(variable_count, sizeof(uint32_t));
+void initialize_sda(size_t variable_count) {
+    sda_size = variable_count;
+    sda = (int *)calloc(variable_count, sizeof(int));
 }
 
 void push_global(int n) {
@@ -25,12 +23,7 @@ void free_sda(void) {
 }
 
 void print_sda(void) {
-    for (int i = 0; i < size; i++) {
-        printf("%03u:\t", i);
-        if (sda == NULL) {
-            printf("nil\n");
-        } else {
-            printf("[%d]\n", sda[i]);
-        }
+    for (int i = 0; i < sda_size; i++) {
+        printf("%03u:\t[%d]\n", i, sda[i]);
     }
 }

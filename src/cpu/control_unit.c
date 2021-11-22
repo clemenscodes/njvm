@@ -14,7 +14,6 @@ void init(void) {
 void shutdown(void) {
     free_sda();
     free_ram();
-    free_stack();
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
@@ -45,7 +44,7 @@ bool check_ninja_version(FILE *fp) {
     return bytecode == NINJA_BINARY_VERSION;
 }
 
-int check_ninja_instruction_count(FILE *fp) {
+uint32_t check_ninja_instruction_count(FILE *fp) {
     int start_of_instruction_count = 8;
     uint32_t bytecode;
     fseek(fp, start_of_instruction_count, SEEK_SET);
@@ -54,7 +53,7 @@ int check_ninja_instruction_count(FILE *fp) {
     return bytecode;
 }
 
-int check_ninja_variable_count(FILE *fp) {
+uint32_t check_ninja_variable_count(FILE *fp) {
     int start_of_variable_count = 12;
     uint32_t bytecode;
     fseek(fp, start_of_variable_count, SEEK_SET);
@@ -80,8 +79,8 @@ void read_file(char *arg) {
         printf("Error: file '%s' does not have the correct Ninja version\n", arg);
         exit(1);
     }
-    int instruction_count = check_ninja_instruction_count(fp);
-    int variable_count = check_ninja_variable_count(fp);
+    uint32_t instruction_count = check_ninja_instruction_count(fp);
+    uint32_t variable_count = check_ninja_variable_count(fp);
     initialize_ram(instruction_count);
     initialize_sda(variable_count);
     if (program_memory == NULL || sda == NULL) {
