@@ -5,6 +5,7 @@
 #include "control_unit.h"
 #include "instructions.h"
 #include "../memory/program_memory.h"
+#include "../memory/stack.h"
 #include "../memory/static_data_area.h"
 
 void init(void) {
@@ -152,6 +153,12 @@ void execute_instruction(uint32_t bytecode) {
             break;
         case rsf:
             rsf_instruction();
+            break;
+        case pushl:
+            pushl_instruction(immediate);
+            break;
+        case popl:
+            popl_instruction(immediate);
             break;
         default:
             printf("Unknown opcode %d\n", opcode);

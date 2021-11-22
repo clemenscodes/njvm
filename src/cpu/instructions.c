@@ -1,9 +1,11 @@
-#include "../memory/stack.h"
-#include "../memory/static_data_area.h"
-#include "../memory/program_memory.h"
 #include "instructions.h"
+
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "../memory/program_memory.h"
+#include "../memory/stack.h"
+#include "../memory/static_data_area.h"
 
 int n1, n2;
 char c;
@@ -98,10 +100,22 @@ void popg_instruction(int immediate) {
 void asf_instruction(int immediate) {
     push(fp);
     fp = sp;
-    sp = sp + immediate;
+    stack_size += immediate;
+    stack = (int *)realloc(stack, (stack_size) * sizeof(int));
+    sp += immediate;
 }
 
 void rsf_instruction(void) {
+    stack_size -= (sp - fp);
+    stack = (int *)realloc(stack, (stack_size) * sizeof(int));
     sp = fp;
     fp = pop();
+}
+
+void pushl_instruction(int immediate) {
+    push(stack[fp + immediate]);
+}
+
+void popl_instruction(int immediate) {
+    stack[fp + immediate] = stack[sp - 1];
 }
