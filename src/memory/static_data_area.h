@@ -11,5 +11,6 @@ int push_global(int n);
 void pop_global(int n);
 void initialize_sda(uint32_t bytes);
 void free_sda(void);
+void print_sda(void);
 
 #endif
