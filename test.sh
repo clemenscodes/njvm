@@ -11,7 +11,3 @@ echo "Testing prog2.bin ..."
 echo
 test/prog2.sh
 echo
-echo "Testing prog3.bin ..."
-echo
-test/prog3.sh
-echo 

@@ -13,7 +13,7 @@ void print_usage(void) {
 }
 
 void print_version(void) {
-    printf("Ninja Virtual Machine version 2 (compiled Sep 23 2015, 10:36:53)\n");
+    printf("Ninja Virtual Machine version 3 (compiled Sep 23 2015, 10:36:53)\n");
     exit(0);
 }
 
