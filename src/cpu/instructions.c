@@ -103,6 +103,9 @@ void asf_instruction(int immediate) {
     stack_size += immediate;
     stack = (int *)realloc(stack, (stack_size) * sizeof(int));
     sp += immediate;
+    for (int i = fp; i < sp; i++) {
+        stack[i] = 0;
+    }
 }
 
 void rsf_instruction(void) {
