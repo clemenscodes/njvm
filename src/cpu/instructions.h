@@ -21,9 +21,9 @@
 #define RSF 14
 #define PUSHL 15
 #define POPL 16
-#define BRF 17
-#define BRT 18
-#define JUMP 19
+#define JUMP 23
+#define BRF 24 
+#define BRT 25 
 
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
@@ -46,9 +46,9 @@ typedef enum Opcode {
     rsf = RSF,
     pushl = PUSHL,
     popl = POPL,
+    jump = JUMP,
     brf = BRF,
     brt = BRT,
-    jump= JUMP,
 } Opcode;
 
 typedef struct Instruction {
