@@ -5,10 +5,9 @@
 
 int main(int argc, char *argv[]) {
     if (argc > 1) {
-        check_args(argv);
+        check_args(argc, argv);
     } else {
-        init();
-        shutdown();
+        printf("Error: no code file specified\n");
     }
     return 0;
 }
