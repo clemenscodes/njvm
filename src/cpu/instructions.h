@@ -2,6 +2,7 @@
 #define _INSTRUCTIONS_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define HALT 0
 #define PUSHC 1
@@ -20,6 +21,9 @@
 #define RSF 14
 #define PUSHL 15
 #define POPL 16
+#define BRF 17
+#define BRT 18
+#define JUMP 19
 
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
@@ -42,6 +46,9 @@ typedef enum Opcode {
     rsf = RSF,
     pushl = PUSHL,
     popl = POPL,
+    brf = BRF,
+    brt = BRT,
+    jump= JUMP,
 } Opcode;
 
 typedef struct Instruction {
@@ -71,5 +78,8 @@ void popg_instruction(int immediate);
 void asf_instruction(int immediate);
 void rsf_instruction(void);
 void pushl_instruction(int immediate);
+void brf_instruction(bool immediate);
+void brt_instruction(bool immediate);
+void jump_instruction(int immediate);
 void popl_instruction(int immediate);
 #endif

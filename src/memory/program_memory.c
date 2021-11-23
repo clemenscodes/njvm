@@ -83,6 +83,15 @@ void print_memory(void) {
             case popl:
                 printf("%03d:\tpopl\t%d\n", i, immediate);
                 break;
+            case brf:
+                printf("%03d:\tbrf\t%d\n", i, immediate);
+                break;
+            case brt:
+                printf("%03d:\tbrt\t%d\n", i, immediate);
+                break;
+            case jump:
+                printf("%03d:\tjump\t%d\n", i, immediate);
+                break;
             default:
                 printf("Unknown opcode %d\n", opcode);
                 break;
