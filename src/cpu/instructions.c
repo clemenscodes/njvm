@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "../memory/program_memory.h"
 #include "../memory/stack.h"
@@ -121,4 +122,20 @@ void pushl_instruction(int immediate) {
 
 void popl_instruction(int immediate) {
     stack[fp + immediate] = stack[sp - 1];
+}
+
+void brf_instruction(bool immediate) {
+    if (!immediate) {
+        jump_instruction(immediate);
+    }
+}
+
+void brt_instruction(bool immediate) {
+    if (immediate) {
+        jump_instruction(immediate);
+    }
+}
+
+void jump_instruction(int immediate) {
+    pc = immediate;
 }

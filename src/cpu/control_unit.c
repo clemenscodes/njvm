@@ -16,7 +16,10 @@ void read_file(char *arg) {
     FILE *fp = open_file(arg);
     check_ninja_binary_format(fp, arg);
     check_ninja_version(fp, arg);
-    initialize_sda(check_ninja_variable_count(fp));
+    int variable_count = check_ninja_variable_count(fp);
+    if (variable_count > 0) {
+        initialize_sda(variable_count);
+    }
     read_instructions_into_memory(fp);
     close(fp);
 }
@@ -30,6 +33,7 @@ void read_instructions_into_memory(FILE *fp) {
     read_objects = fread(program_memory, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
+        close(fp);
         exit(1);
     }
     pc = instruction_count;
@@ -39,6 +43,7 @@ FILE *open_file(char *arg) {
     FILE *fp = fopen(arg, "r");
     if (!fp) {
         printf("Error: cannot open code file '%s'\n", arg);
+        close(fp);
         exit(1);
     }
     return fp;
@@ -51,6 +56,7 @@ void check_ninja_binary_format(FILE *fp, char *arg) {
     fread(&bytecode, sizeof(uint32_t), 1, fp);
     if (!(bytecode == NINJA_BINARY_FORMAT)) {
         printf("Error: file '%s' is not a Ninja binary\n", arg);
+        close(fp);
         exit(1);
     }
 }
@@ -63,6 +69,7 @@ void check_ninja_version(FILE *fp, char *arg) {
     // printf("ninja_version = [0x%08x]\n", bytecode);
     if (!(bytecode == NINJA_BINARY_VERSION)) {
         printf("Error: file '%s' does not have the correct Ninja version\n", arg);
+        close(fp);
         exit(1);
     }
 }
@@ -73,6 +80,11 @@ uint32_t check_ninja_instruction_count(FILE *fp) {
     fseek(fp, start_of_instruction_count, SEEK_SET);
     fread(&bytecode, sizeof(uint32_t), 1, fp);
     // printf("ninja_instruction_count = [0x%08x]\n", bytecode);
+    if (bytecode == 0) {
+        printf("Error: no instructions\n");
+        close(fp);
+        exit(1);
+    }
     return bytecode;
 }
 
@@ -159,6 +171,15 @@ void execute_instruction(uint32_t bytecode) {
             break;
         case popl:
             popl_instruction(immediate);
+            break;
+        case brf:
+            brf_instruction(immediate);
+            break;
+        case brt:
+            brt_instruction(immediate);
+            break;
+        case jump:
+            jump_instruction(immediate);
             break;
         default:
             printf("Unknown opcode %d\n", opcode);
