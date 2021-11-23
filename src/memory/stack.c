@@ -1,6 +1,7 @@
+#include "stack.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "stack.h"
 
 size_t stack_size = 0;
 int sp = 0;
@@ -13,9 +14,10 @@ void push(int immediate) {
         exit(1);
     }
     stack_size++;
-    stack = (int *)realloc(stack, stack_size*sizeof(int));
+    stack = (int *)realloc(stack, (stack_size + 1) * sizeof(int));
     stack[sp] = immediate;
     sp++;
+    stack[sp] = 0;
 }
 
 int pop(void) {
@@ -26,7 +28,7 @@ int pop(void) {
     sp--;
     stack_size--;
     int tmp = stack[sp];
-    stack = (int *)realloc(stack, stack_size*sizeof(int));
+    stack = (int *)realloc(stack, stack_size * sizeof(int));
     return tmp;
 }
 
@@ -35,7 +37,7 @@ void print_stack(void) {
     printf(".-------+-------.\n");
     for (int i = sp; i >= 0; i--) {
         if (i == sp) {
-            printf("|sp->%3d|%7d|\n", i, stack[i]);
+            printf("|sp->%3d|%7d|\n", i, 0);
         } else {
             printf("|%7d|%7d|\n", i, stack[i]);
         }
