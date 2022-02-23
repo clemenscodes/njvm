@@ -4,11 +4,11 @@ set(CMAKE_C_COMPILER gcc)
 
 set(CMAKE_C_STANDARD 99)
 
-set(EXECUTABLE_OUTPUT_PATH "../")
-
 project(njvm C)
 
 add_compile_options(-g -Wall -pedantic)
+
+enable_testing()
 
 add_executable(
     njvm 
@@ -20,3 +20,9 @@ add_executable(
     src/memory/stack.c
     src/memory/static_data_area.c
 )
+
+include(CTest)
+
+add_executable(tester test/test.c)
+
+add_test(Tester tester COMMAND tester)
