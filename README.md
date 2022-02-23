@@ -6,21 +6,18 @@
 
     sudo apt update
     sudo apt upgrade
-    sudo apt install git
-
-### Install Build dependencies
-
-    sudo apt install build-essential cmake
+    sudo apt install git build-essential cmake
 
 ### Compile
 
-    git clone https://github.com/clemenscodes/njvm.git
-    cd njvm
-    cargo install --path .
+    git clone https://github.com/clemenscodes/KSP.git
+    cd KSP 
+    cmake -B build
+    make -C build
 
 ## Usage
 
-    njvm [options] <code file>
+    ./njvm [options] <code file>
 
 ### Flags
 
@@ -74,7 +71,3 @@ Otherwise the entered address must be an unsigned integer.
 ### Quitting the VM
 
 - ```quit``` or simply ```q```.
-
-## Documentation
-
-    cargo doc --open
