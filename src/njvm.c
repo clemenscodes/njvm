@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "cpu/control_unit.h"
-#include "boot/boot.h"
+#include "control_unit.h"
 
 int main(int argc, char *argv[]) {
     if (argc > 1) {
