@@ -3,7 +3,7 @@
 #include <string.h>
 #include "stack.h"
 #include "program_memory.h"
-#include "../cpu/instructions.h"
+#include "instructions.h"
 
 int pc = 0;
 uint32_t *program_memory;

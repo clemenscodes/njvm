@@ -2,7 +2,7 @@
 #define _PROGRAM_MEMORY_H
 
 #include "stack.h"
-#include "../cpu/instructions.h"
+#include "instructions.h"
 
 extern int pc;
 extern uint32_t *program_memory;

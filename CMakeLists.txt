@@ -8,12 +8,13 @@ project(njvm C)
 
 add_compile_options(-g -Wall -pedantic)
 
+include_directories(include)
+
 enable_testing()
 
 add_executable(
     njvm 
     src/njvm.c 
-    src/boot/boot.c 
     src/cpu/control_unit.c 
     src/cpu/instructions.c 
     src/memory/program_memory.c 
@@ -23,6 +24,6 @@ add_executable(
 
 include(CTest)
 
-add_executable(tester test/test.c)
+add_executable(tests test/test.c)
 
-add_test(Tester tester COMMAND tester)
+add_test(Test tests)

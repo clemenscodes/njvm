@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "../memory/program_memory.h"
-#include "../memory/stack.h"
-#include "../memory/static_data_area.h"
+#include "program_memory.h"
+#include "stack.h"
+#include "static_data_area.h"
 
 int n1, n2;
 char c;
