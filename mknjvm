@@ -1,5 +1,7 @@
 #!/bin/sh
 
+rm -rf build
+mkdir build
 cmake -B build
 make -C build
 cd build || exit

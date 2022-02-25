@@ -15,7 +15,7 @@ void read_file(char *arg) {
 void read_instructions_into_memory(FILE *fp) {
     uint32_t instruction_count = check_ninja_instruction_count(fp);
     int start_of_instructions = 16;
-    initialize_ram(instruction_count);
+    initialize_ir(instruction_count);
     fseek(fp, start_of_instructions, SEEK_SET);
     size_t read_objects = fread(ir.data, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
@@ -92,6 +92,7 @@ uint32_t check_ninja_variable_count(FILE *fp) {
     }
     return bytecode;
 }
+
 void close(FILE *fp) {
     if (fclose(fp) != 0) {
         perror("Error (fclose)");

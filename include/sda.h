@@ -4,12 +4,14 @@
 #include <stdint.h>
 #include "stack.h"
 
-extern int *sda;
-extern int size;
+extern size_t sda_size;
 
 typedef struct sda {
     int *data;
+    size_t size;
 } StaticDataArea;
+
+extern StaticDataArea sda;
 
 void push_global(int n);
 void pop_global(int n);

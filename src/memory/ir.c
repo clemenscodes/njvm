@@ -1,18 +1,29 @@
-#include "program_memory.h"
+#include "ir.h"
 
 InstructionRegister ir;
 
-void initialize_ram(uint32_t instruction_count) {
+void initialize_ir(size_t instruction_count) {
+    ir.size = instruction_count;
     ir.pc = 0;
-    ir.data = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
+    ir.data = (uint32_t *)calloc(ir.size, sizeof(uint32_t));
     if (!ir.data) {
         perror("malloc(ir.program_memory)");
         exit(1);
     }
 }
 
-void print_memory(void) {
-    for (int i = 0; i < ir.pc; i++) {
+void register_instruction(Opcode opcode, int immediate) {
+    uint32_t instruction = encode_instruction(opcode, immediate);
+    ir.data[ir.pc] = instruction;
+    ir.pc++;
+}
+
+void free_ir(void) {
+    free(ir.data);
+}
+
+void print_ir(void) {
+    for (int i = 0; i < ir.size; i++) {
         Instruction instruction = decode_instruction(ir.data[i]);
         Opcode opcode = instruction.opcode;
         int immediate = instruction.immediate;
@@ -92,14 +103,4 @@ void print_memory(void) {
                 break;
         }
     }
-}
-
-void register_instruction(Opcode opcode, int immediate) {
-    uint32_t instruction = encode_instruction(opcode, immediate);
-    ir.data[ir.pc] = instruction;
-    ir.pc++;
-}
-
-void free_ir(void) {
-    free(ir.data);
 }

@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "static_data_area.h"
-#include "program_memory.h"
-#include "control_unit.h"
+#include "sda.h"
+#include "ir.h"
+#include "processor.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
 #define NINJA_BINARY_VERSION 0x00000002

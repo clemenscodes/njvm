@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stack.h"
-#include "program_memory.h"
-#include "static_data_area.h"
+#include "ir.h"
+#include "sda.h"
 #include "utils.h"
 
 typedef int Breakpoint;

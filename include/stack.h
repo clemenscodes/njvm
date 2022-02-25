@@ -4,21 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAXITEMS 10000
-
-extern int sp;
-extern int fp;
-extern int *stack;
-extern size_t stack_size;
-
 typedef int StackPointer;
 typedef int FramePointer;
 
 typedef struct stack {
     StackPointer sp;
     FramePointer fp;
+    size_t size;
     int *data;
 } Stack;
+
+extern Stack stack;
 
 void initialize_stack(void);
 void push(int immediate);

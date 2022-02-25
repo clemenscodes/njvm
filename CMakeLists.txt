@@ -16,11 +16,11 @@ enable_testing()
 add_executable(
     njvm 
     src/njvm.c 
-    src/cpu/control_unit.c 
-    src/cpu/instructions.c 
-    src/memory/program_memory.c 
+    src/cpu/processor.c 
+    src/cpu/instruction.c 
+    src/memory/ir.c 
     src/memory/stack.c
-    src/memory/static_data_area.c
+    src/memory/sda.c
     src/utils/utils.c
 )
 

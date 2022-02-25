@@ -1,27 +1,23 @@
-#ifndef _INSTRUCTIONS_H
-#define _INSTRUCTIONS_H
+#ifndef _CONTROL_UNIT_H
+#define _CONTROL_UNIT_H
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include "program_memory.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "instruction.h"
+#include "ir.h"
 #include "stack.h"
-#include "static_data_area.h"
-#include "opcode.h"
-
-#define IMMEDIATE(x) ((x)&0x00FFFFFF)
-#define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
-
-typedef struct Instruction {
-    Opcode opcode;
-    int immediate;
-} Instruction;
+#include "sda.h"
+#include "utils.h"
 
 extern int n1, n2;
 extern char c;
 
-uint32_t encode_instruction(Opcode opcode, int immediate);
-Instruction decode_instruction(uint32_t bytecode);
+void init(void);
+void execute_binary(char *file_name);
+void execute_instruction(uint32_t bytecode);
+void work(void);
 void shutdown(void);
 void halt_instruction(void);
 void pushc_instruction(int immediate);
