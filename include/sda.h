@@ -1,11 +1,10 @@
-#ifndef _STATIC_DATA_AREA_H
-#define _STATIC_DATA_AREA_H
+#ifndef _SDA_H
+#define _SDA_H
 
 #include <stdint.h>
-#include "stack.h"
 
-extern int *sda;
-extern int size;
+#include "njvm.h"
+#include "stack.h"
 
 void push_global(int n);
 void pop_global(int n);

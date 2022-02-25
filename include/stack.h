@@ -2,13 +2,9 @@
 #define _STACK_H
 
 #include <stdio.h>
+#include <stdlib.h>
 
-#define MAXITEMS 10000
-
-extern int sp;
-extern int fp;
-extern int *stack;
-extern size_t stack_size;
+#include "njvm.h"
 
 void initialize_stack(void);
 void push(int immediate);

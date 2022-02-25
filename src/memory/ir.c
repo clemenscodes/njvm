@@ -1,24 +1,28 @@
-#include "stdlib.h"
-#include <stdio.h>
-#include <string.h>
-#include "stack.h"
-#include "program_memory.h"
-#include "instructions.h"
+#include "ir.h"
 
-int pc = 0;
-uint32_t *program_memory;
-
-void initialize_ram(uint32_t instruction_count) {
-    program_memory = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
-    if (program_memory == NULL) {
-        perror("malloc(program_memory)");
+void initialize_ir(size_t instruction_count) {
+    vm.ir.size = instruction_count;
+    vm.ir.pc = 0;
+    vm.ir.data = (uint32_t *)calloc(vm.ir.size, sizeof(uint32_t));
+    if (!vm.ir.data) {
+        perror("malloc(ir.program_memory)");
         exit(1);
     }
 }
 
-void print_memory(void) {
-    for (int i = 0; i < pc; i++) {
-        Instruction instruction = decode_instruction(program_memory[i]);
+void register_instruction(Opcode opcode, int immediate) {
+    uint32_t instruction = encode_instruction(opcode, immediate);
+    vm.ir.data[vm.ir.pc] = instruction;
+    vm.ir.pc++;
+}
+
+void free_ir(void) {
+    free(vm.ir.data);
+}
+
+void print_ir(void) {
+    for (int i = 0; i < vm.ir.size; i++) {
+        Instruction instruction = decode_instruction(vm.ir.data[i]);
         Opcode opcode = instruction.opcode;
         int immediate = instruction.immediate;
         switch (opcode) {
@@ -97,14 +101,4 @@ void print_memory(void) {
                 break;
         }
     }
-}
-
-void register_instruction(Opcode opcode, int immediate) {
-    uint32_t instruction = encode_instruction(opcode, immediate);
-    program_memory[pc] = instruction;
-    pc++;
-}
-
-void free_ram(void) {
-    free(program_memory);
 }
