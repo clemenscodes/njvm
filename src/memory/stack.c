@@ -21,7 +21,7 @@ void push(int immediate) {
 }
 
 int pop(void) {
-    if ((sp == 0) && stack[sp] == 0) {
+    if (!(sp || stack[sp])) {
         printf("Stack underflow: popped from empty stack\n");
         exit(1);
     }

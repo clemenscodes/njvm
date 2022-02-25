@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_C_COMPILER gcc)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_BUILD_TYPE Release)
 
 project(njvm C)
 
@@ -21,8 +22,6 @@ add_executable(
     src/memory/stack.c
     src/memory/static_data_area.c
 )
-
-include(CTest)
 
 add_executable(tests test/test.c)
 

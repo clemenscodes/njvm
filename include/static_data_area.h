@@ -7,6 +7,10 @@
 extern int *sda;
 extern int size;
 
+typedef struct sda {
+    int *data;
+} StaticDataArea;
+
 void push_global(int n);
 void pop_global(int n);
 void initialize_sda(uint32_t variable_count);

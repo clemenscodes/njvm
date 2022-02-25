@@ -10,6 +10,15 @@ extern int fp;
 extern int *stack;
 extern size_t stack_size;
 
+typedef int StackPointer;
+typedef int FramePointer;
+
+typedef struct stack {
+    StackPointer sp;
+    FramePointer fp;
+    int *data;
+} Stack;
+
 void initialize_stack(void);
 void push(int immediate);
 int pop(void);

@@ -5,20 +5,20 @@
 #include "program_memory.h"
 #include "instructions.h"
 
-int pc = 0;
-uint32_t *program_memory;
+InstructionRegister ir;
 
 void initialize_ram(uint32_t instruction_count) {
-    program_memory = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
-    if (program_memory == NULL) {
-        perror("malloc(program_memory)");
+    ir.pc = 0;
+    ir.instructions = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
+    if (!ir.instructions) {
+        perror("malloc(ir.program_memory)");
         exit(1);
     }
 }
 
 void print_memory(void) {
-    for (int i = 0; i < pc; i++) {
-        Instruction instruction = decode_instruction(program_memory[i]);
+    for (int i = 0; i < ir.pc; i++) {
+        Instruction instruction = decode_instruction(ir.instructions[i]);
         Opcode opcode = instruction.opcode;
         int immediate = instruction.immediate;
         switch (opcode) {
@@ -101,10 +101,10 @@ void print_memory(void) {
 
 void register_instruction(Opcode opcode, int immediate) {
     uint32_t instruction = encode_instruction(opcode, immediate);
-    program_memory[pc] = instruction;
-    pc++;
+    ir.instructions[ir.pc] = instruction;
+    ir.pc++;
 }
 
-void free_ram(void) {
-    free(program_memory);
+void free_instruction_register(void) {
+    free(ir.instructions);
 }

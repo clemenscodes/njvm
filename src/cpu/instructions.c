@@ -1,14 +1,12 @@
-#include "instructions.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
+#include "instructions.h"
 #include "program_memory.h"
 #include "stack.h"
 #include "static_data_area.h"
 
-int n1, n2;
+int a, b;
 char c;
 
 uint32_t encode_instruction(Opcode opcode, int immediate) {
@@ -24,7 +22,7 @@ Instruction decode_instruction(uint32_t bytecode) {
 
 void halt_instruction(void) {
     free_sda();
-    free_ram();
+    free_instruction_register();
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
@@ -34,41 +32,41 @@ void pushc_instruction(int immediate) {
 }
 
 void add_instruction(void) {
-    n2 = pop();
-    n1 = pop();
-    push(n1 + n2);
+    b = pop();
+    a = pop();
+    push(a + b);
 }
 
 void sub_instruction(void) {
-    n2 = pop();
-    n1 = pop();
-    push(n1 - n2);
+    b = pop();
+    a = pop();
+    push(a - b);
 }
 
 void mul_instruction(void) {
-    n2 = pop();
-    n1 = pop();
-    push(n1 * n2);
+    b = pop();
+    a = pop();
+    push(a * b);
 }
 
 void div_instruction(void) {
-    n2 = pop();
-    n1 = pop();
-    if (n2 == 0) {
+    b = pop();
+    a = pop();
+    if (b == 0) {
         printf("Division by zero error\n");
         exit(1);
     }
-    push(n1 / n2);
+    push(a / b);
 }
 
 void mod_instruction(void) {
-    n2 = pop();
-    n1 = pop();
-    if (n2 == 0) {
+    b = pop();
+    a = pop();
+    if (b == 0) {
         printf("Division by zero error\n");
         exit(1);
     }
-    push(n1 % n2);
+    push(a % b);
 }
 
 void wrchr_instruction(void) {
@@ -77,13 +75,19 @@ void wrchr_instruction(void) {
 }
 
 void rdchr_instruction(void) {
-    scanf("%c", &c);
+    if(!scanf("%c", &c)) {
+        printf("Error: failed to read character");
+        exit(1);
+    }
     push(c);
 }
 
 void rdint_instruction(void) {
-    scanf("%d", &n2);
-    push(n2);
+    if(!scanf("%d", &b)) {
+        printf("Error: failed to read integer");
+        exit(1);
+    }
+    push(b);
 }
 
 void wrint_instruction(void) {
@@ -137,5 +141,5 @@ void brt_instruction(bool immediate) {
 }
 
 void jump_instruction(int immediate) {
-    pc = immediate;
+    ir.pc = immediate;
 }

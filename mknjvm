@@ -4,3 +4,4 @@ cmake -B build
 make -C build
 cd build || exit
 ctest
+cp njvm ../njvm
