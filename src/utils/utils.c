@@ -30,7 +30,6 @@ FILE* open_file(char *arg) {
     FILE *fp = fopen(arg, "r");
     if (!fp) {
         printf("Error: cannot open code file '%s'\n", arg);
-        close(fp);
         exit(1);
     }
     return fp;
