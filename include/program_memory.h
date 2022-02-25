@@ -3,8 +3,9 @@
 
 #include "stack.h"
 #include "instructions.h"
+#include "opcode.h"
 
-typedef struct ir {
+typedef struct InstructionRegister {
     int pc;
     uint32_t *data;
 } InstructionRegister;

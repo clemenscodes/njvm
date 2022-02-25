@@ -2,54 +2,15 @@
 #define _INSTRUCTIONS_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
-
-#define HALT 0
-#define PUSHC 1
-#define ADD 2
-#define SUB 3
-#define MUL 4
-#define DIV 5
-#define MOD 6
-#define RDINT 7
-#define WRINT 8
-#define RDCHR 9
-#define WRCHR 10
-#define PUSHG 11
-#define POPG 12
-#define ASF 13
-#define RSF 14
-#define PUSHL 15
-#define POPL 16
-#define JUMP 23
-#define BRF 24 
-#define BRT 25 
+#include "program_memory.h"
+#include "stack.h"
+#include "static_data_area.h"
+#include "opcode.h"
 
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
-
-typedef enum Opcode {
-    halt = HALT,
-    pushc = PUSHC,
-    add = ADD,
-    sub = SUB,
-    mul = MUL,
-    divide = DIV,
-    mod = MOD,
-    rdint = RDINT,
-    wrint = WRINT,
-    rdchr = RDCHR,
-    wrchr = WRCHR,
-    pushg = PUSHG,
-    popg = POPG,
-    asf = ASF,
-    rsf = RSF,
-    pushl = PUSHL,
-    popl = POPL,
-    jump = JUMP,
-    brf = BRF,
-    brt = BRT,
-} Opcode;
 
 typedef struct Instruction {
     Opcode opcode;
@@ -82,4 +43,5 @@ void brf_instruction(bool immediate);
 void brt_instruction(bool immediate);
 void jump_instruction(int immediate);
 void popl_instruction(int immediate);
+
 #endif

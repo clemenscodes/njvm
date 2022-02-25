@@ -1,8 +1,5 @@
 #include "stack.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 size_t stack_size = 0;
 int sp = 0;
 int fp = 0;

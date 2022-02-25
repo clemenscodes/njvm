@@ -2,6 +2,7 @@
 #define _STACK_H
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAXITEMS 10000
 

@@ -1,9 +1,4 @@
-#include "stdlib.h"
-#include <stdio.h>
-#include <string.h>
-#include "stack.h"
 #include "program_memory.h"
-#include "instructions.h"
 
 InstructionRegister ir;
 

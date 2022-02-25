@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include "instructions.h"
-#include "program_memory.h"
-#include "stack.h"
-#include "static_data_area.h"
 
 int a, b;
 char c;

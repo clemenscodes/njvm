@@ -1,7 +1,4 @@
-#include <stdint.h>
-#include <stdio.h>
-#include "stack.h"
-#include "stdlib.h"
+#include "static_data_area.h"
 
 uint32_t sda_size;
 int* sda;

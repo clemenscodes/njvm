@@ -21,6 +21,7 @@ add_executable(
     src/memory/program_memory.c 
     src/memory/stack.c
     src/memory/static_data_area.c
+    src/utils/utils.c
 )
 
 add_executable(tests test/test.c)
