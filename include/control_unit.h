@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
-#define NINJA_BINARY_VERSION 0x00000003
+#define NINJA_BINARY_VERSION 0x00000002
 
 FILE *open_file(char *file_name);
 void init(void);

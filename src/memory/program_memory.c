@@ -9,8 +9,8 @@ InstructionRegister ir;
 
 void initialize_ram(uint32_t instruction_count) {
     ir.pc = 0;
-    ir.instructions = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
-    if (!ir.instructions) {
+    ir.data = (uint32_t *)calloc(instruction_count, sizeof(uint32_t));
+    if (!ir.data) {
         perror("malloc(ir.program_memory)");
         exit(1);
     }
@@ -18,7 +18,7 @@ void initialize_ram(uint32_t instruction_count) {
 
 void print_memory(void) {
     for (int i = 0; i < ir.pc; i++) {
-        Instruction instruction = decode_instruction(ir.instructions[i]);
+        Instruction instruction = decode_instruction(ir.data[i]);
         Opcode opcode = instruction.opcode;
         int immediate = instruction.immediate;
         switch (opcode) {
@@ -101,10 +101,10 @@ void print_memory(void) {
 
 void register_instruction(Opcode opcode, int immediate) {
     uint32_t instruction = encode_instruction(opcode, immediate);
-    ir.instructions[ir.pc] = instruction;
+    ir.data[ir.pc] = instruction;
     ir.pc++;
 }
 
-void free_instruction_register(void) {
-    free(ir.instructions);
+void free_ir(void) {
+    free(ir.data);
 }

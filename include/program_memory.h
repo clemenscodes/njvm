@@ -6,13 +6,13 @@
 
 typedef struct ir {
     int pc;
-    uint32_t *instructions;
+    uint32_t *data;
 } InstructionRegister;
 
 extern InstructionRegister ir;
 void initialize_ram(uint32_t instruction_count);
 void print_memory(void);
 void register_instruction(Opcode opcode, int immediate);
-void free_instruction_register(void);
+void free_ir(void);
 
 #endif

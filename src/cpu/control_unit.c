@@ -1,8 +1,11 @@
+
+#include "control_unit.h"
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "control_unit.h"
+
 #include "instructions.h"
 #include "program_memory.h"
 #include "stack.h"
@@ -26,11 +29,10 @@ void read_file(char *arg) {
 
 void read_instructions_into_memory(FILE *fp) {
     uint32_t instruction_count = check_ninja_instruction_count(fp);
-    size_t read_objects = 0;
     int start_of_instructions = 16;
     initialize_ram(instruction_count);
     fseek(fp, start_of_instructions, SEEK_SET);
-    read_objects = fread(ir.instructions, sizeof(uint32_t), instruction_count, fp);
+    size_t read_objects = fread(ir.data, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
         close(fp);
@@ -107,8 +109,8 @@ uint32_t check_ninja_variable_count(FILE *fp) {
 }
 
 void execute_binary(char *arg) {
-    init();
     read_file(arg);
+    init();
     print_memory();
     work();
 }
@@ -121,8 +123,12 @@ void close(FILE *fp) {
 }
 
 void work(void) {
-    for (int i = 0; i < ir.pc; i++) {
-        execute_instruction(ir.instructions[i]);
+    ir.pc = 0;
+    while (true) {
+        uint32_t instruction = ir.data[ir.pc];
+        ir.pc++;
+        execute_instruction(instruction);
+        if (decode_instruction(instruction).opcode == HALT) break;
     }
 }
 

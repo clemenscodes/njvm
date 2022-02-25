@@ -22,7 +22,7 @@ Instruction decode_instruction(uint32_t bytecode) {
 
 void halt_instruction(void) {
     free_sda();
-    free_instruction_register();
+    free_ir();
     printf("Ninja Virtual Machine stopped\n");
     exit(0);
 }
