@@ -17,13 +17,13 @@ void read_instructions_into_memory(FILE *fp) {
     int start_of_instructions = 16;
     initialize_ir(instruction_count);
     fseek(fp, start_of_instructions, SEEK_SET);
-    size_t read_objects = fread(ir.data, sizeof(uint32_t), instruction_count, fp);
+    size_t read_objects = fread(vm.ir.data, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
         close(fp);
         exit(1);
     }
-    ir.pc = instruction_count;
+    vm.ir.pc = instruction_count;
 }
 
 FILE* open_file(char *arg) {

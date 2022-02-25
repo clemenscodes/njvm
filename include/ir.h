@@ -1,18 +1,14 @@
-#ifndef _PROGRAM_MEMORY_H
-#define _PROGRAM_MEMORY_H
+#ifndef _IR_H
+#define _IR_H
 
-#include "stack.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "instruction.h"
+#include "njvm.h"
 #include "opcode.h"
-
-typedef struct InstructionRegister {
-    int pc;
-    uint32_t *data;
-    size_t size;
-} InstructionRegister;
-
-extern InstructionRegister ir;
-
 void initialize_ir(size_t instruction_count);
 void print_ir(void);
 void register_instruction(Opcode opcode, int immediate);

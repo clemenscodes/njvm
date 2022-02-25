@@ -1,5 +1,7 @@
 #include "njvm.h"
 
+NinjaVM vm;
+
 void print_usage(void) {
     printf("usage: ./njvm [option] [option] ...\n");
     printf("  --version        show version and exit\n");

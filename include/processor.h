@@ -1,14 +1,16 @@
-#ifndef _CONTROL_UNIT_H
-#define _CONTROL_UNIT_H
+#ifndef _PROCESSOR_H
+#define _PROCESSOR_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "instruction.h"
 #include "ir.h"
-#include "stack.h"
+#include "njvm.h"
 #include "sda.h"
+#include "stack.h"
 #include "utils.h"
 
 extern int n1, n2;

@@ -1,17 +1,10 @@
-#ifndef _STATIC_DATA_AREA_H
-#define _STATIC_DATA_AREA_H
+#ifndef _SDA_H
+#define _SDA_H
 
 #include <stdint.h>
+
+#include "njvm.h"
 #include "stack.h"
-
-extern size_t sda_size;
-
-typedef struct sda {
-    int *data;
-    size_t size;
-} StaticDataArea;
-
-extern StaticDataArea sda;
 
 void push_global(int n);
 void pop_global(int n);

@@ -1,12 +1,10 @@
 #include "ir.h"
 
-InstructionRegister ir;
-
 void initialize_ir(size_t instruction_count) {
-    ir.size = instruction_count;
-    ir.pc = 0;
-    ir.data = (uint32_t *)calloc(ir.size, sizeof(uint32_t));
-    if (!ir.data) {
+    vm.ir.size = instruction_count;
+    vm.ir.pc = 0;
+    vm.ir.data = (uint32_t *)calloc(vm.ir.size, sizeof(uint32_t));
+    if (!vm.ir.data) {
         perror("malloc(ir.program_memory)");
         exit(1);
     }
@@ -14,17 +12,17 @@ void initialize_ir(size_t instruction_count) {
 
 void register_instruction(Opcode opcode, int immediate) {
     uint32_t instruction = encode_instruction(opcode, immediate);
-    ir.data[ir.pc] = instruction;
-    ir.pc++;
+    vm.ir.data[vm.ir.pc] = instruction;
+    vm.ir.pc++;
 }
 
 void free_ir(void) {
-    free(ir.data);
+    free(vm.ir.data);
 }
 
 void print_ir(void) {
-    for (int i = 0; i < ir.size; i++) {
-        Instruction instruction = decode_instruction(ir.data[i]);
+    for (int i = 0; i < vm.ir.size; i++) {
+        Instruction instruction = decode_instruction(vm.ir.data[i]);
         Opcode opcode = instruction.opcode;
         int immediate = instruction.immediate;
         switch (opcode) {

@@ -4,17 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef int StackPointer;
-typedef int FramePointer;
-
-typedef struct stack {
-    StackPointer sp;
-    FramePointer fp;
-    size_t size;
-    int *data;
-} Stack;
-
-extern Stack stack;
+#include "njvm.h"
 
 void initialize_stack(void);
 void push(int immediate);

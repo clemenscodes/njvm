@@ -15,10 +15,10 @@ void execute_binary(char *arg) {
 }
 
 void work(void) {
-    ir.pc = 0;
+    vm.ir.pc = 0;
     while (true) {
-        uint32_t instruction = ir.data[ir.pc];
-        ir.pc++;
+        uint32_t instruction = vm.ir.data[vm.ir.pc];
+        vm.ir.pc++;
         execute_instruction(instruction);
         if (decode_instruction(instruction).opcode == HALT) break;
     }
@@ -149,7 +149,7 @@ void wrchr_instruction(void) {
 }
 
 void rdchr_instruction(void) {
-    if(!scanf("%c", &c)) {
+    if (!scanf("%c", &c)) {
         printf("Error: failed to read character");
         exit(1);
     }
@@ -157,7 +157,7 @@ void rdchr_instruction(void) {
 }
 
 void rdint_instruction(void) {
-    if(!scanf("%d", &b)) {
+    if (!scanf("%d", &b)) {
         printf("Error: failed to read integer");
         exit(1);
     }
@@ -177,29 +177,29 @@ void popg_instruction(int immediate) {
 }
 
 void asf_instruction(int immediate) {
-    push(stack.fp);
-    stack.fp = stack.sp;
-    stack.size += immediate;
-    stack.data = (int *)realloc(stack.data, (stack.size) * sizeof(int));
-    stack.sp += immediate;
-    for (int i = stack.fp; i < stack.sp; i++) {
-        stack.data[i] = 0;
+    push(vm.stack.fp);
+    vm.stack.fp = vm.stack.sp;
+    vm.stack.size += immediate;
+    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.sp += immediate;
+    for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
+        vm.stack.data[i] = 0;
     }
 }
 
 void rsf_instruction(void) {
-    stack.size -= (stack.sp - stack.fp);
-    stack.data = (int *)realloc(stack.data, (stack.size) * sizeof(int));
-    stack.sp = stack.fp;
-    stack.fp = pop();
+    vm.stack.size -= (vm.stack.sp - vm.stack.fp);
+    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.sp = vm.stack.fp;
+    vm.stack.fp = pop();
 }
 
 void pushl_instruction(int immediate) {
-    push(stack.data[stack.fp + immediate]);
+    push(vm.stack.data[vm.stack.fp + immediate]);
 }
 
 void popl_instruction(int immediate) {
-    stack.data[stack.fp + immediate] = stack.data[stack.sp - 1];
+    vm.stack.data[vm.stack.fp + immediate] = vm.stack.data[vm.stack.sp - 1];
 }
 
 void brf_instruction(bool immediate) {
@@ -215,5 +215,5 @@ void brt_instruction(bool immediate) {
 }
 
 void jump_instruction(int immediate) {
-    ir.pc = immediate;
+    vm.ir.pc = immediate;
 }
