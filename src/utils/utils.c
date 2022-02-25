@@ -14,9 +14,8 @@ void read_file(char *arg) {
 
 void read_instructions_into_memory(FILE *fp) {
     uint32_t instruction_count = check_ninja_instruction_count(fp);
-    int start_of_instructions = 16;
     initialize_ir(instruction_count);
-    fseek(fp, start_of_instructions, SEEK_SET);
+    fseek(fp, 16, SEEK_SET);
     size_t read_objects = fread(vm.ir.data, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
@@ -26,7 +25,7 @@ void read_instructions_into_memory(FILE *fp) {
     vm.ir.pc = instruction_count;
 }
 
-FILE* open_file(char *arg) {
+FILE *open_file(char *arg) {
     FILE *fp = fopen(arg, "r");
     if (!fp) {
         printf("Error: cannot open code file '%s'\n", arg);
@@ -35,15 +34,19 @@ FILE* open_file(char *arg) {
     return fp;
 }
 
-void check_ninja_binary_format(FILE *fp, char *arg) {
-    int start = 0;
-    uint32_t bytecode;
-    fseek(fp, start, SEEK_SET);
-    if (!fread(&bytecode, sizeof(uint32_t), 1, fp)) {
-        printf("Error: could not read ninja binary format");
+uint32_t seek_file(FILE *fp, int offset) {
+    uint32_t buffer;
+    fseek(fp, offset, SEEK_SET);
+    if (!fread(&buffer, sizeof(uint32_t), 1, fp)) {
+        perror("Error (fread)");
         exit(1);
     }
-    if (!(bytecode == NINJA_BINARY_FORMAT)) {
+    return buffer;
+}
+
+void check_ninja_binary_format(FILE *fp, char *arg) {
+    uint32_t buffer = seek_file(fp, 0);
+    if (!(buffer == NINJA_BINARY_FORMAT)) {
         printf("Error: file '%s' is not a Ninja binary\n", arg);
         close(fp);
         exit(1);
@@ -51,14 +54,8 @@ void check_ninja_binary_format(FILE *fp, char *arg) {
 }
 
 void check_ninja_version(FILE *fp, char *arg) {
-    int start_of_version = 4;
-    uint32_t bytecode;
-    fseek(fp, start_of_version, SEEK_SET);
-    if (!fread(&bytecode, sizeof(uint32_t), 1, fp)) {
-        printf("Error: could not read ninja version");
-        exit(1);
-    }
-    if (!(bytecode == NINJA_BINARY_VERSION)) {
+    uint32_t buffer = seek_file(fp, 4);
+    if (!(buffer == NINJA_BINARY_VERSION)) {
         printf("Error: file '%s' does not have the correct Ninja version\n", arg);
         close(fp);
         exit(1);
@@ -66,34 +63,22 @@ void check_ninja_version(FILE *fp, char *arg) {
 }
 
 uint32_t check_ninja_instruction_count(FILE *fp) {
-    int start_of_instruction_count = 8;
-    uint32_t bytecode;
-    fseek(fp, start_of_instruction_count, SEEK_SET);
-    if (!fread(&bytecode, sizeof(uint32_t), 1, fp)) {
-        printf("Error: could not read instruction count");
-        exit(1);
-    }
-    if (bytecode == 0) {
+    uint32_t buffer = seek_file(fp, 8);
+    if (!buffer) {
         printf("Error: no instructions\n");
         close(fp);
         exit(1);
     }
-    return bytecode;
+    return buffer;
 }
 
 uint32_t check_ninja_variable_count(FILE *fp) {
-    int start_of_variable_count = 12;
-    uint32_t bytecode;
-    fseek(fp, start_of_variable_count, SEEK_SET);
-    if (!fread(&bytecode, sizeof(uint32_t), 1, fp)) {
-        printf("Error: could not variable count");
-        exit(1);
-    }
-    return bytecode;
+    uint32_t buffer = seek_file(fp, 12);
+    return buffer;
 }
 
 void close(FILE *fp) {
-    if (fclose(fp) != 0) {
+    if (fclose(fp)) {
         perror("Error (fclose)");
         exit(1);
     }
