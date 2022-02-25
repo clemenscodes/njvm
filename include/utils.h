@@ -15,8 +15,9 @@ void close(FILE *fp);
 void read_file(char *file_name);
 void check_ninja_binary_format(FILE *fp, char *arg);
 void check_ninja_version(FILE *fp, char *arg);
-void read_instructions_into_memory(FILE *fp);
+void read_instructions_into_ir(FILE *fp);
 uint32_t check_ninja_instruction_count(FILE *fp);
 uint32_t check_ninja_variable_count(FILE *fp);
+uint32_t seek_file(FILE *fp, int offset);
 
 #endif

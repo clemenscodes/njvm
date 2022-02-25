@@ -8,11 +8,11 @@ void read_file(char *arg) {
     if (variable_count > 0) {
         initialize_sda(variable_count);
     }
-    read_instructions_into_memory(fp);
+    read_instructions_into_ir(fp);
     close(fp);
 }
 
-void read_instructions_into_memory(FILE *fp) {
+void read_instructions_into_ir(FILE *fp) {
     uint32_t instruction_count = check_ninja_instruction_count(fp);
     initialize_ir(instruction_count);
     fseek(fp, 16, SEEK_SET);
