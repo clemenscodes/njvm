@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_C_COMPILER gcc)
 
 set(CMAKE_C_STANDARD 99)
+
 set(CMAKE_BUILD_TYPE Release)
 
 project(njvm C)

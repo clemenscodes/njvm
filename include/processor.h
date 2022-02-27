@@ -16,7 +16,7 @@ extern int n1, n2;
 extern char c;
 
 void init(void);
-void execute_binary(char *file_name);
+void execute(char *file_name);
 void execute_instruction(uint32_t bytecode);
 void work(void);
 void shutdown(void);

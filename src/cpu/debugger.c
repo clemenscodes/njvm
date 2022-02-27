@@ -1,7 +1,9 @@
 #include "debugger.h"
 
 void debug(char *bin) {
-    printf("debug\n");
+    read_file(bin);
+    printf("DEBUG: file '%s' loaded (code size = %ld, data size = %ld)\n", bin, vm.ir.size, vm.sda.size);
+    exit(0);
 }
 void prompt(void) {
     printf("prompt\n");

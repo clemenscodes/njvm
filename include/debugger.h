@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "njvm.h"
+#include "utils.h"
 
 void debug(char *bin);
 void prompt(void);

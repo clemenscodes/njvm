@@ -7,7 +7,7 @@ void init(void) {
     printf("Ninja Virtual Machine started\n");
 }
 
-void execute_binary(char *arg) {
+void execute(char *arg) {
     read_file(arg);
     init();
     print_ir();
