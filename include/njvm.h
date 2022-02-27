@@ -45,12 +45,4 @@ typedef struct njvm {
 
 extern NinjaVM vm;
 
-void print_usage(void);
-void print_version(void);
-void process_arg(char *arg, char *argv[]);
-int check_arg(char *arg, char *argv[]);
-void check_help(char *arg);
-void check_version(char *arg);
-void check_debug(char *arg, char *argv[]);
-
 #endif
