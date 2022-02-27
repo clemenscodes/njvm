@@ -7,7 +7,7 @@ void init(void) {
     printf("Ninja Virtual Machine started\n");
 }
 
-void execute_binary(char *arg) {
+void execute(char *arg) {
     read_file(arg);
     init();
     print_ir();
@@ -16,7 +16,7 @@ void execute_binary(char *arg) {
 
 void work(void) {
     vm.ir.pc = 0;
-    while (true) {
+    while (1) {
         uint32_t instruction = vm.ir.data[vm.ir.pc];
         vm.ir.pc++;
         execute_instruction(instruction);
@@ -79,14 +79,32 @@ void execute_instruction(uint32_t bytecode) {
         case popl:
             popl_instruction(immediate);
             break;
+        case eq:
+            eq_instruction();
+            break;
+        case ne:
+            ne_instruction();
+            break;
+        case lt:
+            lt_instruction();
+            break;
+        case le:
+            le_instruction();
+            break;
+        case gt:
+            gt_instruction();
+            break;
+        case ge:
+            ge_instruction();
+            break;
+        case jump:
+            jump_instruction(immediate);
+            break;
         case brf:
             brf_instruction(immediate);
             break;
         case brt:
             brt_instruction(immediate);
-            break;
-        case jump:
-            jump_instruction(immediate);
             break;
         default:
             printf("Unknown opcode %d\n", opcode);
@@ -202,18 +220,73 @@ void popl_instruction(int immediate) {
     vm.stack.data[vm.stack.fp + immediate] = vm.stack.data[vm.stack.sp - 1];
 }
 
-void brf_instruction(bool immediate) {
-    if (!immediate) {
-        jump_instruction(immediate);
+void eq_instruction(void) {
+    b = pop();
+    a = pop();
+    if (a == b) {
+        push(1);
+    } else {
+        push(0);
     }
 }
 
-void brt_instruction(bool immediate) {
-    if (immediate) {
-        jump_instruction(immediate);
+void ne_instruction(void) {
+    b = pop();
+    a = pop();
+    if (a != b) {
+        push(1);
+    } else {
+        push(0);
     }
 }
-
+void lt_instruction(void) {
+    b = pop();
+    a = pop();
+    if (a < b) {
+        push(1);
+    } else {
+        push(0);
+    }
+}
+void le_instruction(void) {
+    b = pop();
+    a = pop();
+    if (a <= b) {
+        push(1);
+    } else {
+        push(0);
+    }
+}
+void gt_instruction(void) {
+    b = pop();
+    a = pop();
+    if (a > b) {
+        push(1);
+    } else {
+        push(0);
+    }
+}
+void ge_instruction(void) {
+    b = pop();
+    a = pop();
+    if (a >= b) {
+        push(1);
+    } else {
+        push(0);
+    }
+}
 void jump_instruction(int immediate) {
     vm.ir.pc = immediate;
+}
+
+void brf_instruction(int immediate) {
+    if (pop() == 0) {
+        jump_instruction(immediate);
+    }
+}
+
+void brt_instruction(int immediate) {
+    if (pop() == 1) {
+        jump_instruction(immediate);
+    }
 }

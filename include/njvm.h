@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "debugger.h"
 #include "ir.h"
 #include "processor.h"
 #include "sda.h"
@@ -16,25 +17,25 @@ typedef int ReturnValueRegister;
 typedef int StackPointer;
 typedef int FramePointer;
 
-typedef struct {
+typedef struct stack {
     StackPointer sp;
     FramePointer fp;
     size_t size;
     int *data;
 } Stack;
 
-typedef struct {
+typedef struct ir {
     int pc;
     size_t size;
     uint32_t *data;
 } InstructionRegister;
 
-typedef struct {
+typedef struct sda {
     int *data;
     size_t size;
 } StaticDataArea;
 
-typedef struct {
+typedef struct njvm {
     Stack stack;
     StaticDataArea sda;
     InstructionRegister ir;
@@ -43,5 +44,13 @@ typedef struct {
 } NinjaVM;
 
 extern NinjaVM vm;
+
+void print_usage(void);
+void print_version(void);
+void process_arg(char *arg, char *argv[]);
+int check_arg(char *arg, char *argv[]);
+void check_help(char *arg);
+void check_version(char *arg);
+void check_debug(char *arg, char *argv[]);
 
 #endif

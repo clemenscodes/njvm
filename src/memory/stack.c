@@ -8,7 +8,7 @@ void initialize_stack(void) {
 
 void push(int immediate) {
     vm.stack.size++;
-    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size + 1) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size + 1) * sizeof(int));
     vm.stack.data[vm.stack.sp] = immediate;
     vm.stack.sp++;
     vm.stack.data[vm.stack.sp] = 0;
@@ -22,7 +22,7 @@ int pop(void) {
     vm.stack.sp--;
     vm.stack.size--;
     int tmp = vm.stack.data[vm.stack.sp];
-    vm.stack.data = (int *)realloc(vm.stack.data, vm.stack.size * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, vm.stack.size * sizeof(int));
     return tmp;
 }
 
