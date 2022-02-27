@@ -3,9 +3,9 @@
 void initialize_ir(size_t instruction_count) {
     vm.ir.size = instruction_count;
     vm.ir.pc = 0;
-    vm.ir.data = (uint32_t *)calloc(vm.ir.size, sizeof(uint32_t));
+    vm.ir.data = calloc(vm.ir.size, sizeof(uint32_t));
     if (!vm.ir.data) {
-        perror("malloc(ir.program_memory)");
+        perror("malloc(ir.data)");
         exit(1);
     }
 }
@@ -87,14 +87,32 @@ void print_ir(void) {
             case popl:
                 printf("%03d:\tpopl\t%d\n", i, immediate);
                 break;
+            case eq:
+                printf("%03d:\teq\n", i);
+                break;
+            case ne:
+                printf("%03d:\tne\n", i);
+                break;
+            case lt:
+                printf("%03d:\tlt\n", i);
+                break;
+            case le:
+                printf("%03d:\tle\n", i);
+                break;
+            case gt:
+                printf("%03d:\tgt\n", i);
+                break;
+            case ge:
+                printf("%03d:\tge\n", i);
+                break;
+            case jump:
+                printf("%03d:\tjump\t%d\n", i, immediate);
+                break;
             case brf:
                 printf("%03d:\tbrf\t%d\n", i, immediate);
                 break;
             case brt:
                 printf("%03d:\tbrt\t%d\n", i, immediate);
-                break;
-            case jump:
-                printf("%03d:\tjump\t%d\n", i, immediate);
                 break;
             default:
                 printf("Unknown opcode %d\n", opcode);

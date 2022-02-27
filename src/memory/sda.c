@@ -2,9 +2,9 @@
 
 void initialize_sda(uint32_t variable_count) {
     vm.sda.size = variable_count;
-    vm.sda.data = (int *)calloc(vm.sda.size, sizeof(int));
+    vm.sda.data = calloc(vm.sda.size, sizeof(int));
     if (!vm.sda.data) {
-        perror("malloc(sda)");
+        perror("malloc(sda.data)");
         exit(1);
     }
 }

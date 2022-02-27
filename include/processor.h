@@ -1,7 +1,6 @@
 #ifndef _PROCESSOR_H
 #define _PROCESSOR_H
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,9 +36,15 @@ void popg_instruction(int immediate);
 void asf_instruction(int immediate);
 void rsf_instruction(void);
 void pushl_instruction(int immediate);
-void brf_instruction(bool immediate);
-void brt_instruction(bool immediate);
-void jump_instruction(int immediate);
 void popl_instruction(int immediate);
+void eq_instruction(void);
+void ne_instruction(void);
+void lt_instruction(void);
+void le_instruction(void);
+void gt_instruction(void);
+void ge_instruction(void);
+void jump_instruction(int immediate);
+void brf_instruction(int immediate);
+void brt_instruction(int immediate);
 
 #endif

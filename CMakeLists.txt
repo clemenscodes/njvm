@@ -18,6 +18,7 @@ add_executable(
     src/njvm.c 
     src/cpu/processor.c 
     src/cpu/instruction.c 
+    src/cpu/debugger.c 
     src/memory/ir.c 
     src/memory/stack.c
     src/memory/sda.c
