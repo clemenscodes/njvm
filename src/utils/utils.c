@@ -22,7 +22,6 @@ void read_instructions_into_ir(FILE *fp) {
         close(fp);
         exit(1);
     }
-    vm.ir.pc = instruction_count;
 }
 
 FILE *open_file(char *arg) {

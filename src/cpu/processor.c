@@ -10,12 +10,10 @@ void init(void) {
 void execute(char *arg) {
     read_file(arg);
     init();
-    print_ir();
     work();
 }
 
 void work(void) {
-    vm.ir.pc = 0;
     while (1) {
         uint32_t instruction = vm.ir.data[vm.ir.pc];
         vm.ir.pc++;
@@ -116,7 +114,6 @@ void halt_instruction(void) {
     free_sda();
     free_ir();
     printf("Ninja Virtual Machine stopped\n");
-    exit(0);
 }
 
 void pushc_instruction(int immediate) {
