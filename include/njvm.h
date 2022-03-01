@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "debugger.h"
@@ -16,6 +17,14 @@ typedef int *ReturnValueRegister;
 typedef int *Breakpoint;
 typedef Immediate Object;
 typedef Object *ObjRef;
+
+typedef struct StackSlot {
+    bool is_obj_ref;
+    union {
+        ObjRef obj_ref;
+        Immediate value;
+    } slot;
+} StackSlot;
 
 typedef struct Stack {
     StackPointer sp;
