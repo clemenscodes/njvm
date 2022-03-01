@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16.3)
 
 set(CMAKE_C_COMPILER gcc)
 
@@ -8,11 +8,11 @@ set(CMAKE_BUILD_TYPE Release)
 
 project(njvm C)
 
+include(cmake/FetchCMocka.cmake)
+
 add_compile_options(-g -Wall -pedantic)
 
 include_directories(include)
-
-enable_testing()
 
 add_executable(
     njvm 
@@ -25,6 +25,10 @@ add_executable(
     src/memory/sda.c
     src/utils/utils.c
 )
+
+target_link_libraries(njvm PRIVATE cmocka-static)
+
+enable_testing()
 
 add_executable(tests test/test.c)
 
