@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
             printf("Ninja Virtual Machine version %d (compiled Sep 23 2015, 10:36:53)\n", NINJA_BINARY_VERSION);
             exit(0);
         }
-
         if (!strncmp("-", argv[i], strlen("-"))) {
             printf("unknown command line argument '%s', try '%s --help'\n", argv[i], argv[0]);
             exit(1);

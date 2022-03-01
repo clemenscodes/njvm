@@ -8,7 +8,7 @@
 #define IMMEDIATE(x) ((x)&0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i)&0x00800000 ? (i) | 0xFF000000 : (i))
 
-typedef struct {
+typedef struct Instruction {
     Opcode opcode;
     int immediate;
 } Instruction;

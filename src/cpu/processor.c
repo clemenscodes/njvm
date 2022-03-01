@@ -18,7 +18,7 @@ void work(void) {
         uint32_t instruction = vm.ir.data[vm.ir.pc];
         vm.ir.pc++;
         execute_instruction(instruction);
-        if (decode_instruction(instruction).opcode == HALT) break;
+        if (decode_instruction(instruction).opcode == HALT) exit(0);
     }
 }
 

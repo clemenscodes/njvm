@@ -1,3 +1,6 @@
+#ifndef _DEBUGGER_H
+#define _DEBUGGER_H
+
 #include <stdio.h>
 
 #include "njvm.h"
@@ -5,7 +8,6 @@
 #include "processor.h"
 
 void debug(char *bin);
-void prompt(void);
 void inspect(void);
 void step(void);
 void next(void);
@@ -15,3 +17,6 @@ void print_next_instruction(void);
 void debug_stack(void);
 void debug_sda(void);
 void debug_ir(void);
+void prompt(void);
+
+#endif

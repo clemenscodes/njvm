@@ -12,30 +12,30 @@
 #include "stack.h"
 #include "utils.h"
 
-typedef int Breakpoint;
-typedef int ReturnValueRegister;
 typedef int StackPointer;
 typedef int FramePointer;
+typedef int ReturnValueRegister;
+typedef int* Breakpoint;
 
-typedef struct stack {
+typedef struct Stack {
     StackPointer sp;
     FramePointer fp;
     size_t size;
     int *data;
 } Stack;
 
-typedef struct ir {
+typedef struct InstructionRegister {
     int pc;
     size_t size;
     uint32_t *data;
 } InstructionRegister;
 
-typedef struct sda {
+typedef struct StaticDataArea {
     int *data;
     size_t size;
 } StaticDataArea;
 
-typedef struct njvm {
+typedef struct NinjaVM {
     Stack stack;
     StaticDataArea sda;
     InstructionRegister ir;
