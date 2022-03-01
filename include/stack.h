@@ -8,7 +8,7 @@
 
 void initialize_stack(void);
 void push(Immediate immediate);
-int pop(void);
+Immediate pop(void);
 void print_stack(void);
 
 #endif

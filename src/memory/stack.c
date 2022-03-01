@@ -14,14 +14,14 @@ void push(Immediate immediate) {
     vm.stack.sp++;
 }
 
-int pop(void) {
+Immediate pop(void) {
     if (!(vm.stack.sp || vm.stack.data[vm.stack.sp])) fatal_error("Stack underflow: popped from empty stack");
     vm.stack.sp--;
     vm.stack.size--;
-    int tmp = vm.stack.data[vm.stack.sp];
+    Immediate immediate = vm.stack.data[vm.stack.sp];
     vm.stack.data = realloc(vm.stack.data, vm.stack.size * sizeof(int));
     if (!vm.stack.data && vm.stack.size) perror("realloc(vm.stack.data)");
-    return tmp;
+    return immediate;
 }
 
 void print_stack(void) {

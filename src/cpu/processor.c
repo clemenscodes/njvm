@@ -162,14 +162,14 @@ void mul_instruction(void) {
 void div_instruction(void) {
     b = pop();
     a = pop();
-    if (b == 0) fatal_error("Error: Division by zero");
+    if (!b) fatal_error("Error: Division by zero");
     push(a / b);
 }
 
 void mod_instruction(void) {
     b = pop();
     a = pop();
-    if (b == 0) fatal_error("Error: Division by zero");
+    if (!b) fatal_error("Error: Division by zero");
     push(a % b);
 }
 
@@ -267,7 +267,7 @@ void jump_instruction(Immediate immediate) {
 }
 
 void brf_instruction(Immediate immediate) {
-    if (pop() == 0) jump_instruction(immediate);
+    if (!pop()) jump_instruction(immediate);
 }
 
 void brt_instruction(Immediate immediate) {
@@ -302,7 +302,7 @@ void popr_instruction(void) {
 }
 
 void dup_instruction(void) {
-    Immediate dup = pop();
-    push(dup);
-    push(dup);
+    Immediate immediate = pop();
+    push(immediate);
+    push(immediate);
 }
