@@ -14,14 +14,16 @@
 
 typedef int StackPointer;
 typedef int FramePointer;
-typedef int* ReturnValueRegister;
-typedef int* Breakpoint;
+typedef int *ReturnValueRegister;
+typedef int *Breakpoint;
+typedef int Object;
+typedef Object *ObjRef;
 
 typedef struct Stack {
     StackPointer sp;
     FramePointer fp;
     size_t size;
-    int *data;
+    ObjRef data;
 } Stack;
 
 typedef struct InstructionRegister {
@@ -31,7 +33,7 @@ typedef struct InstructionRegister {
 } InstructionRegister;
 
 typedef struct StaticDataArea {
-    int *data;
+    ObjRef data;
     size_t size;
 } StaticDataArea;
 
