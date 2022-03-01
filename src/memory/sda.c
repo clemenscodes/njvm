@@ -3,8 +3,7 @@
 void initialize_sda(size_t variable_count) {
     vm.sda.size = variable_count;
     vm.sda.data = calloc(vm.sda.size, sizeof(Immediate));
-    if (!vm.sda.data)
-        perror("malloc(vm.sda.data)");
+    if (!vm.sda.data) perror("malloc(vm.sda.data)");
 }
 
 void push_global(Immediate immediate) {
