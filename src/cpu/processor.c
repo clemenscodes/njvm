@@ -10,17 +10,15 @@ void init(void) {
 void execute(char *arg) {
     read_file(arg);
     init();
-    print_ir();
     work();
 }
 
 void work(void) {
-    vm.ir.pc = 0;
     while (1) {
         uint32_t instruction = vm.ir.data[vm.ir.pc];
         vm.ir.pc++;
         execute_instruction(instruction);
-        if (decode_instruction(instruction).opcode == HALT) break;
+        if (decode_instruction(instruction).opcode == HALT) exit(0);
     }
 }
 
@@ -106,6 +104,24 @@ void execute_instruction(uint32_t bytecode) {
         case brt:
             brt_instruction(immediate);
             break;
+        case call:
+            call_instruction(immediate);
+            break;
+        case ret:
+            ret_instruction();
+            break;
+        case drop:
+            drop_instruction(immediate);
+            break;
+        case pushr:
+            pushr_instruction();
+            break;
+        case popr:
+            popr_instruction();
+            break;
+        case dup:
+            dup_instruction();
+            break;
         default:
             printf("Unknown opcode %d\n", opcode);
             halt_instruction();
@@ -115,8 +131,9 @@ void execute_instruction(uint32_t bytecode) {
 void halt_instruction(void) {
     free_sda();
     free_ir();
+    if (vm.bp)
+        free(vm.bp);
     printf("Ninja Virtual Machine stopped\n");
-    exit(0);
 }
 
 void pushc_instruction(int immediate) {
@@ -239,6 +256,7 @@ void ne_instruction(void) {
         push(0);
     }
 }
+
 void lt_instruction(void) {
     b = pop();
     a = pop();
@@ -248,6 +266,7 @@ void lt_instruction(void) {
         push(0);
     }
 }
+
 void le_instruction(void) {
     b = pop();
     a = pop();
@@ -257,6 +276,7 @@ void le_instruction(void) {
         push(0);
     }
 }
+
 void gt_instruction(void) {
     b = pop();
     a = pop();
@@ -266,6 +286,7 @@ void gt_instruction(void) {
         push(0);
     }
 }
+
 void ge_instruction(void) {
     b = pop();
     a = pop();
@@ -275,6 +296,7 @@ void ge_instruction(void) {
         push(0);
     }
 }
+
 void jump_instruction(int immediate) {
     vm.ir.pc = immediate;
 }
@@ -289,4 +311,41 @@ void brt_instruction(int immediate) {
     if (pop() == 1) {
         jump_instruction(immediate);
     }
+}
+
+void call_instruction(int immediate) {
+    push(vm.ir.pc);
+    vm.ir.pc = immediate;
+}
+
+void ret_instruction(void) {
+    vm.ir.pc = pop();
+}
+
+void drop_instruction(int immediate) {
+    int i;
+    for (i = 0; i < immediate; i++) {
+        pop();
+    }
+}
+
+void pushr_instruction(void) {
+    if (vm.rv) {
+        push(*vm.rv);
+        vm.rv = NULL;
+        free(vm.rv);
+    } else {
+        printf("Error: no value in return value register\n");
+    }
+}
+
+void popr_instruction(void) {
+    vm.rv = malloc(sizeof(int));
+    *vm.rv = pop();
+}
+
+void dup_instruction(void) {
+    int dup = pop();
+    push(dup);
+    push(dup);
 }

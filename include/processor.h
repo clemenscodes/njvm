@@ -12,9 +12,6 @@
 #include "stack.h"
 #include "utils.h"
 
-extern int n1, n2;
-extern char c;
-
 void init(void);
 void execute(char *file_name);
 void execute_instruction(uint32_t bytecode);
@@ -46,5 +43,11 @@ void ge_instruction(void);
 void jump_instruction(int immediate);
 void brf_instruction(int immediate);
 void brt_instruction(int immediate);
+void call_instruction(int immediate);
+void ret_instruction(void);
+void drop_instruction(int immediate);
+void pushr_instruction(void);
+void popr_instruction(void);
+void dup_instruction(void);
 
 #endif

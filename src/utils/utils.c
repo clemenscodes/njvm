@@ -9,7 +9,7 @@ void read_file(char *arg) {
         initialize_sda(variable_count);
     }
     read_instructions_into_ir(fp);
-    close(fp);
+    close_file(fp);
 }
 
 void read_instructions_into_ir(FILE *fp) {
@@ -19,10 +19,9 @@ void read_instructions_into_ir(FILE *fp) {
     size_t read_objects = fread(vm.ir.data, sizeof(uint32_t), instruction_count, fp);
     if (read_objects != instruction_count) {
         printf("Error: Could only read [%lu] of [%d] items.\n", read_objects, instruction_count);
-        close(fp);
+        close_file(fp);
         exit(1);
     }
-    vm.ir.pc = instruction_count;
 }
 
 FILE *open_file(char *arg) {
@@ -48,7 +47,7 @@ void check_ninja_binary_format(FILE *fp, char *arg) {
     uint32_t buffer = seek_file(fp, 0);
     if (!(buffer == NINJA_BINARY_FORMAT)) {
         printf("Error: file '%s' is not a Ninja binary\n", arg);
-        close(fp);
+        close_file(fp);
         exit(1);
     }
 }
@@ -57,7 +56,7 @@ void check_ninja_version(FILE *fp, char *arg) {
     uint32_t buffer = seek_file(fp, 4);
     if (!(buffer == NINJA_BINARY_VERSION)) {
         printf("Error: file '%s' does not have the correct Ninja version\n", arg);
-        close(fp);
+        close_file(fp);
         exit(1);
     }
 }
@@ -66,7 +65,7 @@ uint32_t check_ninja_instruction_count(FILE *fp) {
     uint32_t buffer = seek_file(fp, 8);
     if (!buffer) {
         printf("Error: no instructions\n");
-        close(fp);
+        close_file(fp);
         exit(1);
     }
     return buffer;
@@ -77,9 +76,19 @@ uint32_t check_ninja_variable_count(FILE *fp) {
     return buffer;
 }
 
-void close(FILE *fp) {
+void close_file(FILE *fp) {
     if (fclose(fp)) {
         perror("Error (fclose)");
         exit(1);
     }
+}
+
+char *read_line(void) {
+    char *line = NULL;
+    size_t len = 0;
+    if (!getline(&line, &len, stdin)) {
+        perror("(getline)");
+        exit(1);
+    }
+    return line;
 }

@@ -8,10 +8,9 @@ void initialize_stack(void) {
 
 void push(int immediate) {
     vm.stack.size++;
-    vm.stack.data = realloc(vm.stack.data, (vm.stack.size + 1) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
     vm.stack.data[vm.stack.sp] = immediate;
     vm.stack.sp++;
-    vm.stack.data[vm.stack.sp] = 0;
 }
 
 int pop(void) {
@@ -27,14 +26,25 @@ int pop(void) {
 }
 
 void print_stack(void) {
-    printf("\n\tStack\n");
-    printf(".-------+-------.\n");
-    for (int i = vm.stack.sp; i >= 0; i--) {
-        if (i == vm.stack.sp) {
-            printf("|sp->%3d|%7d|\n", i, 0);
-        } else {
-            printf("|%7d|%7d|\n", i, vm.stack.data[i]);
+    int sp = vm.stack.sp;
+    int fp = vm.stack.fp;
+    for (int slot = sp; slot >= 0; slot--) {
+        if (!sp && !fp) {
+            printf("sp, fp --->\t%04d:\txxxx\n", slot);
+        } else if (sp == fp) {
+            printf("sp, fp --->\t%04d:\t%d\n", slot, vm.stack.data[slot]);
+        }
+        if (slot != sp && slot != fp) {
+            printf("\t\t%04d:\t%d\n", slot, vm.stack.data[slot]);
+        }
+        if (slot == sp && slot != fp) {
+            printf("sp \t --->\t%04d:\txxxx\n", sp);
+        }
+        if (slot == fp && slot != sp && fp == 0) {
+            printf("fp \t --->\t%04d:\t%d\n", fp, vm.stack.data[fp]);
+        }
+        if (slot == fp && slot != sp && fp != 0) {
+            printf("fp \t --->\t%04d:\t%d\n", fp, vm.stack.data[fp]);
         }
     }
-    printf("'-------+-------'\n\n");
 }

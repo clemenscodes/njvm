@@ -27,6 +27,12 @@
 #define JUMP 23
 #define BRF 24
 #define BRT 25
+#define CALL 26
+#define RET 27
+#define DROP 28
+#define PUSHR 29
+#define POPR 30
+#define DUP 31
 
 typedef enum Opcode {
     halt = HALT,
@@ -55,6 +61,12 @@ typedef enum Opcode {
     jump = JUMP,
     brf = BRF,
     brt = BRT,
+    call = CALL,
+    ret = RET,
+    drop = DROP,
+    pushr = PUSHR,
+    popr = POPR,
+    dup = DUP,
 } Opcode;
 
 #endif
