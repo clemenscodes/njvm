@@ -29,47 +29,37 @@ void print_instruction(ProgramCounter pc) {
     Immediate immediate = instruction.immediate;
     switch (opcode) {
         case halt:
-            printf("%03d:\t", pc);
-            printf("halt\n");
+            printf("%03d:\thalt\n", pc);
             break;
         case pushc:
             printf("%03d:\tpushc\t%d\n", pc, immediate);
             break;
         case add:
-            printf("%03d:\t", pc);
-            printf("add\n");
+            printf("%03d:\tadd\n", pc);
             break;
         case sub:
-            printf("%03d:\t", pc);
-            printf("sub\n");
+            printf("%03d:\tsub\n", pc);
             break;
         case mul:
-            printf("%03d:\t", pc);
-            printf("mul\n");
+            printf("%03d:\tmul\n", pc);
             break;
         case divide:
-            printf("%03d:\t", pc);
-            printf("div\n");
+            printf("%03d:\tdiv\n", pc);
             break;
         case mod:
-            printf("%03d:\t", pc);
-            printf("mod\n");
+            printf("%03d:\tmod\n", pc);
             break;
         case rdint:
-            printf("%03d:\t", pc);
-            printf("rdint\n");
+            printf("%03d:\trdint\n", pc);
             break;
         case wrint:
-            printf("%03d:\t", pc);
-            printf("wrint\n");
+            printf("%03d:\twrint\n", pc);
             break;
         case rdchr:
-            printf("%03d:\t", pc);
-            printf("rdchr\n");
+            printf("%03d:\trdchr\n", pc);
             break;
         case wrchr:
-            printf("%03d:\t", pc);
-            printf("wrchr\n");
+            printf("%03d:\twrchr\n", pc);
             break;
         case pushg:
             printf("%03d:\tpushg\t%d\n", pc, immediate);
