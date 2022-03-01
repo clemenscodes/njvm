@@ -22,101 +22,105 @@ void free_ir(void) {
 
 void print_ir(void) {
     for (int i = 0; i < vm.ir.size; i++) {
-        Instruction instruction = decode_instruction(vm.ir.data[i]);
-        Opcode opcode = instruction.opcode;
-        int immediate = instruction.immediate;
-        switch (opcode) {
-            case halt:
-                printf("%03d:\t", i);
-                printf("halt\n");
-                break;
-            case pushc:
-                printf("%03d:\tpushc\t%d\n", i, immediate);
-                break;
-            case add:
-                printf("%03d:\t", i);
-                printf("add\n");
-                break;
-            case sub:
-                printf("%03d:\t", i);
-                printf("sub\n");
-                break;
-            case mul:
-                printf("%03d:\t", i);
-                printf("mul\n");
-                break;
-            case divide:
-                printf("%03d:\t", i);
-                printf("div\n");
-                break;
-            case mod:
-                printf("%03d:\t", i);
-                printf("mod\n");
-                break;
-            case rdint:
-                printf("%03d:\t", i);
-                printf("rdint\n");
-                break;
-            case wrint:
-                printf("%03d:\t", i);
-                printf("wrint\n");
-                break;
-            case rdchr:
-                printf("%03d:\t", i);
-                printf("rdchr\n");
-                break;
-            case wrchr:
-                printf("%03d:\t", i);
-                printf("wrchr\n");
-                break;
-            case pushg:
-                printf("%03d:\tpushg\t%d\n", i, immediate);
-                break;
-            case popg:
-                printf("%03d:\tpopg\t%d\n", i, immediate);
-                break;
-            case asf:
-                printf("%03d:\tasf\t%d\n", i, immediate);
-                break;
-            case rsf:
-                printf("%03d:\trsf\n", i);
-                break;
-            case pushl:
-                printf("%03d:\tpushl\t%d\n", i, immediate);
-                break;
-            case popl:
-                printf("%03d:\tpopl\t%d\n", i, immediate);
-                break;
-            case eq:
-                printf("%03d:\teq\n", i);
-                break;
-            case ne:
-                printf("%03d:\tne\n", i);
-                break;
-            case lt:
-                printf("%03d:\tlt\n", i);
-                break;
-            case le:
-                printf("%03d:\tle\n", i);
-                break;
-            case gt:
-                printf("%03d:\tgt\n", i);
-                break;
-            case ge:
-                printf("%03d:\tge\n", i);
-                break;
-            case jump:
-                printf("%03d:\tjump\t%d\n", i, immediate);
-                break;
-            case brf:
-                printf("%03d:\tbrf\t%d\n", i, immediate);
-                break;
-            case brt:
-                printf("%03d:\tbrt\t%d\n", i, immediate);
-                break;
-            default:
-                printf("Unknown opcode %d\n", opcode);
-                break;
-        }
+        print_instruction(i);
+    }
+}
+
+void print_instruction(int pc) {
+    Instruction instruction = decode_instruction(vm.ir.data[pc]);
+    Opcode opcode = instruction.opcode;
+    int immediate = instruction.immediate;
+    switch (opcode) {
+        case halt:
+            printf("%03d:\t", pc);
+            printf("halt\n");
+            break;
+        case pushc:
+            printf("%03d:\tpushc\t%d\n", pc, immediate);
+            break;
+        case add:
+            printf("%03d:\t", pc);
+            printf("add\n");
+            break;
+        case sub:
+            printf("%03d:\t", pc);
+            printf("sub\n");
+            break;
+        case mul:
+            printf("%03d:\t", pc);
+            printf("mul\n");
+            break;
+        case divide:
+            printf("%03d:\t", pc);
+            printf("div\n");
+            break;
+        case mod:
+            printf("%03d:\t", pc);
+            printf("mod\n");
+            break;
+        case rdint:
+            printf("%03d:\t", pc);
+            printf("rdint\n");
+            break;
+        case wrint:
+            printf("%03d:\t", pc);
+            printf("wrint\n");
+            break;
+        case rdchr:
+            printf("%03d:\t", pc);
+            printf("rdchr\n");
+            break;
+        case wrchr:
+            printf("%03d:\t", pc);
+            printf("wrchr\n");
+            break;
+        case pushg:
+            printf("%03d:\tpushg\t%d\n", pc, immediate);
+            break;
+        case popg:
+            printf("%03d:\tpopg\t%d\n", pc, immediate);
+            break;
+        case asf:
+            printf("%03d:\tasf\t%d\n", pc, immediate);
+            break;
+        case rsf:
+            printf("%03d:\trsf\n", pc);
+            break;
+        case pushl:
+            printf("%03d:\tpushl\t%d\n", pc, immediate);
+            break;
+        case popl:
+            printf("%03d:\tpopl\t%d\n", pc, immediate);
+            break;
+        case eq:
+            printf("%03d:\teq\n", pc);
+            break;
+        case ne:
+            printf("%03d:\tne\n", pc);
+            break;
+        case lt:
+            printf("%03d:\tlt\n", pc);
+            break;
+        case le:
+            printf("%03d:\tle\n", pc);
+            break;
+        case gt:
+            printf("%03d:\tgt\n", pc);
+            break;
+        case ge:
+            printf("%03d:\tge\n", pc);
+            break;
+        case jump:
+            printf("%03d:\tjump\t%d\n", pc, immediate);
+            break;
+        case brf:
+            printf("%03d:\tbrf\t%d\n", pc, immediate);
+            break;
+        case brt:
+            printf("%03d:\tbrt\t%d\n", pc, immediate);
+            break;
+        default:
+            printf("Unknown opcode %d\n", opcode);
+            break;
     }
 }

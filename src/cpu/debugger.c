@@ -10,7 +10,7 @@ void debug(char *bin) {
 
 void prompt(void) {
     while (vm.ir.pc != vm.ir.size) {
-        print_next_instruction();
+        print_instruction(vm.ir.pc);
         printf("DEBUG: inspect, list, breakpoint, step, run, quit?\n");
         char *line = read_line();
         char c = line[0];
@@ -20,7 +20,7 @@ void prompt(void) {
         }
         switch (c) {
             case 'i':
-                printf("inspect\n");
+                printf("DEBUG: [inspect]: stack, data?\n");
                 line = read_line();
                 c = line[0];
                 switch (c) {
@@ -109,10 +109,6 @@ void set_breakpoint(void) {
     vm.bp = malloc(sizeof(int));
     *vm.bp = bp;
     printf("DEBUG [breakpoint]: now set at %d\n", *vm.bp);
-}
-
-void print_next_instruction(void) {
-    printf("print_next_instruction\n");
 }
 
 void debug_stack(void) {

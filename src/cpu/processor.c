@@ -113,6 +113,8 @@ void execute_instruction(uint32_t bytecode) {
 void halt_instruction(void) {
     free_sda();
     free_ir();
+    if (vm.bp)
+        free(vm.bp);
     printf("Ninja Virtual Machine stopped\n");
 }
 
