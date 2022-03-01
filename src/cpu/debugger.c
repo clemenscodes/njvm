@@ -99,10 +99,8 @@ void set_breakpoint(void) {
     }
     printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
     int bp;
-    if (!scanf("%i", &bp)) {
-        printf("Error: failed to read integer");
-        exit(1);
-    }
+    if (!scanf("%i", &bp))
+        fatal_error("Error: failed to read integer");
     if (bp < -1) {
         return;
     }

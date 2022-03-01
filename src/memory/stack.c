@@ -14,10 +14,8 @@ void push(Immediate immediate) {
 }
 
 int pop(void) {
-    if (!(vm.stack.sp || vm.stack.data[vm.stack.sp])) {
-        printf("Stack underflow: popped from empty stack\n");
-        exit(1);
-    }
+    if (!(vm.stack.sp || vm.stack.data[vm.stack.sp]))
+        fatal_error("Stack underflow: popped from empty stack");
     vm.stack.sp--;
     vm.stack.size--;
     int tmp = vm.stack.data[vm.stack.sp];
