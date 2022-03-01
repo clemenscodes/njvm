@@ -14,7 +14,7 @@
 
 typedef int StackPointer;
 typedef int FramePointer;
-typedef int ReturnValueRegister;
+typedef int* ReturnValueRegister;
 typedef int* Breakpoint;
 
 typedef struct Stack {

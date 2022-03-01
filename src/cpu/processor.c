@@ -104,6 +104,24 @@ void execute_instruction(uint32_t bytecode) {
         case brt:
             brt_instruction(immediate);
             break;
+        case call:
+            call_instruction(immediate);
+            break;
+        case ret:
+            ret_instruction();
+            break;
+        case drop:
+            drop_instruction(immediate);
+            break;
+        case pushr:
+            pushr_instruction();
+            break;
+        case popr:
+            popr_instruction();
+            break;
+        case dup:
+            dup_instruction();
+            break;
         default:
             printf("Unknown opcode %d\n", opcode);
             halt_instruction();
@@ -238,6 +256,7 @@ void ne_instruction(void) {
         push(0);
     }
 }
+
 void lt_instruction(void) {
     b = pop();
     a = pop();
@@ -247,6 +266,7 @@ void lt_instruction(void) {
         push(0);
     }
 }
+
 void le_instruction(void) {
     b = pop();
     a = pop();
@@ -256,6 +276,7 @@ void le_instruction(void) {
         push(0);
     }
 }
+
 void gt_instruction(void) {
     b = pop();
     a = pop();
@@ -265,6 +286,7 @@ void gt_instruction(void) {
         push(0);
     }
 }
+
 void ge_instruction(void) {
     b = pop();
     a = pop();
@@ -274,6 +296,7 @@ void ge_instruction(void) {
         push(0);
     }
 }
+
 void jump_instruction(int immediate) {
     vm.ir.pc = immediate;
 }
@@ -288,4 +311,41 @@ void brt_instruction(int immediate) {
     if (pop() == 1) {
         jump_instruction(immediate);
     }
+}
+
+void call_instruction(int immediate) {
+    push(vm.ir.pc);
+    vm.ir.pc = immediate;
+}
+
+void ret_instruction(void) {
+    vm.ir.pc = pop();
+}
+
+void drop_instruction(int immediate) {
+    int i;
+    for (i = 0; i < immediate; i++) {
+        pop();
+    }
+}
+
+void pushr_instruction(void) {
+    if (vm.rv) {
+        push(*vm.rv);
+        vm.rv = NULL;
+        free(vm.rv);
+    } else {
+        printf("Error: no value in return value register\n");
+    }
+}
+
+void popr_instruction(void) {
+    vm.rv = malloc(sizeof(int));
+    *vm.rv = pop();
+}
+
+void dup_instruction(void) {
+    int dup = pop();
+    push(dup);
+    push(dup);
 }

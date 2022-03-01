@@ -119,6 +119,24 @@ void print_instruction(int pc) {
         case brt:
             printf("%03d:\tbrt\t%d\n", pc, immediate);
             break;
+        case call:
+            printf("%03d:\tcall\t%d\n", pc, immediate);
+            break;
+        case ret:
+            printf("%03d:\tret\n", pc);
+            break;
+        case drop:
+            printf("%03d:\tdrop\t%d\n", pc, immediate);
+            break;
+        case pushr:
+            printf("%03d:\tpushr\n", pc);
+            break;
+        case popr:
+            printf("%03d:\tpopr\n", pc);
+            break;
+        case dup:
+            printf("%03d:\tdup\n", pc);
+            break;
         default:
             printf("Unknown opcode %d\n", opcode);
             break;
