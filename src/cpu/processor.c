@@ -14,11 +14,8 @@ void execute(char *arg) {
 }
 
 void work(void) {
-    Bytecode instruction = vm.ir.data[vm.ir.pc];
-    Opcode opcode = decode_instruction(instruction).opcode;
-    while (opcode != HALT) {
-        instruction = vm.ir.data[vm.ir.pc];
-        opcode = decode_instruction(instruction).opcode;
+    while (1) {
+        Bytecode instruction = vm.ir.data[vm.ir.pc];
         vm.ir.pc++;
         execute_instruction(instruction);
     }
@@ -133,8 +130,10 @@ void execute_instruction(Bytecode bytecode) {
 void halt_instruction(void) {
     free_sda();
     free_ir();
+    free_stack();
     if (vm.bp) free(vm.bp);
     printf("Ninja Virtual Machine stopped\n");
+    exit(0);
 }
 
 void pushc_instruction(Immediate immediate) {
@@ -204,7 +203,7 @@ void asf_instruction(Immediate immediate) {
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
-    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, vm.stack.size * sizeof(Immediate));
     if (!vm.stack.data) perror("realloc(vm.stack.data)");
     vm.stack.sp += immediate;
     for (int i = vm.stack.fp; i < vm.stack.sp; i++) vm.stack.data[i] = 0;
@@ -212,7 +211,7 @@ void asf_instruction(Immediate immediate) {
 
 void rsf_instruction(void) {
     vm.stack.size -= (vm.stack.sp - vm.stack.fp);
-    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(Immediate));
     if (!vm.stack.data) perror("realloc(vm.stack.data)");
     vm.stack.sp = vm.stack.fp;
     vm.stack.fp = pop();
@@ -292,7 +291,8 @@ void pushr_instruction(void) {
     if (vm.rv) {
         push(*vm.rv);
         free(vm.rv);
-    } else fatal_error("Error: no value in return value register");
+    } else
+        fatal_error("Error: no value in return value register");
 }
 
 void popr_instruction(void) {

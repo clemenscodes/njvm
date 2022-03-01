@@ -24,6 +24,10 @@ Immediate pop(void) {
     return immediate;
 }
 
+void free_stack(void) {
+    free(vm.stack.data);
+}
+
 void print_stack(void) {
     int sp = vm.stack.sp;
     int fp = vm.stack.fp;
