@@ -14,8 +14,5 @@ void step(void);
 void next(void);
 void run(void);
 void set_breakpoint(void);
-void debug_stack(void);
-void debug_sda(void);
-void debug_ir(void);
 
 #endif

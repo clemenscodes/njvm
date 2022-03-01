@@ -26,11 +26,15 @@ void prompt(void) {
                 switch (c) {
                     case 's':
                         free(line);
-                        debug_stack();
+                        printf("-----------------------------\n");
+                        print_stack();
+                        printf("-----------------------------\n");
                         continue;
                     case 'd':
                         free(line);
-                        debug_sda();
+                        printf("-----------------------------\n");
+                        print_sda();
+                        printf("-----------------------------\n");
                         continue;
                     default:
                         free(line);
@@ -38,7 +42,9 @@ void prompt(void) {
                 }
             case 'l':
                 free(line);
-                debug_ir();
+                printf("-----------------------------\n");
+                print_ir();
+                printf("-----------------------------\n");
                 continue;
             case 'b':
                 free(line);
@@ -109,22 +115,4 @@ void set_breakpoint(void) {
     vm.bp = malloc(sizeof(int));
     *vm.bp = bp;
     printf("DEBUG [breakpoint]: now set at %d\n", *vm.bp);
-}
-
-void debug_stack(void) {
-    printf("-----------------------------\n");
-    print_stack();
-    printf("-----------------------------\n");
-}
-
-void debug_sda(void) {
-    printf("-----------------------------\n");
-    print_sda();
-    printf("-----------------------------\n");
-}
-
-void debug_ir(void) {
-    printf("-----------------------------\n");
-    print_ir();
-    printf("-----------------------------\n");
 }
