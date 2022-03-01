@@ -64,9 +64,8 @@ void check_ninja_version(FILE *fp, char *arg) {
 size_t check_ninja_instruction_count(FILE *fp) {
     Bytecode buffer = seek_file(fp, 8);
     if (!buffer) {
-        fprintf(stderr, "Error: no instructions\n");
         close_file(fp);
-        exit(1);
+        fatal_error("Error: no instructions");
     }
     return buffer;
 }
