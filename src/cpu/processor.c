@@ -123,7 +123,7 @@ void execute_instruction(Bytecode bytecode) {
             dup_instruction();
             break;
         default:
-            printf("Unknown opcode %d\n", opcode);
+            fprintf(stderr, "Unknown opcode %d\n", opcode);
             halt_instruction();
     }
 }
@@ -161,20 +161,16 @@ void mul_instruction(void) {
 void div_instruction(void) {
     b = pop();
     a = pop();
-    if (b == 0) {
-        printf("Division by zero error\n");
-        exit(1);
-    }
+    if (b == 0)
+        fatal_error("Error: Division by zero");
     push(a / b);
 }
 
 void mod_instruction(void) {
     b = pop();
     a = pop();
-    if (b == 0) {
-        printf("Division by zero error\n");
-        exit(1);
-    }
+    if (b == 0)
+        fatal_error("Error: Division by zero");
     push(a % b);
 }
 
@@ -184,18 +180,14 @@ void wrchr_instruction(void) {
 }
 
 void rdchr_instruction(void) {
-    if (!scanf("%c", &c)) {
-        printf("Error: failed to read character");
-        exit(1);
-    }
+    if (!scanf("%c", &c))
+        fatal_error("Error: failed to read character");
     push(c);
 }
 
 void rdint_instruction(void) {
-    if (!scanf("%d", &b)) {
-        printf("Error: failed to read integer");
-        exit(1);
-    }
+    if (!scanf("%d", &b))
+        fatal_error("Error: failed to read integer");
     push(b);
 }
 
@@ -215,7 +207,7 @@ void asf_instruction(Immediate immediate) {
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
-    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
     vm.stack.sp += immediate;
     for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
         vm.stack.data[i] = 0;
@@ -224,7 +216,7 @@ void asf_instruction(Immediate immediate) {
 
 void rsf_instruction(void) {
     vm.stack.size -= (vm.stack.sp - vm.stack.fp);
-    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
     vm.stack.sp = vm.stack.fp;
     vm.stack.fp = pop();
 }
@@ -333,9 +325,8 @@ void pushr_instruction(void) {
     if (vm.rv) {
         push(*vm.rv);
         free(vm.rv);
-    } else {
-        printf("Error: no value in return value register\n");
-    }
+    } else
+        fatal_error("Error: no value in return value register");
 }
 
 void popr_instruction(void) {

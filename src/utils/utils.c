@@ -92,3 +92,8 @@ char *read_line(void) {
     }
     return line;
 }
+
+void fatal_error(char *error_message) {
+    fprintf(stderr, "%s\n", error_message);
+    exit(1);
+}
