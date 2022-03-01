@@ -14,18 +14,20 @@ void execute(char *arg) {
 }
 
 void work(void) {
-    while (1) {
-        uint32_t instruction = vm.ir.data[vm.ir.pc];
+    Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Opcode opcode = decode_instruction(instruction).opcode;
+    while (opcode != HALT) {
+        instruction = vm.ir.data[vm.ir.pc];
+        opcode = decode_instruction(instruction).opcode;
         vm.ir.pc++;
         execute_instruction(instruction);
-        if (decode_instruction(instruction).opcode == HALT) exit(0);
     }
 }
 
-void execute_instruction(uint32_t bytecode) {
+void execute_instruction(Bytecode bytecode) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
-    int immediate = instruction.immediate;
+    Immediate immediate = instruction.immediate;
     switch (opcode) {
         case halt:
             halt_instruction();
@@ -123,7 +125,7 @@ void execute_instruction(uint32_t bytecode) {
             dup_instruction();
             break;
         default:
-            printf("Unknown opcode %d\n", opcode);
+            fprintf(stderr, "Unknown opcode %d\n", opcode);
             halt_instruction();
     }
 }
@@ -136,7 +138,7 @@ void halt_instruction(void) {
     printf("Ninja Virtual Machine stopped\n");
 }
 
-void pushc_instruction(int immediate) {
+void pushc_instruction(Immediate immediate) {
     push(immediate);
 }
 
@@ -161,20 +163,16 @@ void mul_instruction(void) {
 void div_instruction(void) {
     b = pop();
     a = pop();
-    if (b == 0) {
-        printf("Division by zero error\n");
-        exit(1);
-    }
+    if (b == 0)
+        fatal_error("Error: Division by zero");
     push(a / b);
 }
 
 void mod_instruction(void) {
     b = pop();
     a = pop();
-    if (b == 0) {
-        printf("Division by zero error\n");
-        exit(1);
-    }
+    if (b == 0)
+        fatal_error("Error: Division by zero");
     push(a % b);
 }
 
@@ -184,18 +182,14 @@ void wrchr_instruction(void) {
 }
 
 void rdchr_instruction(void) {
-    if (!scanf("%c", &c)) {
-        printf("Error: failed to read character");
-        exit(1);
-    }
+    if (!scanf("%c", &c))
+        fatal_error("Error: failed to read character");
     push(c);
 }
 
 void rdint_instruction(void) {
-    if (!scanf("%d", &b)) {
-        printf("Error: failed to read integer");
-        exit(1);
-    }
+    if (!scanf("%d", &b))
+        fatal_error("Error: failed to read integer");
     push(b);
 }
 
@@ -203,117 +197,112 @@ void wrint_instruction(void) {
     printf("%d", pop());
 }
 
-void pushg_instruction(int immediate) {
+void pushg_instruction(Immediate immediate) {
     push_global(immediate);
 }
 
-void popg_instruction(int immediate) {
+void popg_instruction(Immediate immediate) {
     pop_global(immediate);
 }
 
-void asf_instruction(int immediate) {
+void asf_instruction(Immediate immediate) {
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
-    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    if (!vm.stack.data)
+        perror("realloc(vm.stack.data)");
     vm.stack.sp += immediate;
-    for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
+    for (int i = vm.stack.fp; i < vm.stack.sp; i++)
         vm.stack.data[i] = 0;
-    }
 }
 
 void rsf_instruction(void) {
     vm.stack.size -= (vm.stack.sp - vm.stack.fp);
-    vm.stack.data = (int *)realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    if (!vm.stack.data)
+        perror("realloc(vm.stack.data)");
     vm.stack.sp = vm.stack.fp;
     vm.stack.fp = pop();
 }
 
-void pushl_instruction(int immediate) {
+void pushl_instruction(Immediate immediate) {
     push(vm.stack.data[vm.stack.fp + immediate]);
 }
 
-void popl_instruction(int immediate) {
+void popl_instruction(Immediate immediate) {
     vm.stack.data[vm.stack.fp + immediate] = vm.stack.data[vm.stack.sp - 1];
 }
 
 void eq_instruction(void) {
     b = pop();
     a = pop();
-    if (a == b) {
+    if (a == b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void ne_instruction(void) {
     b = pop();
     a = pop();
-    if (a != b) {
+    if (a != b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void lt_instruction(void) {
     b = pop();
     a = pop();
-    if (a < b) {
+    if (a < b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void le_instruction(void) {
     b = pop();
     a = pop();
-    if (a <= b) {
+    if (a <= b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void gt_instruction(void) {
     b = pop();
     a = pop();
-    if (a > b) {
+    if (a > b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void ge_instruction(void) {
     b = pop();
     a = pop();
-    if (a >= b) {
+    if (a >= b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
-void jump_instruction(int immediate) {
+void jump_instruction(Immediate immediate) {
     vm.ir.pc = immediate;
 }
 
-void brf_instruction(int immediate) {
-    if (pop() == 0) {
+void brf_instruction(Immediate immediate) {
+    if (pop() == 0)
         jump_instruction(immediate);
-    }
 }
 
-void brt_instruction(int immediate) {
-    if (pop() == 1) {
+void brt_instruction(Immediate immediate) {
+    if (pop() == 1)
         jump_instruction(immediate);
-    }
 }
 
-void call_instruction(int immediate) {
+void call_instruction(Immediate immediate) {
     push(vm.ir.pc);
     vm.ir.pc = immediate;
 }
@@ -322,25 +311,24 @@ void ret_instruction(void) {
     vm.ir.pc = pop();
 }
 
-void drop_instruction(int immediate) {
+void drop_instruction(Immediate immediate) {
     int i;
-    for (i = 0; i < immediate; i++) {
+    for (i = 0; i < immediate; i++)
         pop();
-    }
 }
 
 void pushr_instruction(void) {
     if (vm.rv) {
         push(*vm.rv);
-        vm.rv = NULL;
         free(vm.rv);
-    } else {
-        printf("Error: no value in return value register\n");
-    }
+    } else
+        fatal_error("Error: no value in return value register");
 }
 
 void popr_instruction(void) {
     vm.rv = malloc(sizeof(int));
+    if (!vm.rv)
+        perror("malloc(vm.rv)");
     *vm.rv = pop();
 }
 

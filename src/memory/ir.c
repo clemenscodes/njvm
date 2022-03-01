@@ -3,15 +3,13 @@
 void initialize_ir(size_t instruction_count) {
     vm.ir.size = instruction_count;
     vm.ir.pc = 0;
-    vm.ir.data = calloc(vm.ir.size, sizeof(uint32_t));
-    if (!vm.ir.data) {
-        perror("malloc(ir.data)");
-        exit(1);
-    }
+    vm.ir.data = calloc(vm.ir.size, sizeof(Bytecode));
+    if (!vm.ir.data)
+        perror("calloc(vm.ir.data)");
 }
 
-void register_instruction(Opcode opcode, int immediate) {
-    uint32_t instruction = encode_instruction(opcode, immediate);
+void register_instruction(Opcode opcode, Immediate immediate) {
+    Bytecode instruction = encode_instruction(opcode, immediate);
     vm.ir.data[vm.ir.pc] = instruction;
     vm.ir.pc++;
 }
@@ -21,15 +19,14 @@ void free_ir(void) {
 }
 
 void print_ir(void) {
-    for (int i = 0; i < vm.ir.size; i++) {
+    for (int i = 0; i < vm.ir.size; i++)
         print_instruction(i);
-    }
 }
 
-void print_instruction(int pc) {
+void print_instruction(ProgramCounter pc) {
     Instruction instruction = decode_instruction(vm.ir.data[pc]);
     Opcode opcode = instruction.opcode;
-    int immediate = instruction.immediate;
+    Immediate immediate = instruction.immediate;
     switch (opcode) {
         case halt:
             printf("%03d:\t", pc);

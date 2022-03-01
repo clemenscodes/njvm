@@ -3,26 +3,24 @@
 NinjaVM vm;
 
 int main(int argc, char *argv[]) {
-    int i;
-    int code_file_specified = 0;
-    int debug_mode_activated = 0;
+    int i,
+        code_file_specified = 0,
+        debug_mode_activated = 0;
     char *code_file = NULL;
     for (i = 1; i <= argc; i++) {
         if (i == argc) {
-            if (!code_file_specified) {
-                printf("Error: no code file specified\n");
-                exit(1);
-            }
+            if (!code_file_specified)
+                fatal_error("Error: no code file specified");
             execute(code_file);
+            exit(0);
         }
         if (!strcmp(argv[i], "--debug")) {
             if (i < argc - 1) {
                 debug_mode_activated = 1;
                 continue;
             }
-            if (code_file_specified) {
+            if (code_file_specified)
                 debug(code_file);
-            }
             debug_mode_activated = 1;
             continue;
         }
@@ -42,16 +40,13 @@ int main(int argc, char *argv[]) {
             printf("unknown command line argument '%s', try '%s --help'\n", argv[i], argv[0]);
             exit(1);
         }
-        if (code_file_specified) {
-            printf("Error: more than one code file specified\n");
-            exit(1);
-        }
+        if (code_file_specified)
+            fatal_error("Error: more than one code file specified");
         code_file = argv[i];
         code_file_specified = 1;
         if (debug_mode_activated) {
-            if (i < argc - 1) {
+            if (i < argc - 1)
                 continue;
-            }
             debug(code_file);
         }
     }

@@ -3,36 +3,45 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "debugger.h"
-#include "ir.h"
 #include "processor.h"
-#include "sda.h"
-#include "stack.h"
 #include "utils.h"
+#include "pc.h"
 
 typedef int StackPointer;
 typedef int FramePointer;
-typedef int* ReturnValueRegister;
-typedef int* Breakpoint;
+typedef int *ReturnValueRegister;
+typedef int *Breakpoint;
+typedef Immediate Object;
+typedef Object *ObjRef;
+
+typedef struct StackSlot {
+    bool is_obj_ref;
+    union {
+        ObjRef obj_ref;
+        Immediate value;
+    } slot;
+} StackSlot;
 
 typedef struct Stack {
     StackPointer sp;
     FramePointer fp;
     size_t size;
-    int *data;
+    ObjRef data;
 } Stack;
 
 typedef struct InstructionRegister {
-    int pc;
+    ProgramCounter pc;
     size_t size;
-    uint32_t *data;
+    Bytecode *data;
 } InstructionRegister;
 
 typedef struct StaticDataArea {
-    int *data;
     size_t size;
+    ObjRef data;
 } StaticDataArea;
 
 typedef struct NinjaVM {

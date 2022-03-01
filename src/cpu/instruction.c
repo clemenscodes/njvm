@@ -1,10 +1,10 @@
 #include "instruction.h"
 
-uint32_t encode_instruction(Opcode opcode, int immediate) {
+Bytecode encode_instruction(Opcode opcode, Immediate immediate) {
     return (opcode << 24) | IMMEDIATE(immediate);
 }
 
-Instruction decode_instruction(uint32_t bytecode) {
+Instruction decode_instruction(Bytecode bytecode) {
     Instruction instruction;
     instruction.opcode = bytecode >> 24;
     instruction.immediate = SIGN_EXTEND(IMMEDIATE(bytecode));
