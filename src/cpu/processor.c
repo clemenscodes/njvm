@@ -15,7 +15,7 @@ void execute(char *arg) {
 
 void work(void) {
     while (1) {
-        uint32_t instruction = vm.ir.data[vm.ir.pc];
+        Bytecode instruction = vm.ir.data[vm.ir.pc];
         vm.ir.pc++;
         execute_instruction(instruction);
         if (decode_instruction(instruction).opcode == HALT) exit(0);
@@ -332,7 +332,6 @@ void drop_instruction(Immediate immediate) {
 void pushr_instruction(void) {
     if (vm.rv) {
         push(*vm.rv);
-        vm.rv = NULL;
         free(vm.rv);
     } else {
         printf("Error: no value in return value register\n");

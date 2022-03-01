@@ -31,8 +31,8 @@ typedef struct InstructionRegister {
 } InstructionRegister;
 
 typedef struct StaticDataArea {
-    ObjRef data;
     size_t size;
+    ObjRef data;
 } StaticDataArea;
 
 typedef struct NinjaVM {
