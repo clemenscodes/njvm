@@ -1,15 +1,15 @@
 #ifndef _NJVM_H
 #define _NJVM_H
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
 #include "debugger.h"
+#include "pc.h"
 #include "processor.h"
 #include "utils.h"
-#include "pc.h"
 
 typedef int StackPointer;
 typedef int FramePointer;
