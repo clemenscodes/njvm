@@ -209,9 +209,8 @@ void asf_instruction(Immediate immediate) {
     vm.stack.size += immediate;
     vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
     vm.stack.sp += immediate;
-    for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
+    for (int i = vm.stack.fp; i < vm.stack.sp; i++)
         vm.stack.data[i] = 0;
-    }
 }
 
 void rsf_instruction(void) {
@@ -232,61 +231,55 @@ void popl_instruction(Immediate immediate) {
 void eq_instruction(void) {
     b = pop();
     a = pop();
-    if (a == b) {
+    if (a == b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void ne_instruction(void) {
     b = pop();
     a = pop();
-    if (a != b) {
+    if (a != b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void lt_instruction(void) {
     b = pop();
     a = pop();
-    if (a < b) {
+    if (a < b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void le_instruction(void) {
     b = pop();
     a = pop();
-    if (a <= b) {
+    if (a <= b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void gt_instruction(void) {
     b = pop();
     a = pop();
-    if (a > b) {
+    if (a > b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void ge_instruction(void) {
     b = pop();
     a = pop();
-    if (a >= b) {
+    if (a >= b)
         push(1);
-    } else {
+    else
         push(0);
-    }
 }
 
 void jump_instruction(Immediate immediate) {
@@ -294,15 +287,13 @@ void jump_instruction(Immediate immediate) {
 }
 
 void brf_instruction(Immediate immediate) {
-    if (pop() == 0) {
+    if (pop() == 0)
         jump_instruction(immediate);
-    }
 }
 
 void brt_instruction(Immediate immediate) {
-    if (pop() == 1) {
+    if (pop() == 1)
         jump_instruction(immediate);
-    }
 }
 
 void call_instruction(Immediate immediate) {
@@ -316,9 +307,8 @@ void ret_instruction(void) {
 
 void drop_instruction(Immediate immediate) {
     int i;
-    for (i = 0; i < immediate; i++) {
+    for (i = 0; i < immediate; i++)
         pop();
-    }
 }
 
 void pushr_instruction(void) {

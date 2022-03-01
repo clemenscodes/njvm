@@ -5,9 +5,8 @@ void read_file(char *arg) {
     check_ninja_binary_format(fp, arg);
     check_ninja_version(fp, arg);
     size_t variable_count = check_ninja_variable_count(fp);
-    if (variable_count > 0) {
+    if (variable_count > 0)
         initialize_sda(variable_count);
-    }
     read_instructions_into_ir(fp);
     close_file(fp);
 }

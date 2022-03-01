@@ -21,9 +21,8 @@ void free_ir(void) {
 }
 
 void print_ir(void) {
-    for (int i = 0; i < vm.ir.size; i++) {
+    for (int i = 0; i < vm.ir.size; i++)
         print_instruction(i);
-    }
 }
 
 void print_instruction(ProgramCounter pc) {

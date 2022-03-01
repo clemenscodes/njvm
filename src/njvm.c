@@ -18,9 +18,8 @@ int main(int argc, char *argv[]) {
                 debug_mode_activated = 1;
                 continue;
             }
-            if (code_file_specified) {
+            if (code_file_specified)
                 debug(code_file);
-            }
             debug_mode_activated = 1;
             continue;
         }
@@ -45,9 +44,8 @@ int main(int argc, char *argv[]) {
         code_file = argv[i];
         code_file_specified = 1;
         if (debug_mode_activated) {
-            if (i < argc - 1) {
+            if (i < argc - 1)
                 continue;
-            }
             debug(code_file);
         }
     }
