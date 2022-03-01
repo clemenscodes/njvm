@@ -24,3 +24,4 @@ char *read_line(void);
 void fatal_error(char *error_message);
 
 #endif
+ 

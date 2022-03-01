@@ -3,11 +3,9 @@
 void initialize_ir(size_t instruction_count) {
     vm.ir.size = instruction_count;
     vm.ir.pc = 0;
-    vm.ir.data = calloc(vm.ir.size, sizeof(uint32_t));
-    if (!vm.ir.data) {
-        perror("malloc(ir.data)");
-        exit(1);
-    }
+    vm.ir.data = calloc(vm.ir.size, sizeof(Bytecode));
+    if (!vm.ir.data)
+        perror("calloc(vm.ir.data)");
 }
 
 void register_instruction(Opcode opcode, Immediate immediate) {

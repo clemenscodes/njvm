@@ -208,6 +208,8 @@ void asf_instruction(Immediate immediate) {
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
     vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    if (!vm.stack.data)
+        perror("realloc(vm.stack.data)");
     vm.stack.sp += immediate;
     for (int i = vm.stack.fp; i < vm.stack.sp; i++)
         vm.stack.data[i] = 0;
@@ -216,6 +218,8 @@ void asf_instruction(Immediate immediate) {
 void rsf_instruction(void) {
     vm.stack.size -= (vm.stack.sp - vm.stack.fp);
     vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    if (!vm.stack.data)
+        perror("realloc(vm.stack.data)");
     vm.stack.sp = vm.stack.fp;
     vm.stack.fp = pop();
 }
@@ -321,6 +325,8 @@ void pushr_instruction(void) {
 
 void popr_instruction(void) {
     vm.rv = malloc(sizeof(int));
+    if (!vm.rv)
+        perror("malloc(vm.rv)");
     *vm.rv = pop();
 }
 

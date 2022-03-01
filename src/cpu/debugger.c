@@ -78,7 +78,7 @@ void step(void) {
 
 void run(void) {
     while (vm.ir.pc != vm.ir.size) {
-        if (vm.bp) {
+        if (vm.bp)
             if (*vm.bp == vm.ir.pc) {
                 vm.bp = NULL;
                 free(vm.bp);
@@ -86,13 +86,12 @@ void run(void) {
                 prompt();
                 break;
             }
-        }
         step();
     }
 }
 
 void set_breakpoint(void) {
-    if (vm.bp) 
+    if (vm.bp)
         printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
     else
         printf("DEBUG [breakpoint]: cleared\n");
@@ -109,6 +108,8 @@ void set_breakpoint(void) {
         return;
     }
     vm.bp = malloc(sizeof(int));
+    if (!vm.bp)
+        perror("(malloc)");
     *vm.bp = bp;
     printf("DEBUG [breakpoint]: now set at %d\n", *vm.bp);
 }
