@@ -5,10 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <stddef.h>
-#include <cmocka.h>
 
 #include "debugger.h"
 #include "pc.h"

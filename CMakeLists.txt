@@ -26,10 +26,10 @@ add_executable(
     src/utils/utils.c
 )
 
-target_link_libraries(njvm PRIVATE cmocka-static)
-
 enable_testing()
 
 add_executable(tests test/test.c)
+
+target_link_libraries(tests PRIVATE cmocka-static)
 
 add_test(Test tests)
