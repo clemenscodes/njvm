@@ -9,8 +9,7 @@ int main(int argc, char *argv[]) {
     char *code_file = NULL;
     for (i = 1; i <= argc; i++) {
         if (i == argc) {
-            if (!code_file_specified)
-                fatal_error("Error: no code file specified");
+            if (!code_file_specified) fatal_error("Error: no code file specified");
             execute(code_file);
             exit(0);
         }
@@ -19,8 +18,7 @@ int main(int argc, char *argv[]) {
                 debug_mode_activated = 1;
                 continue;
             }
-            if (code_file_specified)
-                debug(code_file);
+            if (code_file_specified) debug(code_file);
             debug_mode_activated = 1;
             continue;
         }
@@ -40,13 +38,11 @@ int main(int argc, char *argv[]) {
             printf("unknown command line argument '%s', try '%s --help'\n", argv[i], argv[0]);
             exit(1);
         }
-        if (code_file_specified)
-            fatal_error("Error: more than one code file specified");
+        if (code_file_specified) fatal_error("Error: more than one code file specified");
         code_file = argv[i];
         code_file_specified = 1;
         if (debug_mode_activated) {
-            if (i < argc - 1)
-                continue;
+            if (i < argc - 1) continue;
             debug(code_file);
         }
     }

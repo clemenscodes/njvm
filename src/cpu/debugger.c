@@ -91,16 +91,12 @@ void run(void) {
 }
 
 void set_breakpoint(void) {
-    if (vm.bp)
-        printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
-    else
-        printf("DEBUG [breakpoint]: cleared\n");
+    if (vm.bp) printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
+    else printf("DEBUG [breakpoint]: cleared\n");
     printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
     int bp;
-    if (!scanf("%i", &bp))
-        fatal_error("Error: failed to read integer");
-    if (bp < -1)
-        return;
+    if (!scanf("%i", &bp)) fatal_error("Error: failed to read integer");
+    if (bp < -1) return;
     if (bp == -1) {
         vm.bp = NULL;
         free(vm.bp);
@@ -108,8 +104,7 @@ void set_breakpoint(void) {
         return;
     }
     vm.bp = malloc(sizeof(int));
-    if (!vm.bp)
-        perror("(malloc)");
+    if (!vm.bp) perror("(malloc)");
     *vm.bp = bp;
     printf("DEBUG [breakpoint]: now set at %d\n", *vm.bp);
 }
