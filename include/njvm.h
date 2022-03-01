@@ -6,17 +6,15 @@
 #include <string.h>
 
 #include "debugger.h"
-#include "ir.h"
 #include "processor.h"
-#include "sda.h"
-#include "stack.h"
 #include "utils.h"
+#include "pc.h"
 
 typedef int StackPointer;
 typedef int FramePointer;
 typedef int *ReturnValueRegister;
 typedef int *Breakpoint;
-typedef int Object;
+typedef Immediate Object;
 typedef Object *ObjRef;
 
 typedef struct Stack {
@@ -27,9 +25,9 @@ typedef struct Stack {
 } Stack;
 
 typedef struct InstructionRegister {
-    int pc;
+    ProgramCounter pc;
     size_t size;
-    uint32_t *data;
+    Bytecode *data;
 } InstructionRegister;
 
 typedef struct StaticDataArea {

@@ -9,11 +9,12 @@
 #include "instruction.h"
 #include "njvm.h"
 #include "opcode.h"
+#include "pc.h"
 
 void initialize_ir(size_t instruction_count);
-void register_instruction(Opcode opcode, int immediate);
+void register_instruction(Opcode opcode, Immediate immediate);
 void free_ir(void);
-void print_instruction(int pc);
+void print_instruction(ProgramCounter pc);
 void print_ir(void);
 
 #endif

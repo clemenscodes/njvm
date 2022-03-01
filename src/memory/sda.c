@@ -1,6 +1,6 @@
 #include "sda.h"
 
-void initialize_sda(uint32_t variable_count) {
+void initialize_sda(size_t variable_count) {
     vm.sda.size = variable_count;
     vm.sda.data = calloc(vm.sda.size, sizeof(int));
     if (!vm.sda.data) {
@@ -9,12 +9,12 @@ void initialize_sda(uint32_t variable_count) {
     }
 }
 
-void push_global(int n) {
-    push(vm.sda.data[n]);
+void push_global(Immediate immediate) {
+    push(vm.sda.data[immediate]);
 }
 
-void pop_global(int n) {
-    vm.sda.data[n] = pop();
+void pop_global(Immediate immediate) {
+    vm.sda.data[immediate] = pop();
 }
 
 void free_sda(void) {

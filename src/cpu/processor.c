@@ -22,10 +22,10 @@ void work(void) {
     }
 }
 
-void execute_instruction(uint32_t bytecode) {
+void execute_instruction(Bytecode bytecode) {
     Instruction instruction = decode_instruction(bytecode);
     Opcode opcode = instruction.opcode;
-    int immediate = instruction.immediate;
+    Immediate immediate = instruction.immediate;
     switch (opcode) {
         case halt:
             halt_instruction();
@@ -136,7 +136,7 @@ void halt_instruction(void) {
     printf("Ninja Virtual Machine stopped\n");
 }
 
-void pushc_instruction(int immediate) {
+void pushc_instruction(Immediate immediate) {
     push(immediate);
 }
 
@@ -203,15 +203,15 @@ void wrint_instruction(void) {
     printf("%d", pop());
 }
 
-void pushg_instruction(int immediate) {
+void pushg_instruction(Immediate immediate) {
     push_global(immediate);
 }
 
-void popg_instruction(int immediate) {
+void popg_instruction(Immediate immediate) {
     pop_global(immediate);
 }
 
-void asf_instruction(int immediate) {
+void asf_instruction(Immediate immediate) {
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
@@ -229,11 +229,11 @@ void rsf_instruction(void) {
     vm.stack.fp = pop();
 }
 
-void pushl_instruction(int immediate) {
+void pushl_instruction(Immediate immediate) {
     push(vm.stack.data[vm.stack.fp + immediate]);
 }
 
-void popl_instruction(int immediate) {
+void popl_instruction(Immediate immediate) {
     vm.stack.data[vm.stack.fp + immediate] = vm.stack.data[vm.stack.sp - 1];
 }
 
@@ -297,23 +297,23 @@ void ge_instruction(void) {
     }
 }
 
-void jump_instruction(int immediate) {
+void jump_instruction(Immediate immediate) {
     vm.ir.pc = immediate;
 }
 
-void brf_instruction(int immediate) {
+void brf_instruction(Immediate immediate) {
     if (pop() == 0) {
         jump_instruction(immediate);
     }
 }
 
-void brt_instruction(int immediate) {
+void brt_instruction(Immediate immediate) {
     if (pop() == 1) {
         jump_instruction(immediate);
     }
 }
 
-void call_instruction(int immediate) {
+void call_instruction(Immediate immediate) {
     push(vm.ir.pc);
     vm.ir.pc = immediate;
 }
@@ -322,7 +322,7 @@ void ret_instruction(void) {
     vm.ir.pc = pop();
 }
 
-void drop_instruction(int immediate) {
+void drop_instruction(Immediate immediate) {
     int i;
     for (i = 0; i < immediate; i++) {
         pop();

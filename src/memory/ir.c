@@ -10,8 +10,8 @@ void initialize_ir(size_t instruction_count) {
     }
 }
 
-void register_instruction(Opcode opcode, int immediate) {
-    uint32_t instruction = encode_instruction(opcode, immediate);
+void register_instruction(Opcode opcode, Immediate immediate) {
+    Bytecode instruction = encode_instruction(opcode, immediate);
     vm.ir.data[vm.ir.pc] = instruction;
     vm.ir.pc++;
 }
@@ -26,10 +26,10 @@ void print_ir(void) {
     }
 }
 
-void print_instruction(int pc) {
+void print_instruction(ProgramCounter pc) {
     Instruction instruction = decode_instruction(vm.ir.data[pc]);
     Opcode opcode = instruction.opcode;
-    int immediate = instruction.immediate;
+    Immediate immediate = instruction.immediate;
     switch (opcode) {
         case halt:
             printf("%03d:\t", pc);

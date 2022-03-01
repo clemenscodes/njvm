@@ -7,7 +7,7 @@
 #include "njvm.h"
 
 void initialize_stack(void);
-void push(int immediate);
+void push(Immediate immediate);
 int pop(void);
 void print_stack(void);
 

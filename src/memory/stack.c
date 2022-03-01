@@ -6,7 +6,7 @@ void initialize_stack(void) {
     vm.stack.fp = 0;
 }
 
-void push(int immediate) {
+void push(Immediate immediate) {
     vm.stack.size++;
     vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
     vm.stack.data[vm.stack.sp] = immediate;
