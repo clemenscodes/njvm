@@ -14,11 +14,13 @@ void execute(char *arg) {
 }
 
 void work(void) {
-    while (1) {
-        Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Opcode opcode = decode_instruction(instruction).opcode;
+    while (opcode != HALT) {
+        instruction = vm.ir.data[vm.ir.pc];
+        opcode = decode_instruction(instruction).opcode;
         vm.ir.pc++;
         execute_instruction(instruction);
-        if (decode_instruction(instruction).opcode == HALT) exit(0);
     }
 }
 

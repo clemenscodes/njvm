@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
             if (!code_file_specified)
                 fatal_error("Error: no code file specified");
             execute(code_file);
+            exit(0);
         }
         if (!strcmp(argv[i], "--debug")) {
             if (i < argc - 1) {
