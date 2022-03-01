@@ -5,11 +5,10 @@ void debug(char *bin) {
     printf("DEBUG: file '%s' loaded (code size = %ld, data size = %ld)\n", bin, vm.ir.size, vm.sda.size);
     init();
     prompt();
-    exit(0);
 }
 
 void prompt(void) {
-    while (vm.ir.pc != vm.ir.size) {
+    while (1) {
         print_instruction(vm.ir.pc);
         printf("DEBUG: inspect, list, breakpoint, step, run, quit?\n");
         char *line = read_line();
@@ -77,7 +76,7 @@ void step(void) {
 }
 
 void run(void) {
-    while (vm.ir.pc != vm.ir.size) {
+    while (1) {
         if (vm.bp)
             if (*vm.bp == vm.ir.pc) {
                 vm.bp = NULL;
@@ -91,10 +90,10 @@ void run(void) {
 }
 
 void set_breakpoint(void) {
+    int bp;
     if (vm.bp) printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
     else printf("DEBUG [breakpoint]: cleared\n");
     printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
-    int bp;
     if (!scanf("%i", &bp)) fatal_error("Error: failed to read integer");
     if (bp < -1) return;
     if (bp == -1) {
