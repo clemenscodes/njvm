@@ -3,8 +3,10 @@
 #include <stddef.h>
 #include <cmocka.h>
 
+#include "opcode.h"
+
 static void test(void **state) {
-    assert_int_equal(2, 2);
+    assert_int_equal(HALT, 0);
 }
 
 int main() {

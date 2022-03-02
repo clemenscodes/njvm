@@ -2,7 +2,7 @@
 
 NinjaVM vm;
 
-int main(int argc, char *argv[]) {
+int njvm(int argc, char *argv[]) {
     int i,
         code_file_specified = 0,
         debug_mode_activated = 0;

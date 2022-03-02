@@ -54,4 +54,6 @@ typedef struct NinjaVM {
 
 extern NinjaVM vm;
 
+int njvm(int argc, char *argv[]);
+
 #endif
