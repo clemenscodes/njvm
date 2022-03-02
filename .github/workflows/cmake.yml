@@ -10,7 +10,7 @@ on:
 env:
   BUILD_TYPE: Release
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,10 +24,8 @@ jobs:
     - name: Package
       id: package
       run: |
-        PROJECT_NAME="njvm"
         PROJECT_VERSION="$(grep NINJA_BINARY_VERSION include/utils.h | tail -c2)"
-        PKG_SUFFIX=".tar.gz"
-        PKG_NAME="${PROJECT_NAME}-${PROJECT_VERSION}${PKG_SUFFIX}"
+        PKG_NAME="njvm_v${PROJECT_VERSION}.tar.gz"
         tar -C ${{github.workspace}}/build -czf "${PKG_NAME}" njvm
         echo ::set-output name=PKG_NAME::${PKG_NAME}
         echo ::set-output name=PKG_PATH::${PKG_NAME}
@@ -43,4 +41,3 @@ jobs:
         files: ${{ steps.package.outputs.PKG_PATH }}
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
