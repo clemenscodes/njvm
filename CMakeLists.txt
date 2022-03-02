@@ -16,9 +16,11 @@ include_directories(include)
 
 set(SOURCES 
     src/njvm.c 
-    src/cpu/processor.c 
     src/cpu/instruction.c 
+    src/cpu/processor.c 
     src/cpu/debugger.c 
+    src/cpu/opcode.c 
+    src/cpu/immediate.c 
     src/memory/ir.c 
     src/memory/stack.c
     src/memory/sda.c
@@ -50,10 +52,7 @@ set(TEST_HEADERS
 
 add_library(njvm_lib STATIC ${SOURCES})
 
-add_executable(
-    njvm 
-    src/main.c 
-)
+add_executable(njvm src/main.c)
 
 target_link_libraries(njvm njvm_lib)
 

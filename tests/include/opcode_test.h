@@ -4,7 +4,7 @@
 #include "cmocka.h"
 #include "opcode.h"
 
-void test_halt(void **state);
-void test_pushc(void **state);
+void test_encode_opcode(void **state);
+void test_decode_opcode(void **state);
 
 #endif

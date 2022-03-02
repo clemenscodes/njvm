@@ -5,6 +5,7 @@
 
 #include "njvm.h"
 #include "utils.h"
+#include "opcode.h"
 #include "processor.h"
 
 void debug(char *bin);

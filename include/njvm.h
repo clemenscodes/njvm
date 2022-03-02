@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "debugger.h"
+#include "immediate.h"
+#include "opcode.h"
 #include "pc.h"
 #include "processor.h"
 #include "utils.h"

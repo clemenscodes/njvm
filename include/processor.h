@@ -7,6 +7,7 @@
 
 #include "instruction.h"
 #include "ir.h"
+#include "opcode.h"
 #include "njvm.h"
 #include "sda.h"
 #include "stack.h"

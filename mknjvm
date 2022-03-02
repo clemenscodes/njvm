@@ -3,5 +3,5 @@
 cmake -B build
 make -C build
 cd build || exit
-ctest
+ctest --verbose
 cp njvm ../njvm
