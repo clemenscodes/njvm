@@ -6,7 +6,8 @@ SET="\\033[0m"
 VERSION="$(grep NINJA_BINARY_VERSION include/utils.h | tail -c2)"
 TEST_DIR="data/v$VERSION"
 REFERENCE_NJVM="$TEST_DIR/njvm"
-BUILD_NJVM="./njvm"
+BUILD_NJVM="build/njvm"
+FAIL_FLAG=false
 
 red() {
     printf "$RED%s$SET" "$1"
@@ -17,7 +18,7 @@ green() {
 }
 
 for bin in "$TEST_DIR"/*.bin; do
-    printf "Testing %s [" "$bin"
+    printf "Testing %s " "$bin"
     TEST=$(echo "$bin" | awk -F '.' '{print $1}')
     STDIN="$(cat "$TEST".in)"
     BUILD="$(echo "$STDIN" | $BUILD_NJVM "$bin")"
@@ -28,10 +29,18 @@ for bin in "$TEST_DIR"/*.bin; do
     echo "$REFERENCE" > "$REFERENCE_OUT"
     if diff "$BUILD_OUT" "$REFERENCE_OUT"
     then
+        printf "["
         green "OK" 
         printf "]\\n"
     else
+        FAIL_FLAG=true
+        printf "["
         red "FAILED" 
         printf "]\\n"
     fi
 done
+
+if [ $FAIL_FLAG = true ]
+then
+    exit 1
+fi
