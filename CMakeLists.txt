@@ -29,6 +29,11 @@ set(TESTS
     tests/test.c
     tests/opcode_test.c 
     tests/instruction_test.c 
+    tests/ir_test.c 
+    tests/stack_test.c 
+    tests/processor_test.c 
+    tests/sda_test.c 
+    tests/utils_test.c 
 )
 
 add_library(njvm_lib SHARED ${SOURCES})
@@ -46,4 +51,4 @@ add_executable(tests ${TESTS})
 
 target_link_libraries(tests PRIVATE njvm_lib cmocka-static)
 
-add_test(Test tests)
+add_test(UnitTests tests)
