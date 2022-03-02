@@ -48,7 +48,7 @@ set(TEST_HEADERS
     tests/include/utils_test.h
 )
 
-add_library(njvm_lib SHARED ${SOURCES})
+add_library(njvm_lib STATIC ${SOURCES})
 
 add_executable(
     njvm 
