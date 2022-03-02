@@ -1,6 +1,11 @@
 #ifndef _OPCODE_H
 #define _OPCODE_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "bytecode.h"
+
 #define HALT 0
 #define PUSHC 1
 #define ADD 2
@@ -68,5 +73,9 @@ typedef enum Opcode {
     popr = POPR,
     dup = DUP,
 } Opcode;
+
+Bytecode encode_opcode(Opcode opcode);
+Opcode decode_opcode(Bytecode bytecode);
+
 
 #endif

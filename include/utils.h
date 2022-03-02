@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "instruction.h"
+#include "bytecode.h"
 #include "njvm.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
