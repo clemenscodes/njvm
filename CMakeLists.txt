@@ -26,7 +26,7 @@ set(SOURCES
 )
 
 set(TESTS
-    test/test.c 
+    tests/test.c 
 )
 
 add_library(njvm_lib SHARED ${SOURCES})
