@@ -6,7 +6,7 @@ Bytecode encode_opcode(Opcode opcode) {
 
 Opcode decode_opcode(Bytecode bytecode) {
     Opcode opcode;
-    int shifted_bytecode = bytecode >> 24;
+    Bytecode shifted_bytecode = bytecode >> 24;
     switch (shifted_bytecode) {
         case 0:
             opcode = halt;
@@ -109,4 +109,5 @@ Opcode decode_opcode(Bytecode bytecode) {
             fprintf(stderr, "Unknown opcode %d\n", opcode);
             exit(1);
     }
+    return opcode;
 }
