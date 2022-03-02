@@ -1,19 +1,11 @@
-#include <stdarg.h>
-#include <setjmp.h>
-#include <stddef.h>
-#include <cmocka.h>
-
-#include "opcode.h"
-
-static void test(void **state) {
-    assert_int_equal(HALT, 0);
-}
+#include "test.h"
 
 int main() {
-    const struct CMUnitTest tests[] =
-        {
-            cmocka_unit_test(test),
-        };
-
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(test_halt),
+        cmocka_unit_test(test_pushc),
+        cmocka_unit_test(test_encode_instruction),
+        cmocka_unit_test(test_decode_instruction),
+    };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
