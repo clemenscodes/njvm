@@ -14,8 +14,7 @@ add_compile_options(-g -Wall -pedantic)
 
 include_directories(include)
 
-add_executable(
-    njvm 
+set(SOURCES 
     src/njvm.c 
     src/cpu/processor.c 
     src/cpu/instruction.c 
@@ -26,10 +25,23 @@ add_executable(
     src/utils/utils.c
 )
 
+set(TESTS
+    test/test.c 
+)
+
+add_library(njvm_lib SHARED ${SOURCES})
+
+add_executable(
+    njvm 
+    src/main.c 
+)
+
+target_link_libraries(njvm njvm_lib)
+
 enable_testing()
 
-add_executable(tests test/test.c)
+add_executable(tests ${TESTS})
 
-target_link_libraries(tests PRIVATE cmocka-static)
+target_link_libraries(tests PRIVATE njvm_lib cmocka-static)
 
 add_test(Test tests)
