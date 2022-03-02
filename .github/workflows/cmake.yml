@@ -18,9 +18,12 @@ jobs:
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-    - name: Test
+    - name: Unit Tests
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}} --verbose
+    - name: Integration Tests
+      working-directory: ${{github.workspace}}
+      run: scripts/tests.sh
     - name: Package
       id: package
       run: |
