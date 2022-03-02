@@ -19,6 +19,6 @@ void free_sda(void) {
 }
 
 void print_sda(void) {
-    for (int i = 0; i < vm.sda.size; i++)
-        printf("data[%04u]:\t[%d]\n", i, vm.sda.data[i]);
+    if (!vm.sda.size) printf("data[%04u]:\t[empty]\n", 0);
+    for (int i = 0; i < vm.sda.size; i++) printf("data[%04u]:\t[%d]\n", i, vm.sda.data[i]);
 }

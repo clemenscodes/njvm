@@ -17,5 +17,3 @@ Instruction decode_instruction(Bytecode bytecode) {
     instruction.immediate = SIGN_EXTEND(IMMEDIATE(bytecode));
     return instruction;
 }
-
-
