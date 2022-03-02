@@ -1,4 +1,4 @@
-#include "instruction_test.h"
+#include "include/instruction_test.h"
 
 void test_encode_instruction(void **state) {
     assert_int_equal(0, 0);

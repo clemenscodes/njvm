@@ -1,4 +1,4 @@
-#include "test.h"
+#include "include/test.h"
 
 int main() {
     const struct CMUnitTest tests[] = {

@@ -1,4 +1,4 @@
-#include "opcode_test.h"
+#include "include/opcode_test.h"
 
 void test_halt(void **state) {
     assert_int_equal(HALT, 0);

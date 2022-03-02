@@ -36,6 +36,18 @@ set(TESTS
     tests/utils_test.c 
 )
 
+set(TEST_HEADERS
+    tests/include/cmocka.h
+    tests/include/test.h
+    tests/include/opcode_test.h
+    tests/include/instruction_test.h
+    tests/include/ir_test.h
+    tests/include/stack_test.h
+    tests/include/processor_test.h
+    tests/include/sda_test.h
+    tests/include/utils_test.h
+)
+
 add_library(njvm_lib SHARED ${SOURCES})
 
 add_executable(
@@ -47,7 +59,7 @@ target_link_libraries(njvm njvm_lib)
 
 enable_testing()
 
-add_executable(tests ${TESTS})
+add_executable(tests ${TESTS} ${TEST_HEADERS})
 
 target_link_libraries(tests PRIVATE njvm_lib cmocka-static)
 
