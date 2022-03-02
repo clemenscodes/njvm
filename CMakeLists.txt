@@ -20,6 +20,7 @@ set(SOURCES
     src/cpu/processor.c 
     src/cpu/debugger.c 
     src/cpu/opcode.c 
+    src/cpu/immediate.c 
     src/memory/ir.c 
     src/memory/stack.c
     src/memory/sda.c
