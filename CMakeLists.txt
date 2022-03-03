@@ -25,6 +25,7 @@ set(SOURCES
     src/memory/stack.c
     src/memory/sda.c
     src/utils/utils.c
+    src/utils/support.c
 )
 
 set(TESTS

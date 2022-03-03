@@ -7,7 +7,7 @@ void initialize_stack() {
 }
 
 void push(Immediate immediate) {
-    if (vm.stack.size >= MAX_ITEMS) fatal_error("Error: stack overflow");
+    if (vm.stack.size >= MAX_ITEMS) fatalError("Error: stack overflow");
     vm.stack.size++;
     vm.stack.data[vm.stack.sp].is_obj_ref = false;
     vm.stack.data[vm.stack.sp].u.value = immediate;
@@ -15,7 +15,7 @@ void push(Immediate immediate) {
 }
 
 void push_obj_ref(ObjRef obj_ref) {
-    if (vm.stack.size >= MAX_ITEMS) fatal_error("Error: stack overflow");
+    if (vm.stack.size >= MAX_ITEMS) fatalError("Error: stack overflow");
     vm.stack.size++;
     vm.stack.data[vm.stack.sp].is_obj_ref = true;
     vm.stack.data[vm.stack.sp].u.obj_ref = obj_ref;
@@ -23,18 +23,18 @@ void push_obj_ref(ObjRef obj_ref) {
 }
 
 Immediate pop(void) {
-    if (!vm.stack.sp) fatal_error("Stack underflow: popped from empty stack");
+    if (!vm.stack.sp) fatalError("Stack underflow: popped from empty stack");
     vm.stack.sp--;
     vm.stack.size--;
-    if (vm.stack.data[vm.stack.sp].is_obj_ref) fatal_error("Error: slot is obj_ref");
+    if (vm.stack.data[vm.stack.sp].is_obj_ref) fatalError("Error: slot is obj_ref");
     return vm.stack.data[vm.stack.sp].u.value;
 }
 
 ObjRef pop_obj_ref(void) {
-    if (!vm.stack.sp) fatal_error("Stack underflow: popped from empty stack");
+    if (!vm.stack.sp) fatalError("Stack underflow: popped from empty stack");
     vm.stack.sp--;
     vm.stack.size--;
-    if (!vm.stack.data[vm.stack.sp].is_obj_ref) fatal_error("Error: slot is not obj_ref");
+    if (!vm.stack.data[vm.stack.sp].is_obj_ref) fatalError("Error: slot is not obj_ref");
     return vm.stack.data[vm.stack.sp].u.obj_ref;
 }
 

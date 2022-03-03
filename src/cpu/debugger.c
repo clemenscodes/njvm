@@ -92,7 +92,7 @@ void set_breakpoint(void) {
     if (vm.bp) printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
     else printf("DEBUG [breakpoint]: cleared\n");
     printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
-    if (!scanf("%i", &bp)) fatal_error("Error: failed to read integer");
+    if (!scanf("%i", &bp)) fatalError("Error: failed to read integer");
     if (bp < -1) return;
     if (bp == -1) {
         vm.bp = NULL;

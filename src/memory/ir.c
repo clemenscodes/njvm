@@ -123,7 +123,7 @@ void print_instruction(ProgramCounter pc) {
             printf("%03d:\tdup\n", pc);
             break;
         default:
-            printf("Unknown opcode %d\n", opcode);
+            fatalError("Unknown opcode");
             break;
     }
 }

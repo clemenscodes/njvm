@@ -168,7 +168,7 @@ void div_instruction(void) {
     ObjRef b = pop_obj_ref();
     ObjRef a = pop_obj_ref();
     ObjRef c = new_obj_ref(sizeof(Immediate));
-    if (!*(Immediate *)b->data) fatal_error("Error: Division by zero");
+    if (!*(Immediate *)b->data) fatalError("Error: Division by zero");
     *(Immediate *)c->data = *(Immediate *)a->data / *(Immediate *)b->data;
     push_obj_ref(c);
 }
@@ -177,14 +177,14 @@ void mod_instruction(void) {
     ObjRef b = pop_obj_ref();
     ObjRef a = pop_obj_ref();
     ObjRef c = new_obj_ref(sizeof(Immediate));
-    if (!*(Immediate *)b->data) fatal_error("Error: Division by zero");
+    if (!*(Immediate *)b->data) fatalError("Error: Division by zero");
     *(Immediate *)c->data = *(Immediate *)a->data % *(Immediate *)b->data;
     push_obj_ref(c);
 }
 
 void rdint_instruction(void) {
     int read_integer;
-    if (!scanf("%d", &read_integer)) fatal_error("Error: failed to read integer");
+    if (!scanf("%d", &read_integer)) fatalError("Error: failed to read integer");
     ObjRef c = new_obj_ref(sizeof(Immediate));
     *(Immediate *)c->data = read_integer;
     push_obj_ref(c);
@@ -196,7 +196,7 @@ void wrint_instruction(void) {
 
 void rdchr_instruction(void) {
     char read_character;
-    if (!scanf("%c", &read_character)) fatal_error("Error: failed to read character");
+    if (!scanf("%c", &read_character)) fatalError("Error: failed to read character");
     ObjRef c = new_obj_ref(sizeof(unsigned char));
     *(char *)c->data = read_character;
     push_obj_ref(c);
@@ -215,8 +215,8 @@ void popg_instruction(Immediate immediate) {
 }
 
 void asf_instruction(Immediate immediate) {
-    if ((vm.stack.size + immediate) >= MAX_ITEMS) fatal_error("Error: stack overflow");
-    if (immediate < 0) fatal_error("Error: negative immediate for asf");
+    if ((vm.stack.size + immediate) >= MAX_ITEMS) fatalError("Error: stack overflow");
+    if (immediate < 0) fatalError("Error: negative immediate for asf");
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
@@ -317,7 +317,7 @@ void drop_instruction(Immediate immediate) {
 
 void pushr_instruction(void) {
     if (vm.rv) push_obj_ref(vm.rv);
-    else fatal_error("Error: no value in return value register");
+    else fatalError("Error: no value in return value register");
 }
 
 void popr_instruction(void) {
