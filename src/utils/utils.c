@@ -88,13 +88,3 @@ char *read_line(void) {
     }
     return line;
 }
-
-
-
-ObjRef new_obj_ref(uint32_t size) {
-    ObjRef obj_ref;
-    obj_ref = malloc(size + sizeof(Immediate));
-    if (!obj_ref) fatalError("Error: failed to allocate memory for obj_ref");
-    obj_ref->size = size;
-    return obj_ref;
-}
