@@ -6,7 +6,7 @@ void initialize_stack(uint32_t bytes) {
     if (!vm.stack.data && vm.stack.size) perror("calloc(vm.stack.data)");
 }
 
-void push(Immediate immediate, bool is_obj_ref) {
+void push(Immediate immediate) {
     if (vm.stack.size >= MAX_ITEMS) fatal_error("Error: stack overflow");
     vm.stack.size++;
     vm.stack.data[vm.stack.sp].is_obj_ref = false;
