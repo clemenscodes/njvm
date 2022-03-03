@@ -6,8 +6,8 @@
 #include <malloc.h>
 
 #include "njvm.h"
+#include "objref.h"
 
-#define MAX_ITEMS 10000
 
 void initialize_stack(uint32_t bytes);
 void push(Immediate immediate);

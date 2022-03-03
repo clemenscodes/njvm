@@ -7,6 +7,7 @@
 
 #include "instruction.h"
 #include "bytecode.h"
+#include "objref.h"
 #include "njvm.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
@@ -23,6 +24,7 @@ size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
 char *read_line(void);
 void fatal_error(char *error_message);
+ObjRef new_obj_ref(uint32_t bytes);
 
 #endif
  
