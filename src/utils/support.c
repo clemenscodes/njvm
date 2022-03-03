@@ -1,5 +1,4 @@
 #include "../lib/build/include/support.h"
-
 #include "../lib/build/include/bigint.h"
 #include "utils.h"
 

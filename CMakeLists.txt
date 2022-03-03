@@ -6,6 +6,8 @@ set(CMAKE_C_STANDARD 99)
 
 set(CMAKE_BUILD_TYPE Release)
 
+set(BIGINT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/lib/build/lib/libbigint.a)
+
 project(njvm C)
 
 include(cmake/FetchCMocka.cmake)
@@ -51,13 +53,21 @@ set(TEST_HEADERS
     tests/include/utils_test.h
 )
 
-add_custom_target(bigint COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+add_custom_target(libbigint COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 add_library(njvm_lib STATIC ${SOURCES})
 
+add_library(bigint STATIC IMPORTED)
+
+set_property(TARGET bigint APPEND PROPERTY IMPORTED_CONFIGURATIONS NOCONFIG)
+
+set_target_properties(bigint PROPERTIES IMPORTED_LOCATION_NOCONFIG ${BIGINT_LIBRARY})
+
+add_dependencies(bigint libbigint)
+
 add_dependencies(njvm_lib bigint)
 
-include_directories(../lib/build/include)
+target_link_libraries(njvm_lib bigint)
 
 add_executable(njvm src/main.c)
 

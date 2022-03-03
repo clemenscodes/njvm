@@ -135,9 +135,8 @@ void halt_instruction(void) {
 }
 
 void pushc_instruction(Immediate immediate) {
-    ObjRef obj_ref = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)obj_ref->data = immediate;
-    push_obj_ref(obj_ref);
+    bigFromInt(immediate);
+    push_obj_ref(bip.res);
 }
 
 void add_instruction(void) {

@@ -13,6 +13,7 @@
 #include "stack.h"
 #include "utils.h"
 #include "../lib/build/include/bigint.h"
+#include "../lib/build/include/support.h"
 
 void init(void);
 void execute(char *file_name);
