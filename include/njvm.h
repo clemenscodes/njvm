@@ -19,19 +19,21 @@ typedef int FramePointer;
 typedef int *ReturnValueRegister;
 typedef int *Breakpoint;
 
-typedef struct StackSlot {
-    bool is_obj_ref;
-    union {
+typedef union {
         ObjRef obj_ref;
         Immediate value;
-    } slot;
+} StackValue;
+
+typedef struct StackSlot {
+    bool is_obj_ref;
+    StackValue u;
 } StackSlot;
 
 typedef struct Stack {
     StackPointer sp;
     FramePointer fp;
     size_t size;
-    Immediate *data;
+    StackSlot data;
 } Stack;
 
 typedef struct InstructionRegister {
@@ -42,7 +44,7 @@ typedef struct InstructionRegister {
 
 typedef struct StaticDataArea {
     size_t size;
-    Immediate *data;
+    ObjRef data;
 } StaticDataArea;
 
 typedef struct NinjaVM {
@@ -50,7 +52,7 @@ typedef struct NinjaVM {
     StaticDataArea sda;
     InstructionRegister ir;
     Breakpoint bp;
-    ReturnValueRegister rv;
+    ObjRef rv;
 } NinjaVM;
 
 extern NinjaVM vm;

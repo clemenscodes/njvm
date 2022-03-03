@@ -7,11 +7,11 @@ void initialize_sda(size_t variable_count) {
 }
 
 void push_global(Immediate immediate) {
-    push(vm.sda.data[immediate]);
+    pushObjRef(vm.sda.data[immediate]);
 }
 
 void pop_global(Immediate immediate) {
-    vm.sda.data[immediate] = pop();
+    vm.sda.data[immediate] = popObjRef();
 }
 
 void free_sda(void) {
@@ -20,5 +20,5 @@ void free_sda(void) {
 
 void print_sda(void) {
     if (!vm.sda.size) printf("data[%04u]:\t[empty]\n", 0);
-    for (int i = 0; i < vm.sda.size; i++) printf("data[%04u]:\t[%d]\n", i, vm.sda.data[i]);
+    for (int i = 0; i < vm.sda.size; i++) printf("data[%04u]:\t[%p]\n", i, vm.sda.data[i]);
 }

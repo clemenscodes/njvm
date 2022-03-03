@@ -7,7 +7,9 @@
 
 #include "njvm.h"
 
-void initialize_stack(void);
+#define MAX_ITEMS 10000
+
+void initialize_stack(uint32_t bytes);
 void push(Immediate immediate);
 Immediate pop(void);
 void free_stack(void);
