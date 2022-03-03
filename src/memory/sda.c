@@ -2,7 +2,7 @@
 
 void initialize_sda(size_t variable_count) {
     vm.sda.size = variable_count;
-    vm.sda.data = calloc(vm.sda.size, sizeof(Immediate));
+    vm.sda.data = calloc(vm.sda.size, sizeof(ObjRef));
     if (!vm.sda.data) perror("malloc(vm.sda.data)");
 }
 

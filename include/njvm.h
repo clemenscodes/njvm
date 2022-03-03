@@ -12,13 +12,12 @@
 #include "pc.h"
 #include "processor.h"
 #include "utils.h"
+#include "objref.h"
 
 typedef int StackPointer;
 typedef int FramePointer;
 typedef int *ReturnValueRegister;
 typedef int *Breakpoint;
-typedef Immediate Object;
-typedef Object *ObjRef;
 
 typedef struct StackSlot {
     bool is_obj_ref;
@@ -32,7 +31,7 @@ typedef struct Stack {
     StackPointer sp;
     FramePointer fp;
     size_t size;
-    ObjRef data;
+    Immediate *data;
 } Stack;
 
 typedef struct InstructionRegister {
@@ -43,7 +42,7 @@ typedef struct InstructionRegister {
 
 typedef struct StaticDataArea {
     size_t size;
-    ObjRef data;
+    Immediate *data;
 } StaticDataArea;
 
 typedef struct NinjaVM {

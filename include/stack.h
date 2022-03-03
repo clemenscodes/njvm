@@ -1,8 +1,9 @@
 #ifndef _STACK_H
 #define _STACK_H
 
+#include <malloc.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <malloc.h>
 
 #include "njvm.h"
 

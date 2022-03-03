@@ -7,11 +7,20 @@ void initialize_stack(void) {
 }
 
 void push(Immediate immediate) {
+    // ObjRef int_obj;
+    // uint32_t obj_size = sizeof(uint32_t) + sizeof(Immediate);
+    // int_obj = malloc(obj_size);
+    // if (!int_obj) perror("malloc(int_obj)");
+    // int_obj->size = sizeof(Immediate);
+    // *(Immediate *)int_obj->data = immediate;
     vm.stack.size++;
-    vm.stack.data = realloc(vm.stack.data, (vm.stack.size) * sizeof(int));
+    vm.stack.data = realloc(vm.stack.data, vm.stack.size * sizeof(int));
     if (!vm.stack.data && vm.stack.size) perror("realloc(vm.stack.data)");
     vm.stack.data[vm.stack.sp] = immediate;
     vm.stack.sp++;
+    // size_t allocated_memory = malloc_usable_size(vm.stack.data);
+    // printf("The stack has size %ld and now %ld alloacated bytes of memory\n", vm.stack.size, allocated_memory);
+    // print_stack();
 }
 
 Immediate pop(void) {
