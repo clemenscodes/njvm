@@ -8,8 +8,7 @@
 #include "njvm.h"
 #include "objref.h"
 
-
-void initialize_stack(uint32_t bytes);
+void initialize_stack(void);
 void push(Immediate immediate);
 void push_obj_ref(ObjRef obj_ref);
 Immediate pop(void);

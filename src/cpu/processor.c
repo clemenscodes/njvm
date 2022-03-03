@@ -2,6 +2,7 @@
 
 void init(void) {
     printf("Ninja Virtual Machine started\n");
+    initialize_stack();
 }
 
 void execute(char *arg) {

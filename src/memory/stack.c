@@ -1,8 +1,8 @@
 #include "stack.h"
 
-void initialize_stack(uint32_t bytes) {
+void initialize_stack() {
     vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
-    vm.stack.data = calloc(bytes, sizeof(unsigned char));
+    vm.stack.data = calloc(MAX_ITEMS, sizeof(StackSlot));
     if (!vm.stack.data && vm.stack.size) perror("calloc(vm.stack.data)");
 }
 
@@ -51,15 +51,15 @@ void print_stack(void) {
             printf("sp, fp --->\t%04d:\txxxx\n", i);
         else if (sp == fp) {
             if (slot.is_obj_ref)
-                printf("sp, fp --->\t%04d: (%s) \t%p\n", i, type, (void *)vm.stack.data[i].u.obj_ref);
+                printf("sp, fp --->\t%04d: (%s) \t%p\n", i, type, (void *)slot.u.obj_ref);
             else
-                printf("sp, fp --->\t%04d: (%s) \t%d\n", i, type, vm.stack.data[i].u.value);
+                printf("sp, fp --->\t%04d: (%s) \t%d\n", i, type, slot.u.value);
         }
         if (i != sp && i != fp) {
             if (slot.is_obj_ref)
-                printf("\t\t%04d: (%s) \t%p\n", i, type, (void *)vm.stack.data[i].u.obj_ref);
+                printf("\t\t%04d: (%s) \t%p\n", i, type, (void *)slot.u.obj_ref);
             else
-                printf("\t\t%04d: (%s) \t%d\n", i, type, vm.stack.data[i].u.value);
+                printf("\t\t%04d: (%s) \t%d\n", i, type, slot.u.value);
         }
         if (i == sp && i != fp) printf("sp \t --->\t%04d:\txxxx\n", sp);
         if (i == fp && i != sp && fp == 0) {
