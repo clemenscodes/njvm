@@ -316,11 +316,8 @@ void drop_instruction(Immediate immediate) {
 }
 
 void pushr_instruction(void) {
-    if (vm.rv) {
-        push_obj_ref(vm.rv);
-        free(vm.rv);
-    } else
-        fatal_error("Error: no value in return value register");
+    if (vm.rv) push_obj_ref(vm.rv);
+    else fatal_error("Error: no value in return value register");
 }
 
 void popr_instruction(void) {

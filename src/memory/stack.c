@@ -43,34 +43,46 @@ void free_stack(void) {
 }
 
 void print_stack(void) {
-    int i, sp = vm.stack.sp, fp = vm.stack.fp;
-    for (i = sp; i >= 0; i--) {
+    int sp = vm.stack.sp, fp = vm.stack.fp;
+    for (int i = sp; i >= 0; i--) {
         StackSlot slot = vm.stack.data[i];
         char *type = slot.is_obj_ref ? "objref\0" : "number\0";
         if (!sp && !fp)
             printf("sp, fp --->\t%04d:\txxxx\n", i);
-        else if (sp == fp) {
+        else if (i == sp && i == fp) {
             if (slot.is_obj_ref)
-                printf("sp, fp --->\t%04d: (%s) \t%p\n", i, type, (void *)slot.u.obj_ref);
+                if (slot.u.obj_ref)
+                    printf("sp, fp --->\t%04d: (%s) \t%p [%d]\n", i, type, (void *)slot.u.obj_ref, *(Immediate *)slot.u.obj_ref->data);
+                else
+                    printf("sp, fp --->\t%04d: (%s) \t%p\n", i, type, (void *)slot.u.obj_ref);
             else
                 printf("sp, fp --->\t%04d: (%s) \t%d\n", i, type, slot.u.value);
         }
         if (i != sp && i != fp) {
             if (slot.is_obj_ref)
-                printf("\t\t%04d: (%s) \t%p\n", i, type, (void *)slot.u.obj_ref);
+                if (slot.u.obj_ref)
+                    printf("\t\t%04d: (%s) \t%p [%d]\n", i, type, (void *)slot.u.obj_ref, *(Immediate *)slot.u.obj_ref->data);
+                else
+                    printf("\t\t%04d: (%s) \t%p\n", i, type, (void *)slot.u.obj_ref);
             else
                 printf("\t\t%04d: (%s) \t%d\n", i, type, slot.u.value);
         }
         if (i == sp && i != fp) printf("sp \t --->\t%04d:\txxxx\n", sp);
         if (i == fp && i != sp && fp == 0) {
             if (slot.is_obj_ref)
-                printf("fp \t --->\t%04d: (%s) \t%p\n", fp, type, (void *)vm.stack.data[fp].u.obj_ref);
+                if (slot.u.obj_ref)
+                    printf("fp \t --->\t%04d: (%s) \t%p [%d]\n", fp, type, (void *)vm.stack.data[fp].u.obj_ref, *(Immediate *)vm.stack.data[fp].u.obj_ref->data);
+                else
+                    printf("fp \t --->\t%04d: (%s) \t%p\n", fp, type, (void *)vm.stack.data[fp].u.obj_ref);
             else
                 printf("fp \t --->\t%04d: (%s) \t%d\n", fp, type, vm.stack.data[fp].u.value);
         }
         if (i == fp && i != sp && fp != 0) {
             if (slot.is_obj_ref)
-                printf("fp \t --->\t%04d: (%s) \t%p\n", fp, type, (void *)vm.stack.data[fp].u.obj_ref);
+                if (slot.u.obj_ref)
+                    printf("fp \t --->\t%04d: (%s) \t%p [%d]\n", fp, type, (void *)vm.stack.data[fp].u.obj_ref, *(Immediate *)vm.stack.data[fp].u.obj_ref->data);
+                else
+                    printf("fp \t --->\t%04d: (%s) \t%p\n", fp, type, (void *)vm.stack.data[fp].u.obj_ref);
             else
                 printf("fp \t --->\t%04d: (%s) \t%d\n", fp, type, vm.stack.data[fp].u.value);
         }

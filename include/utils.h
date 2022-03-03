@@ -11,7 +11,7 @@
 #include "njvm.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
-#define NINJA_BINARY_VERSION 0x00000004
+#define NINJA_BINARY_VERSION 0x00000005
 
 FILE *open_file(char *file_name);
 void read_file(char *file_name);
