@@ -1,7 +1,10 @@
 #!/bin/sh
 
-cmake -B build
-make -C build
-cd build || exit
-ctest --verbose
+cmake -B build &&
+make -C build && 
+cd build || exit &&
+ctest --verbose &&
+# cd .. || exit
+# scripts/tests.sh
+# cp build/njvm njvm
 cp njvm ../njvm

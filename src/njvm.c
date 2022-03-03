@@ -3,9 +3,7 @@
 NinjaVM vm;
 
 int njvm(int argc, char *argv[]) {
-    int i,
-        code_file_specified = 0,
-        debug_mode_activated = 0;
+    int i, code_file_specified = 0, debug_mode_activated = 0;
     char *code_file = NULL;
     for (i = 1; i <= argc; i++) {
         if (i == argc) {

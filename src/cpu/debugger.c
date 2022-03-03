@@ -60,8 +60,6 @@ void prompt(void) {
             case 'q':
                 free(line);
                 halt_instruction();
-                exit(0);
-                continue;
             default:
                 free(line);
                 continue;

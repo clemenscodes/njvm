@@ -93,3 +93,11 @@ void fatal_error(char *error_message) {
     fprintf(stderr, "%s\n", error_message);
     exit(1);
 }
+
+ObjRef new_obj_ref(uint32_t size) {
+    ObjRef obj_ref;
+    obj_ref = malloc(size + sizeof(Immediate));
+    if (!obj_ref) fatal_error("Error: failed to allocate memory for obj_ref");
+    obj_ref->size = size;
+    return obj_ref;
+}

@@ -8,7 +8,7 @@ TEST_DIR="data/v$VERSION"
 REFERENCE_NJVM="$TEST_DIR/njvm"
 BUILD_NJVM="build/njvm"
 FAIL_FLAG=false
-LEAK_FLAG=false
+# LEAK_FLAG=false
 
 red() {
     printf "$RED%s$SET" "$1"
@@ -24,9 +24,11 @@ for bin in "$TEST_DIR"/*.bin; do
     STDIN="$(cat "$TEST".in)"
     VALGRIND_LOG_FILE="$TEST.valgrind.out"
     echo > "$VALGRIND_LOG_FILE"
-    VALGRIND="valgrind --log-file=$VALGRIND_LOG_FILE"
-    BUILD="$(echo "$STDIN" | $VALGRIND "$BUILD_NJVM" "$bin")"
-    REFERENCE="$(echo "$STDIN" | "$REFERENCE_NJVM" "$bin")"
+    VALGRIND="valgrind --leak-check=full --show-leak-kinds=all -s --log-file=$VALGRIND_LOG_FILE"
+    EXEC_BUILD="$VALGRIND $BUILD_NJVM $bin"
+    EXEC_REFERENCE="$REFERENCE_NJVM $bin"
+    BUILD="$(echo "$STDIN" | $EXEC_BUILD)"
+    REFERENCE="$(echo "$STDIN" | $EXEC_REFERENCE)"
     BUILD_OUT="$TEST.build.out"
     REFERENCE_OUT="$TEST.target.out"
     echo "$BUILD" > "$BUILD_OUT"
@@ -36,8 +38,8 @@ for bin in "$TEST_DIR"/*.bin; do
         printf "["
         green "OK" 
         printf "]"
-        grep -q "All heap blocks were freed" "$VALGRIND_LOG_FILE" || 
-            { red " LEAKS MEMORY!" && LEAK_FLAG=true; }
+        grep -q "All heap blocks were freed" "$VALGRIND_LOG_FILE" || red " LEAKS MEMORY!"
+            # { red " LEAKS MEMORY!" && LEAK_FLAG=true; }
         printf "\\n"
     else
         FAIL_FLAG=true
@@ -47,7 +49,7 @@ for bin in "$TEST_DIR"/*.bin; do
     fi
 done
 
-if [ $FAIL_FLAG = true ] || [ $LEAK_FLAG = true ]
+if [ $FAIL_FLAG = true ] #|| [ $LEAK_FLAG = true ]
 then
     exit 1
 fi

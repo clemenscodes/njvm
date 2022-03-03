@@ -2,16 +2,16 @@
 
 void initialize_sda(size_t variable_count) {
     vm.sda.size = variable_count;
-    vm.sda.data = calloc(vm.sda.size, sizeof(Immediate));
+    vm.sda.data = calloc(vm.sda.size, sizeof(ObjRef));
     if (!vm.sda.data) perror("malloc(vm.sda.data)");
 }
 
 void push_global(Immediate immediate) {
-    push(vm.sda.data[immediate]);
+    push_obj_ref(vm.sda.data[immediate]);
 }
 
 void pop_global(Immediate immediate) {
-    vm.sda.data[immediate] = pop();
+    vm.sda.data[immediate] = pop_obj_ref();
 }
 
 void free_sda(void) {
@@ -19,6 +19,6 @@ void free_sda(void) {
 }
 
 void print_sda(void) {
-    for (int i = 0; i < vm.sda.size; i++)
-        printf("data[%04u]:\t[%d]\n", i, vm.sda.data[i]);
+    if (!vm.sda.size) printf("data[%04u]:\t[empty]\n", 0);
+    for (int i = 0; i < vm.sda.size; i++) printf("data[%04u]:\t[%p]\n", i, (void *)vm.sda.data[i]);
 }
