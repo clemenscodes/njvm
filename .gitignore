@@ -54,3 +54,4 @@ dkms.conf
 !test/**/*.out
 lectures
 .vscode
+lib/tst/testbip

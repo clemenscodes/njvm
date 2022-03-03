@@ -50,15 +50,17 @@ set(TEST_HEADERS
     tests/include/utils_test.h
 )
 
-add_custom_target(bigint COMMAND make WORKING_DIRECTORY ../lib)
+add_custom_target(bigint COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 add_library(njvm_lib STATIC ${SOURCES})
+
+add_dependencies(njvm_lib bigint)
+
+include_directories(../lib/build/include)
 
 add_executable(njvm src/main.c)
 
 target_link_libraries(njvm njvm_lib)
-
-add_dependencies(njvm_lib bigint)
 
 enable_testing()
 

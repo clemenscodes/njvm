@@ -12,8 +12,8 @@
 #include "pc.h"
 #include "processor.h"
 #include "utils.h"
-#include "objref.h"
 #include "stack.h"
+#include "../lib/build/include/bigint.h"
 
 #define MAX_ITEMS 10000
 

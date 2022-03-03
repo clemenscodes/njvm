@@ -7,8 +7,8 @@
 
 #include "instruction.h"
 #include "bytecode.h"
-#include "objref.h"
 #include "njvm.h"
+#include "../lib/build/include/bigint.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
 #define NINJA_BINARY_VERSION 0x00000005
