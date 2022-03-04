@@ -55,7 +55,7 @@ void print_stack(void) {
             if (slot.is_obj_ref) {
                 obj_ref = slot.u.obj_ref;
                 if (slot.u.obj_ref) {
-                    printf("sp, fp --->\t%04d: (%s) \t%p [", i, type, (void *)obj_ref);
+                    printf("sp, fp --->\t%04d: (%s) \t%p -> [", i, type, (void *)obj_ref);
                     bip.op1 = obj_ref;
                     bigPrint(stdout);
                     printf("]\n");
@@ -90,7 +90,7 @@ void print_stack(void) {
             if (slot.is_obj_ref) {
                 obj_ref = vm.stack.data[fp].u.obj_ref;
                 if (slot.u.obj_ref) {
-                    printf("fp \t --->\t%04d: (%s) \t%p [", fp, type, (void *)obj_ref);
+                    printf("fp \t --->\t%04d: (%s) \t%p -> [", fp, type, (void *)obj_ref);
                     bip.op1 = obj_ref;
                     bigPrint(stdout);
                     printf("]\n");
@@ -106,7 +106,7 @@ void print_stack(void) {
             if (slot.is_obj_ref) {
                 obj_ref = vm.stack.data[fp].u.obj_ref;
                 if (slot.u.obj_ref) {
-                    printf("fp \t --->\t%04d: (%s) \t%p [", fp, type, (void *)obj_ref);
+                    printf("fp \t --->\t%04d: (%s) \t%p -> [", fp, type, (void *)obj_ref);
                     bip.op1 = obj_ref;
                     bigPrint(stdout);
                     printf("]\n");
