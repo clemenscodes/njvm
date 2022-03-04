@@ -63,7 +63,7 @@ size_t check_ninja_instruction_count(FILE *fp) {
     Bytecode buffer = seek_file(fp, 8);
     if (!buffer) {
         close_file(fp);
-        fatal_error("Error: no instructions");
+        fatalError("Error: no instructions");
     }
     return buffer;
 }
@@ -87,17 +87,4 @@ char *read_line(void) {
         exit(1);
     }
     return line;
-}
-
-void fatal_error(char *error_message) {
-    fprintf(stderr, "%s\n", error_message);
-    exit(1);
-}
-
-ObjRef new_obj_ref(uint32_t size) {
-    ObjRef obj_ref;
-    obj_ref = malloc(size + sizeof(Immediate));
-    if (!obj_ref) fatal_error("Error: failed to allocate memory for obj_ref");
-    obj_ref->size = size;
-    return obj_ref;
 }

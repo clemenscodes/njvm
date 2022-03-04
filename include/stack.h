@@ -6,7 +6,7 @@
 #include <malloc.h>
 
 #include "njvm.h"
-#include "objref.h"
+#include "../lib/build/include/bigint.h"
 
 void initialize_stack(void);
 void push(Immediate immediate);

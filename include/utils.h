@@ -7,11 +7,12 @@
 
 #include "instruction.h"
 #include "bytecode.h"
-#include "objref.h"
 #include "njvm.h"
+#include "../lib/build/include/bigint.h"
+#include "../lib/build/include/support.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
-#define NINJA_BINARY_VERSION 0x00000005
+#define NINJA_BINARY_VERSION 0x00000006
 
 FILE *open_file(char *file_name);
 void read_file(char *file_name);
@@ -24,7 +25,6 @@ size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
 char *read_line(void);
 void fatal_error(char *error_message);
-ObjRef new_obj_ref(uint32_t bytes);
 
 #endif
  

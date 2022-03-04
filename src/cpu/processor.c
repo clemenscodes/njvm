@@ -135,75 +135,65 @@ void halt_instruction(void) {
 }
 
 void pushc_instruction(Immediate immediate) {
-    ObjRef obj_ref = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)obj_ref->data = immediate;
-    push_obj_ref(obj_ref);
+    bigFromInt(immediate);
+    push_obj_ref(bip.res);
 }
 
 void add_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data + *(Immediate *)b->data;
-    push_obj_ref(c);
+    bip.op1 = pop_obj_ref();
+    bip.op2 = pop_obj_ref();
+    bigAdd();
+    push_obj_ref(bip.res);
 }
 
 void sub_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data - *(Immediate *)b->data;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigSub();
+    push_obj_ref(bip.res);
 }
 
 void mul_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data * *(Immediate *)b->data;
-    push_obj_ref(c);
+    bip.op1 = pop_obj_ref();
+    bip.op2 = pop_obj_ref();
+    bigMul();
+    push_obj_ref(bip.res);
 }
 
 void div_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    if (!*(Immediate *)b->data) fatal_error("Error: Division by zero");
-    *(Immediate *)c->data = *(Immediate *)a->data / *(Immediate *)b->data;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigDiv();
+    push_obj_ref(bip.res);
 }
 
 void mod_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    if (!*(Immediate *)b->data) fatal_error("Error: Division by zero");
-    *(Immediate *)c->data = *(Immediate *)a->data % *(Immediate *)b->data;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigDiv();
+    push_obj_ref(bip.rem);
 }
 
 void rdint_instruction(void) {
-    int read_integer;
-    if (!scanf("%d", &read_integer)) fatal_error("Error: failed to read integer");
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = read_integer;
-    push_obj_ref(c);
+    bigRead(stdin);
+    push_obj_ref(bip.res);
 }
 
 void wrint_instruction(void) {
-    printf("%d", *(Immediate *)pop_obj_ref()->data);
+    bip.op1 = pop_obj_ref();
+    bigPrint(stdout);
 }
 
 void rdchr_instruction(void) {
     char read_character;
-    if (!scanf("%c", &read_character)) fatal_error("Error: failed to read character");
-    ObjRef c = new_obj_ref(sizeof(unsigned char));
-    *(char *)c->data = read_character;
-    push_obj_ref(c);
+    if (!scanf("%c", &read_character)) fatalError("Error: failed to read character");
+    bigFromInt((int)read_character);
+    push_obj_ref(bip.res);
 }
 
 void wrchr_instruction(void) {
-    printf("%c", *pop_obj_ref()->data);
+    bip.op1 = pop_obj_ref();
+    printf("%c", (char)bigToInt());
 }
 
 void pushg_instruction(Immediate immediate) {
@@ -215,8 +205,8 @@ void popg_instruction(Immediate immediate) {
 }
 
 void asf_instruction(Immediate immediate) {
-    if ((vm.stack.size + immediate) >= MAX_ITEMS) fatal_error("Error: stack overflow");
-    if (immediate < 0) fatal_error("Error: negative immediate for asf");
+    if ((vm.stack.size + immediate) >= MAX_ITEMS) fatalError("Error: stack overflow");
+    if (immediate < 0) fatalError("Error: negative immediate for asf");
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
@@ -242,51 +232,45 @@ void popl_instruction(Immediate immediate) {
 }
 
 void eq_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data == *(Immediate *)b->data ? 1 : 0;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigFromInt(bigCmp() == 0 ? 1 : 0);
+    push_obj_ref(bip.res);
 }
 
 void ne_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data != *(Immediate *)b->data ? 1 : 0;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigFromInt(bigCmp() != 0 ? 1 : 0);
+    push_obj_ref(bip.res);
 }
 
 void lt_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data < *(Immediate *)b->data ? 1 : 0;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigFromInt(bigCmp() < 0 ? 1 : 0);
+    push_obj_ref(bip.res);
 }
 
 void le_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data <= *(Immediate *)b->data ? 1 : 0;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigFromInt(bigCmp() <= 0 ? 1 : 0);
+    push_obj_ref(bip.res);
 }
 
 void gt_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data > *(Immediate *)b->data ? 1 : 0;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigFromInt(bigCmp() > 0 ? 1 : 0);
+    push_obj_ref(bip.res);
 }
 
 void ge_instruction(void) {
-    ObjRef b = pop_obj_ref();
-    ObjRef a = pop_obj_ref();
-    ObjRef c = new_obj_ref(sizeof(Immediate));
-    *(Immediate *)c->data = *(Immediate *)a->data >= *(Immediate *)b->data ? 1 : 0;
-    push_obj_ref(c);
+    bip.op2 = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    bigFromInt(bigCmp() >= 0 ? 1 : 0);
+    push_obj_ref(bip.res);
 }
 
 void jump_instruction(Immediate immediate) {
@@ -294,11 +278,13 @@ void jump_instruction(Immediate immediate) {
 }
 
 void brf_instruction(Immediate immediate) {
-    if (!*(Immediate *)pop_obj_ref()->data) jump_instruction(immediate);
+    bip.op1 = pop_obj_ref();
+    if (!bigToInt()) jump_instruction(immediate);
 }
 
 void brt_instruction(Immediate immediate) {
-    if (*(Immediate *)pop_obj_ref()->data == 1) jump_instruction(immediate);
+    bip.op1 = pop_obj_ref();
+    if (bigToInt() == 1) jump_instruction(immediate);
 }
 
 void call_instruction(Immediate immediate) {
@@ -316,8 +302,10 @@ void drop_instruction(Immediate immediate) {
 }
 
 void pushr_instruction(void) {
-    if (vm.rv) push_obj_ref(vm.rv);
-    else fatal_error("Error: no value in return value register");
+    if (vm.rv)
+        push_obj_ref(vm.rv);
+    else
+        fatalError("Error: no value in return value register");
 }
 
 void popr_instruction(void) {

@@ -25,15 +25,15 @@ void prompt(void) {
                 switch (c) {
                     case 's':
                         free(line);
-                        printf("-----------------------------\n");
+                        printf("-------------------------------\n");
                         print_stack();
-                        printf("-----------------------------\n");
+                        printf("-------------------------------\n");
                         continue;
                     case 'd':
                         free(line);
-                        printf("-----------------------------\n");
+                        printf("-------------------------------\n");
                         print_sda();
-                        printf("-----------------------------\n");
+                        printf("-------------------------------\n");
                         continue;
                     default:
                         free(line);
@@ -41,9 +41,9 @@ void prompt(void) {
                 }
             case 'l':
                 free(line);
-                printf("-----------------------------\n");
+                printf("-------------------------------\n");
                 print_ir();
-                printf("-----------------------------\n");
+                printf("-------------------------------\n");
                 continue;
             case 'b':
                 free(line);
@@ -89,10 +89,12 @@ void run(void) {
 
 void set_breakpoint(void) {
     int bp;
-    if (vm.bp) printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
-    else printf("DEBUG [breakpoint]: cleared\n");
+    if (vm.bp)
+        printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
+    else
+        printf("DEBUG [breakpoint]: cleared\n");
     printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
-    if (!scanf("%i", &bp)) fatal_error("Error: failed to read integer");
+    if (!scanf("%i", &bp)) fatalError("Error: failed to read integer");
     if (bp < -1) return;
     if (bp == -1) {
         vm.bp = NULL;

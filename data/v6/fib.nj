@@ -1,0 +1,44 @@
+//
+// compute the fibonacci value of a number iteratively
+//
+
+void main() {
+  local Integer n;
+  local Integer m;
+  n = readInteger();
+  m = fib(n);
+  writeCharacter('f');
+  writeCharacter('i');
+  writeCharacter('b');
+  writeCharacter('(');
+  writeInteger(n);
+  writeCharacter(')');
+  writeCharacter(' ');
+  writeCharacter('=');
+  writeCharacter(' ');
+  writeInteger(m);
+  writeCharacter('\n');
+}
+
+Integer fib(Integer n) {
+  local Integer first;
+  local Integer second;
+  local Integer result;
+  local Integer i;
+  first = 0;
+  second = 1;
+  i = 2;
+  if (n == 0) {
+      return first;
+  }
+  if (n == 1) {
+      return second;
+  }
+  while (i <= n) {
+    result = first + second;
+    first = second;
+    second = result;
+    i = i + 1;
+  }
+  return result;
+}
