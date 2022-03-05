@@ -24,7 +24,7 @@ size_t check_ninja_instruction_count(FILE *fp);
 size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
 char *read_line(void);
-void fatal_error(char *error_message);
+ObjRef new_composite_object(int num_obj_refs);
 
 #endif
  

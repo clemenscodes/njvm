@@ -52,5 +52,15 @@ void drop_instruction(Immediate immediate);
 void pushr_instruction(void);
 void popr_instruction(void);
 void dup_instruction(void);
+void new_instruction(Immediate immediate);
+void getf_instruction(Immediate immediate);
+void putf_instruction(Immediate immediate);
+void newa_instruction(void);
+void getfa_instruction(void);
+void putfa_instruction(void);
+void getsz_instruction(void);
+void pushn_instruction(void);
+void refeq_instruction(void);
+void refne_instruction(void);
 
 #endif

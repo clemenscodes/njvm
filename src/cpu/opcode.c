@@ -104,6 +104,36 @@ Opcode decode_opcode(Bytecode bytecode) {
         case 31:
             opcode = dup;
             break;
+        case 32:
+            opcode = new;
+            break;
+        case 33:
+            opcode = getf;
+            break;
+        case 34:
+            opcode = putf;
+            break;
+        case 35:
+            opcode = newa;
+            break;
+        case 36:
+            opcode = getfa;
+            break;
+        case 37:
+            opcode = putfa;
+            break;
+        case 38:
+            opcode = getsz;
+            break;
+        case 39:
+            opcode = pushn;
+            break;
+        case 40:
+            opcode = refeq;
+            break;
+        case 41:
+            opcode = refne;
+            break;
         default:
             opcode = halt;
             fprintf(stderr, "Unknown opcode %d\n", opcode);

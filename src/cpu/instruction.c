@@ -1,6 +1,6 @@
 #include "instruction.h"
 
-Instruction new_instruction(Opcode opcode, Immediate immediate) {
+Instruction create_new_instruction(Opcode opcode, Immediate immediate) {
     Instruction instruction;
     instruction.opcode = opcode;
     instruction.immediate = immediate;

@@ -122,6 +122,36 @@ void print_instruction(ProgramCounter pc) {
         case dup:
             printf("%03d:\tdup\n", pc);
             break;
+        case new:
+            printf("%03d:\tnew\t%d\n", pc, immediate);
+            break;
+        case getf:
+            printf("%03d:\tgetf\t%d\n", pc, immediate);
+            break;
+        case putf:
+            printf("%03d:\tputf\t%d\n", pc, immediate);
+            break;
+        case newa:
+            printf("%03d:\tnewa\n", pc);
+            break;
+        case getfa:
+            printf("%03d:\tgetfa\n", pc);
+            break;
+        case putfa:
+            printf("%03d:\tputfa\n", pc);
+            break;
+        case getsz:
+            printf("%03d:\tgetsz\n", pc);
+            break;
+        case pushn:
+            printf("%03d:\tpushn\n", pc);
+            break;
+        case refeq:
+            printf("%03d:\trefeq\n", pc);
+            break;
+        case refne:
+            printf("%03d:\trefne\n", pc);
+            break;
         default:
             fatalError("Unknown opcode");
             break;

@@ -119,6 +119,36 @@ void execute_instruction(Bytecode bytecode) {
         case dup:
             dup_instruction();
             break;
+        case new:
+            new_instruction(immediate);
+            break;
+        case getf:
+            getf_instruction(immediate);
+            break;
+        case putf:
+            putf_instruction(immediate);
+            break;
+        case newa:
+            newa_instruction();
+            break;
+        case getfa:
+            getfa_instruction();
+            break;
+        case putfa:
+            putfa_instruction();
+            break;
+        case getsz:
+            getsz_instruction();
+            break;
+        case pushn:
+            pushn_instruction();
+            break;
+        case refeq:
+            refeq_instruction();
+            break;
+        case refne:
+            refne_instruction();
+            break;
         default:
             fprintf(stderr, "Unknown opcode %d\n", opcode);
             halt_instruction();
@@ -297,8 +327,7 @@ void ret_instruction(void) {
 }
 
 void drop_instruction(Immediate immediate) {
-    int i;
-    for (i = 0; i < immediate; i++) pop_obj_ref();
+    for (int i = 0; i < immediate; i++) pop_obj_ref();
 }
 
 void pushr_instruction(void) {
@@ -316,4 +345,35 @@ void dup_instruction(void) {
     ObjRef obj_ref = pop_obj_ref();
     push_obj_ref(obj_ref);
     push_obj_ref(obj_ref);
+}
+
+void new_instruction(Immediate immediate) {
+    printf("Executing new instruction with immediate %d\n", immediate);
+}
+void getf_instruction(Immediate immediate) {
+    printf("Executing getf instruction with immediate %d\n", immediate);
+}
+void putf_instruction(Immediate immediate) {
+    printf("Executing putf instruction with immediate %d\n", immediate);
+}
+void newa_instruction(void) {
+    printf("Executing newa instruction\n");
+}
+void getfa_instruction(void) {
+    printf("Executing getfa instruction\n");
+}
+void putfa_instruction(void) {
+    printf("Executing putfa instruction\n");
+}
+void getsz_instruction(void) {
+    printf("Executing getsz instruction\n");
+}
+void pushn_instruction(void) {
+    printf("Executing pushn instruction\n");
+}
+void refeq_instruction(void) {
+    printf("Executing refeq instruction\n");
+}
+void refne_instruction(void) {
+    printf("Executing refne instruction\n");
 }

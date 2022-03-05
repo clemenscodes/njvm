@@ -3,7 +3,7 @@
 void test_instruction(void **state) {
     Opcode opcode = pushc;
     Immediate immediate = 1;
-    Instruction instruction = new_instruction(opcode, immediate);
+    Instruction instruction = create_new_instruction(opcode, immediate);
     assert_int_equal(instruction.opcode, opcode);
     assert_int_equal(instruction.immediate, immediate);
 }
