@@ -17,13 +17,13 @@
 FILE *open_file(char *file_name);
 void read_file(char *file_name);
 void close_file(FILE *fp);
+char *read_line(void);
 void check_ninja_binary_format(FILE *fp, char *arg);
 void check_ninja_version(FILE *fp, char *arg);
 void read_instructions_into_ir(FILE *fp);
 size_t check_ninja_instruction_count(FILE *fp);
 size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
-char *read_line(void);
 ObjRef new_composite_object(int num_obj_refs);
 
 #endif
