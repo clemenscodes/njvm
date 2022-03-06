@@ -88,3 +88,12 @@ char *read_line(void) {
     }
     return line;
 }
+
+ObjRef new_composite_object(int num_obj_refs) {
+    ObjRef obj_ref;
+    // encode MSB in size, telling that its a composite obj
+    // encode number of addresses in size, telling how many fields obj has
+    // allocate memory for addresses in fields
+    // initialize addresses with NULL
+    return obj_ref;
+}

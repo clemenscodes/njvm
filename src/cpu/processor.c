@@ -348,32 +348,42 @@ void dup_instruction(void) {
 }
 
 void new_instruction(Immediate immediate) {
-    printf("Executing new instruction with immediate %d\n", immediate);
+    ObjRef obj_ref = new_composite_object(immediate);
+    push_obj_ref(obj_ref);
 }
+
 void getf_instruction(Immediate immediate) {
     printf("Executing getf instruction with immediate %d\n", immediate);
 }
+
 void putf_instruction(Immediate immediate) {
     printf("Executing putf instruction with immediate %d\n", immediate);
 }
+
 void newa_instruction(void) {
     printf("Executing newa instruction\n");
 }
+
 void getfa_instruction(void) {
     printf("Executing getfa instruction\n");
 }
+
 void putfa_instruction(void) {
     printf("Executing putfa instruction\n");
 }
+
 void getsz_instruction(void) {
     printf("Executing getsz instruction\n");
 }
+
 void pushn_instruction(void) {
     printf("Executing pushn instruction\n");
 }
+
 void refeq_instruction(void) {
     printf("Executing refeq instruction\n");
 }
+
 void refne_instruction(void) {
     printf("Executing refne instruction\n");
 }
