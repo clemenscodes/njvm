@@ -140,75 +140,75 @@ __0:
 // record { Integer num; Integer den; } newFraction(Integer, Integer)
 //
 _newFraction:
-	asf	4
-	pushl	-4
-	pushc	0
-	lt
-	brf	__5
-	pushc	0
-	pushl	-4
-	sub
-	popl	0
-	jmp	__6
+	asf	4 // stackframe with four local variables
+	pushl	-4 // put first function paramter on the stack
+	pushc	0 // put 0 on the stack
+	lt // check if paramter is negative
+	brf	__5 // jump to __5 if paramter is not negative
+	pushc	0 // put 0 on the stack
+	pushl	-4 // put first function paramter on the stack
+	sub // subtract function parameter from 0, getting the negative value
+	popl	0 // saving the negative value of the first function paramter in the first local variable
+	jmp	__6 // jump to __6
 __5:
-	pushl	-4
-	popl	0
+	pushl	-4 // put first function paramter on the stack
+	popl	0 // save value of first function paramter in first local variable
 __6:
-	pushl	-3
-	pushc	0
-	lt
-	brf	__7
-	pushc	0
-	pushl	-3
-	sub
-	popl	1
-	jmp	__8
+	pushl	-3 // put second function parameter on the stack 
+	pushc	0 // put 0 on the stack
+	lt // check if second function parameter is negative
+	brf	__7 // jump to __7 if second function parameter is not negative
+	pushc	0 // put 0 on the stack
+	pushl	-3 // put second function parameter on the stack
+	sub // subtract value of second function parameter from 0, getting the negative value
+	popl	1 // saving the negative value of the second function paramter in the second local variable
+	jmp	__8 // jump to __8)
 __7:
-	pushl	-3
-	popl	1
+	pushl	-3 // put second function parameter on the stack
+	popl	1 // save the value of the second function parameter in the second local variable
 __8:
-	pushl	0
-	pushl	1
-	call	_gcd
-	drop	2
-	pushr
-	popl	2
-	new	2
-	popl	3
-	pushl	-4
-	pushc	0
-	lt
-	pushl	-3
-	pushc	0
-	lt
-	ne
-	brf	__9
-	pushl	3
-	pushc	0
-	pushl	0
-	sub
-	pushl	2
-	div
-	putf	0
-	jmp	__10
+	pushl	0 // put the first local variable on the stack
+	pushl	1 // put the second local variable on the stack
+	call	_gcd // call function to compute the greatest common divisor of the two local variables
+	drop	2 // cleanup function call parameters
+	pushr // put return value of gcd on the stack
+	popl	2 // save return value of gcd in the third local variable
+	new	2 // create a new record with two fields
+	popl	3 // save the record in the fourth local variable
+	pushl	-4 // put the first function parameter on the stack
+	pushc	0 // put 0 on the stack
+	lt // check if first function paramter is negative
+	pushl	-3 // put the second function parameter on the stack
+	pushc	0 // put 0 on the stack
+	lt // check if the second function paramter is negative
+	ne // check if any of the function parameters is negative but the other is not
+	brf	__9 // jump to __0
+	pushl	3 // put fourth local variable on the stack
+	pushc	0 // put 0 on the stack
+	pushl	0 // put the first local variable on the stack
+	sub // subtract the value of the first local variable from 0, getting the negative value of it
+	pushl	2 // put the third local variable on the stack
+	div // divide the negative value of the first local variable with the value of the third local variable
+	putf	0 // save the result of the previous computation in the first field of the record
+	jmp	__10 // jump to __10
 __9:
-	pushl	3
-	pushl	0
-	pushl	2
-	div
-	putf	0
+	pushl	3 // put fourth local variable on the stack
+	pushc	0 // put 0 on the stack
+	pushl	2 // put the third local variable on the stack
+	div // divide the value of the first local variable with the value of the third local variable
+	putf	0 // save the result of the previous computation in the first field of the record
 __10:
-	pushl	3
-	pushl	1
-	pushl	2
-	div
-	putf	1
-	pushl	3
-	popr
-	jmp	__4
+	pushl	3 // put fourth local variable on the stack
+	pushl	1 // put second local variable on the stack
+	pushl	2 // put third local variable on the stack
+	div // divide the value of the second local variable with the value of the third local variable
+	putf	1 // save the result of the previous computation in the second field of the record
+	pushl	3 // put fourth local variable on the stack
+	popr // save the edited record in the return value register
+	jmp	__4 // jump to __4
 __4:
-	rsf
-	ret
+	rsf // reset the stack frame
+	ret // end function call, jump back to return address
 
 //
 // void writeFraction(record { Integer num; Integer den; })
