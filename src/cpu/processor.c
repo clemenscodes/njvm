@@ -371,7 +371,8 @@ void putf_instruction(Immediate immediate) {
 
 void newa_instruction(void) {
     bip.op1 = pop_obj_ref();
-    bip.op1 = new_composite_object(bigToInt());
+    Immediate value = bigToInt();
+    bip.op1 = new_composite_object(value);
     push_obj_ref(bip.op1);
 }
 

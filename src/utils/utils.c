@@ -89,8 +89,13 @@ char *read_line(void) {
     return line;
 }
 
+void print_obj_ref(ObjRef obj_ref) {
+    printf("ObjRef: %p\n", (void *)obj_ref);
+}
+
 ObjRef new_composite_object(int num_obj_refs) {
-    ObjRef obj_ref = malloc(sizeof(ObjRef));
+    printf("Creating new composite object with %d objects\n", num_obj_refs);
+    ObjRef obj_ref = malloc(sizeof(ObjRef) + num_obj_refs * sizeof(void *));
     obj_ref->size |= MSB;
     obj_ref->size |= num_obj_refs;
     for (int i = 0; i < num_obj_refs; i++) {
