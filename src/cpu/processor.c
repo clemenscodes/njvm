@@ -3,6 +3,7 @@
 void init(void) {
     printf("Ninja Virtual Machine started\n");
     initialize_stack();
+    vm.rv = NULL;
 }
 
 void execute(char *arg) {
@@ -342,48 +343,94 @@ void popr_instruction(void) {
 }
 
 void dup_instruction(void) {
-    ObjRef obj_ref = pop_obj_ref();
-    push_obj_ref(obj_ref);
-    push_obj_ref(obj_ref);
+    bip.op1 = pop_obj_ref();
+    push_obj_ref(bip.op1);
+    push_obj_ref(bip.op1);
 }
 
 void new_instruction(Immediate immediate) {
-    ObjRef obj_ref = new_composite_object(immediate);
-    push_obj_ref(obj_ref);
+    bip.op1 = new_composite_object(immediate);
+    push_obj_ref(bip.op1);
 }
 
 void getf_instruction(Immediate immediate) {
-    printf("Executing getf instruction with immediate %d\n", immediate);
+    bip.op1 = pop_obj_ref();
+    bip.op2 = GET_REFS_PTR(bip.op1)[immediate];
+    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
+    if (!((0 <= immediate) && (immediate < size))) fatalError("Error: index out of bound");
+    push_obj_ref(bip.op2);
 }
 
 void putf_instruction(Immediate immediate) {
-    printf("Executing putf instruction with immediate %d\n", immediate);
+    bip.op1 = pop_obj_ref();
+    bip.op2 = GET_REFS_PTR(bip.op1)[immediate];
+    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
+    if (!((0 <= immediate) && (immediate < size))) fatalError("Error: index out of bound");
+    GET_REFS_PTR(bip.op2)[immediate] = bip.op1;
 }
 
 void newa_instruction(void) {
-    printf("Executing newa instruction\n");
+    bip.op1 = pop_obj_ref();
+    bip.op1 = new_composite_object(bigToInt());
+    push_obj_ref(bip.op1);
 }
 
 void getfa_instruction(void) {
-    printf("Executing getfa instruction\n");
+    bip.op1 = pop_obj_ref();
+    Immediate index = bigToInt();
+    bip.op1 = pop_obj_ref();
+    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
+    if (!((0 <= index ) && (index < size))) fatalError("Error: index out of bound");
+    bip.op2 = GET_REFS_PTR(bip.op1)[index];
+    push_obj_ref(bip.op2);
 }
 
 void putfa_instruction(void) {
-    printf("Executing putfa instruction\n");
+    bip.op2 = pop_obj_ref(); // value
+    bip.op1 = pop_obj_ref();
+    Immediate index = bigToInt();
+    bip.op1 = pop_obj_ref();
+    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
+    if (!((0 <= index ) && (index < size))) fatalError("Error: index out of bound");
+    GET_REFS_PTR(bip.op1)
+    [index] = bip.op2;
 }
 
 void getsz_instruction(void) {
-    printf("Executing getsz instruction\n");
+    bip.op1 = pop_obj_ref();
+    if (IS_PRIMITIVE(bip.op1)) {
+        bigFromInt(-1);
+        push_obj_ref(bip.res);
+    } else {
+        bigFromInt(GET_ELEMENT_COUNT(bip.op1));
+        push_obj_ref(bip.res);
+    }
 }
 
 void pushn_instruction(void) {
-    printf("Executing pushn instruction\n");
+    push_obj_ref(NULL);
 }
 
 void refeq_instruction(void) {
-    printf("Executing refeq instruction\n");
+    bip.op1 = pop_obj_ref();
+    bip.op2 = pop_obj_ref();
+    if (bip.op1 == bip.op2) {
+        bigFromInt(1);
+        push_obj_ref(bip.res);
+    } else {
+        bigFromInt(0);
+        push_obj_ref(bip.res);
+    }
 }
 
 void refne_instruction(void) {
-    printf("Executing refne instruction\n");
+    bip.op1 = pop_obj_ref();
+    bip.op2 = pop_obj_ref();
+    if (bip.op1 != bip.op2) {
+        bigFromInt(1);
+        push_obj_ref(bip.res);
+    } else {
+        bigFromInt(0);
+        push_obj_ref(bip.res);
+    }
 }

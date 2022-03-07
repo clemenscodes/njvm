@@ -35,7 +35,9 @@ ObjRef pop_obj_ref(void) {
     vm.stack.sp--;
     vm.stack.size--;
     if (!vm.stack.data[vm.stack.sp].is_obj_ref) fatalError("Error: slot is not obj_ref");
-    return vm.stack.data[vm.stack.sp].u.obj_ref;
+    ObjRef obj_ref = vm.stack.data[vm.stack.sp].u.obj_ref;
+    if (!obj_ref) fatalError("Error: object is NULL");
+    return obj_ref;
 }
 
 void free_stack(void) {
