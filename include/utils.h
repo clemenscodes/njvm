@@ -26,8 +26,6 @@ size_t check_ninja_instruction_count(FILE *fp);
 size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
 ObjRef new_composite_object(int num_obj_refs);
-void set_msb(ObjRef obj_ref);
-void set_element_count(ObjRef obj_ref, int num_obj_refs);
 
 #endif
  

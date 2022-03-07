@@ -91,15 +91,11 @@ char *read_line(void) {
 
 ObjRef new_composite_object(int num_obj_refs) {
     ObjRef obj_ref = malloc(sizeof(ObjRef));
-    set_msb(obj_ref);
-    set_element_count(obj_ref, num_obj_refs);
+    obj_ref->size |= MSB;
+    obj_ref->size |= num_obj_refs;
     for (int i = 0; i < num_obj_refs; i++) {
-        *GET_REFS_PTR(obj_ref)[i]->data = malloc(sizeof(void *));
-        *GET_REFS_PTR(obj_ref) = NULL;
+        GET_REFS_PTR(obj_ref)[i] = malloc(sizeof(void *));
+        *(ObjRef *)GET_REFS_PTR(obj_ref)[i]->data = NULL;
     }
     return obj_ref;
 }
-
-void set_msb(ObjRef obj_ref) {}
-
-void set_element_count(ObjRef obj_ref, int num_obj_refs) {}
