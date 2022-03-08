@@ -13,6 +13,7 @@
 #include "processor.h"
 #include "utils.h"
 #include "stack.h"
+#include "heap.h"
 #include "../lib/build/include/bigint.h"
 
 #define MAX_ITEMS 10000
@@ -33,11 +34,17 @@ typedef struct StackSlot {
 } StackSlot;
 
 typedef struct Stack {
+    unsigned int memory;
     StackPointer sp;
     FramePointer fp;
     size_t size;
     StackSlot *data;
 } Stack;
+
+typedef struct Heap {
+    unsigned int memory;
+    ObjRef *data;
+} Heap;
 
 typedef struct InstructionRegister {
     ProgramCounter pc;
@@ -53,6 +60,7 @@ typedef struct StaticDataArea {
 typedef struct NinjaVM {
     Stack stack;
     StaticDataArea sda;
+    Heap heap;
     InstructionRegister ir;
     Breakpoint bp;
     ObjRef rv;

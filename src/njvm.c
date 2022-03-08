@@ -3,7 +3,8 @@
 NinjaVM vm;
 
 int njvm(int argc, char *argv[]) {
-    int i, code_file_specified = 0, debug_mode_activated = 0, stack_size = 1, heap_size = 1;
+    int i, code_file_specified = 0, debug_mode_activated = 0;
+    vm.stack.memory = 64, vm.heap.memory = 8192;
     char *code_file = NULL;
     for (i = 1; i <= argc; i++) {
         if (i == argc) {
@@ -38,16 +39,16 @@ int njvm(int argc, char *argv[]) {
         }
         if (!strcmp(argv[i], "--stack")) {
             if (i >= argc - 1) continue;
-            int size = strtol(argv[++i], (char **)NULL, 10);
-            if (stack_size <= 0) continue;
-            stack_size = size;
+            int memory = strtol(argv[++i], (char **)NULL, 10);
+            if (memory <= 0) continue;
+            vm.stack.memory = memory;
             continue;
         }
         if (!strcmp(argv[i], "--heap")) {
             if (i >= argc - 1) continue;
-            int size = strtol(argv[++i], (char **)NULL, 10);
-            if (size <= 0) continue;
-            heap_size = size;
+            int memory = strtol(argv[++i], (char **)NULL, 10);
+            if (memory <= 0) continue;
+            vm.heap.memory = memory;
             continue;
         }
         if (!strcmp(argv[i], "--gcstats")) {

@@ -2,8 +2,8 @@
 
 void initialize_stack() {
     vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
-    vm.stack.data = calloc(MAX_ITEMS, sizeof(StackSlot));
-    if (!vm.stack.data && vm.stack.size) perror("calloc(vm.stack.data)");
+    vm.stack.data = malloc(vm.stack.memory * 1024);
+    if (!vm.stack.data && vm.stack.size) perror("malloc(vm.stack.data)");
 }
 
 void push(Immediate immediate) {

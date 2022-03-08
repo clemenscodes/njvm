@@ -3,6 +3,7 @@
 void init(void) {
     printf("Ninja Virtual Machine started\n");
     initialize_stack();
+    initialize_heap();
     vm.rv = NULL;
 }
 

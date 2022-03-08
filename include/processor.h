@@ -11,6 +11,7 @@
 #include "njvm.h"
 #include "sda.h"
 #include "stack.h"
+#include "heap.h"
 #include "utils.h"
 #include "../lib/build/include/bigint.h"
 #include "../lib/build/include/support.h"

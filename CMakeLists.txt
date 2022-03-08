@@ -26,6 +26,7 @@ set(SOURCES
     src/memory/ir.c 
     src/memory/stack.c
     src/memory/sda.c
+    src/memory/heap.c
     src/utils/utils.c
     src/utils/support.c
 )
