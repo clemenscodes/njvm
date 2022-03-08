@@ -13,7 +13,7 @@ void prompt(void) {
         printf("DEBUG: inspect, list, breakpoint, step, run, quit?\n");
         char *line = read_line();
         char c = line[0];
-        if (c == '\n') {
+        if (c == '\n' || c == ' ' || c == '\0') {
             free(line);
             line = read_line();
         }
@@ -40,9 +40,8 @@ void prompt(void) {
                     case 'o': {
                         printf("object reference?\n");
                         line = read_line();
-                        ObjRef obj_ref = *(ObjRef *)line;
                         printf("---------------------------------------\n");
-                        print_obj_ref(obj_ref);
+                        print_obj_ref(line);
                         printf("---------------------------------------\n");
                         free(line);
                         continue;

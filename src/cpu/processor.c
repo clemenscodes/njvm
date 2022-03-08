@@ -349,52 +349,58 @@ void dup_instruction(void) {
 }
 
 void new_instruction(Immediate immediate) {
-    bip.op1 = new_composite_object(immediate);
-    push_obj_ref(bip.op1);
+    ObjRef obj_ref = new_composite_object(immediate);
+    push_obj_ref(obj_ref);
 }
 
 void getf_instruction(Immediate immediate) {
-    bip.op1 = pop_obj_ref();
-    bip.op2 = GET_REFS_PTR(bip.op1)[immediate];
-    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
-    if (!((0 <= immediate) && (immediate < size))) fatalError("Error: index out of bound");
-    push_obj_ref(bip.op2);
+    ObjRef record = pop_obj_ref();
+    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
+    unsigned int size = GET_ELEMENT_COUNT(record);
+    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    ObjRef field = GET_REFS_PTR(record)[immediate];
+    push_obj_ref(field);
 }
 
 void putf_instruction(Immediate immediate) {
-    bip.op1 = pop_obj_ref();
-    bip.op2 = GET_REFS_PTR(bip.op1)[immediate];
-    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
-    if (!((0 <= immediate) && (immediate < size))) fatalError("Error: index out of bound");
-    GET_REFS_PTR(bip.op2)[immediate] = bip.op1;
+    ObjRef new_field = pop_obj_ref();
+    ObjRef record = pop_obj_ref();
+    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
+    unsigned int size = GET_ELEMENT_COUNT(record);
+    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    GET_REFS_PTR(record)[immediate] = new_field;
 }
 
 void newa_instruction(void) {
     bip.op1 = pop_obj_ref();
-    Immediate value = bigToInt();
-    bip.op1 = new_composite_object(value);
-    push_obj_ref(bip.op1);
+    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    unsigned int size = bigToInt();
+    ObjRef array = new_composite_object(size);
+    push_obj_ref(array);
 }
 
 void getfa_instruction(void) {
     bip.op1 = pop_obj_ref();
+    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
     Immediate index = bigToInt();
-    bip.op1 = pop_obj_ref();
-    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
-    if (!((0 <= index ) && (index < size))) fatalError("Error: index out of bound");
-    bip.op2 = GET_REFS_PTR(bip.op1)[index];
-    push_obj_ref(bip.op2);
+    ObjRef array = pop_obj_ref();
+    if (IS_PRIMITIVE(array)) fatalError("Primitive object has no fields");
+    unsigned int size = GET_ELEMENT_COUNT(array);
+    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    ObjRef field = GET_REFS_PTR(array)[index];
+    push_obj_ref(field);
 }
 
 void putfa_instruction(void) {
-    bip.op2 = pop_obj_ref(); // value
+    ObjRef new_field = pop_obj_ref();
     bip.op1 = pop_obj_ref();
+    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
     Immediate index = bigToInt();
-    bip.op1 = pop_obj_ref();
-    unsigned int size = GET_ELEMENT_COUNT(bip.op1);
-    if (!((0 <= index ) && (index < size))) fatalError("Error: index out of bound");
-    GET_REFS_PTR(bip.op1)
-    [index] = bip.op2;
+    ObjRef array = pop_obj_ref();
+    if (IS_PRIMITIVE(array)) fatalError("Not a compound object");
+    unsigned int size = GET_ELEMENT_COUNT(array);
+    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    GET_REFS_PTR(array)[index] = new_field;
 }
 
 void getsz_instruction(void) {
