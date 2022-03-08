@@ -11,6 +11,7 @@ int main() {
         cmocka_unit_test(test_stack),
         cmocka_unit_test(test_sda),
         cmocka_unit_test(test_processor),
+        cmocka_unit_test(test_utils),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

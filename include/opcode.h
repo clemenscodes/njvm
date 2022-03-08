@@ -38,6 +38,16 @@
 #define PUSHR 29
 #define POPR 30
 #define DUP 31
+#define NEW 32
+#define GETF 33
+#define PUTF 34
+#define NEWA 35
+#define GETFA 36
+#define PUTFA 37
+#define GETSZ 38
+#define PUSHN 39
+#define REFEQ 40
+#define REFNE 41
 
 typedef enum Opcode {
     halt = HALT,
@@ -72,10 +82,19 @@ typedef enum Opcode {
     pushr = PUSHR,
     popr = POPR,
     dup = DUP,
+    new = NEW,
+    getf = GETF,
+    putf = PUTF,
+    newa = NEWA,
+    getfa = GETFA,
+    putfa = PUTFA,
+    getsz = GETSZ,
+    pushn = PUSHN,
+    refeq = REFEQ,
+    refne = REFNE,
 } Opcode;
 
 Bytecode encode_opcode(Opcode opcode);
 Opcode decode_opcode(Bytecode bytecode);
-
 
 #endif

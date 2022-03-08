@@ -3,6 +3,7 @@
 void init(void) {
     printf("Ninja Virtual Machine started\n");
     initialize_stack();
+    vm.rv = NULL;
 }
 
 void execute(char *arg) {
@@ -118,6 +119,36 @@ void execute_instruction(Bytecode bytecode) {
             break;
         case dup:
             dup_instruction();
+            break;
+        case new:
+            new_instruction(immediate);
+            break;
+        case getf:
+            getf_instruction(immediate);
+            break;
+        case putf:
+            putf_instruction(immediate);
+            break;
+        case newa:
+            newa_instruction();
+            break;
+        case getfa:
+            getfa_instruction();
+            break;
+        case putfa:
+            putfa_instruction();
+            break;
+        case getsz:
+            getsz_instruction();
+            break;
+        case pushn:
+            pushn_instruction();
+            break;
+        case refeq:
+            refeq_instruction();
+            break;
+        case refne:
+            refne_instruction();
             break;
         default:
             fprintf(stderr, "Unknown opcode %d\n", opcode);
@@ -297,8 +328,7 @@ void ret_instruction(void) {
 }
 
 void drop_instruction(Immediate immediate) {
-    int i;
-    for (i = 0; i < immediate; i++) pop_obj_ref();
+    for (int i = 0; i < immediate; i++) pop_obj_ref();
 }
 
 void pushr_instruction(void) {
@@ -313,7 +343,101 @@ void popr_instruction(void) {
 }
 
 void dup_instruction(void) {
-    ObjRef obj_ref = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    push_obj_ref(bip.op1);
+    push_obj_ref(bip.op1);
+}
+
+void new_instruction(Immediate immediate) {
+    ObjRef obj_ref = new_composite_object(immediate);
     push_obj_ref(obj_ref);
-    push_obj_ref(obj_ref);
+}
+
+void getf_instruction(Immediate immediate) {
+    ObjRef record = pop_obj_ref();
+    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
+    unsigned int size = GET_ELEMENT_COUNT(record);
+    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    ObjRef field = GET_REFS_PTR(record)[immediate];
+    push_obj_ref(field);
+}
+
+void putf_instruction(Immediate immediate) {
+    ObjRef new_field = pop_obj_ref();
+    ObjRef record = pop_obj_ref();
+    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
+    unsigned int size = GET_ELEMENT_COUNT(record);
+    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    GET_REFS_PTR(record)[immediate] = new_field;
+}
+
+void newa_instruction(void) {
+    bip.op1 = pop_obj_ref();
+    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    unsigned int size = bigToInt();
+    ObjRef array = new_composite_object(size);
+    push_obj_ref(array);
+}
+
+void getfa_instruction(void) {
+    bip.op1 = pop_obj_ref();
+    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    Immediate index = bigToInt();
+    ObjRef array = pop_obj_ref();
+    if (IS_PRIMITIVE(array)) fatalError("Primitive object has no fields");
+    unsigned int size = GET_ELEMENT_COUNT(array);
+    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    ObjRef field = GET_REFS_PTR(array)[index];
+    push_obj_ref(field);
+}
+
+void putfa_instruction(void) {
+    ObjRef new_field = pop_obj_ref();
+    bip.op1 = pop_obj_ref();
+    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    Immediate index = bigToInt();
+    ObjRef array = pop_obj_ref();
+    if (IS_PRIMITIVE(array)) fatalError("Not a compound object");
+    unsigned int size = GET_ELEMENT_COUNT(array);
+    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    GET_REFS_PTR(array)[index] = new_field;
+}
+
+void getsz_instruction(void) {
+    bip.op1 = pop_obj_ref();
+    if (IS_PRIMITIVE(bip.op1)) {
+        bigFromInt(-1);
+        push_obj_ref(bip.res);
+    } else {
+        bigFromInt(GET_ELEMENT_COUNT(bip.op1));
+        push_obj_ref(bip.res);
+    }
+}
+
+void pushn_instruction(void) {
+    push_obj_ref(NULL);
+}
+
+void refeq_instruction(void) {
+    bip.op1 = pop_obj_ref();
+    bip.op2 = pop_obj_ref();
+    if (bip.op1 == bip.op2) {
+        bigFromInt(1);
+        push_obj_ref(bip.res);
+    } else {
+        bigFromInt(0);
+        push_obj_ref(bip.res);
+    }
+}
+
+void refne_instruction(void) {
+    bip.op1 = pop_obj_ref();
+    bip.op2 = pop_obj_ref();
+    if (bip.op1 != bip.op2) {
+        bigFromInt(1);
+        push_obj_ref(bip.res);
+    } else {
+        bigFromInt(0);
+        push_obj_ref(bip.res);
+    }
 }

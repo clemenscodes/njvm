@@ -16,7 +16,7 @@ typedef struct Instruction {
     Immediate immediate;
 } Instruction;
 
-Instruction new_instruction(Opcode opcode, Immediate immediate);
+Instruction create_new_instruction(Opcode opcode, Immediate immediate);
 Bytecode encode_instruction(Opcode opcode, Immediate immediate);
 Instruction decode_instruction(Bytecode bytecode);
 

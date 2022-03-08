@@ -13,56 +13,73 @@ void prompt(void) {
         printf("DEBUG: inspect, list, breakpoint, step, run, quit?\n");
         char *line = read_line();
         char c = line[0];
-        if (c == '\n') {
+        if (c == '\n' || c == ' ' || c == '\0') {
             free(line);
             line = read_line();
         }
         switch (c) {
             case 'i':
-                printf("DEBUG: [inspect]: stack, data?\n");
+                printf("DEBUG: [inspect]: stack, data, object?\n");
                 line = read_line();
                 c = line[0];
                 switch (c) {
-                    case 's':
+                    case 's': {
                         free(line);
-                        printf("-------------------------------\n");
+                        printf("---------------------------------------\n");
                         print_stack();
-                        printf("-------------------------------\n");
+                        printf("---------------------------------------\n");
                         continue;
-                    case 'd':
+                    }
+                    case 'd': {
                         free(line);
-                        printf("-------------------------------\n");
+                        printf("---------------------------------------\n");
                         print_sda();
-                        printf("-------------------------------\n");
+                        printf("---------------------------------------\n");
                         continue;
+                    }
+                    case 'o': {
+                        printf("object reference?\n");
+                        line = read_line();
+                        printf("---------------------------------------\n");
+                        print_obj_ref(line);
+                        printf("---------------------------------------\n");
+                        free(line);
+                        continue;
+                    }
                     default:
                         free(line);
                         continue;
                 }
-            case 'l':
+            case 'l': {
                 free(line);
-                printf("-------------------------------\n");
+                printf("---------------------------------------\n");
                 print_ir();
-                printf("-------------------------------\n");
+                printf("---------------------------------------\n");
                 continue;
-            case 'b':
+            }
+            case 'b': {
                 free(line);
                 set_breakpoint();
                 continue;
-            case 's':
+            }
+            case 's': {
                 free(line);
                 step();
                 continue;
-            case 'r':
+            }
+            case 'r': {
                 free(line);
                 run();
                 continue;
-            case 'q':
+            }
+            case 'q': {
                 free(line);
                 halt_instruction();
-            default:
+            }
+            default: {
                 free(line);
                 continue;
+            }
         }
     }
 }
