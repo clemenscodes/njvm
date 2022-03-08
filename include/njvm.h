@@ -6,15 +6,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../lib/build/include/bigint.h"
 #include "debugger.h"
+#include "heap.h"
 #include "immediate.h"
 #include "opcode.h"
 #include "pc.h"
 #include "processor.h"
-#include "utils.h"
 #include "stack.h"
-#include "heap.h"
-#include "../lib/build/include/bigint.h"
+#include "utils.h"
 
 #define MAX_ITEMS 10000
 
@@ -23,8 +23,8 @@ typedef int FramePointer;
 typedef int *Breakpoint;
 
 typedef union {
-        ObjRef obj_ref;
-        Immediate value;
+    ObjRef obj_ref;
+    Immediate value;
 } StackValue;
 
 typedef struct {

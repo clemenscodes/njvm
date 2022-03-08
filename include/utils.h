@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "instruction.h"
-#include "bytecode.h"
-#include "macros.h"
-#include "njvm.h"
 #include "../lib/build/include/bigint.h"
 #include "../lib/build/include/support.h"
+#include "bytecode.h"
+#include "instruction.h"
+#include "macros.h"
+#include "njvm.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
 #define NINJA_BINARY_VERSION 0x00000008
@@ -29,4 +29,3 @@ void print_obj_ref(char *line);
 ObjRef new_composite_object(unsigned int num_obj_refs);
 
 #endif
- 

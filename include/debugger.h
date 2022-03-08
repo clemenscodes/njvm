@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 #include "njvm.h"
-#include "utils.h"
 #include "opcode.h"
 #include "processor.h"
+#include "utils.h"
 
 void debug(char *bin);
 void prompt(void);

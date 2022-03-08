@@ -26,7 +26,7 @@
 #define EQ 17
 #define NE 18
 #define LT 19
-#define LE 20 
+#define LE 20
 #define GT 21
 #define GE 22
 #define JUMP 23

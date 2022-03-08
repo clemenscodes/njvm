@@ -5,16 +5,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "instruction.h"
-#include "ir.h"
-#include "opcode.h"
-#include "njvm.h"
-#include "sda.h"
-#include "stack.h"
-#include "heap.h"
-#include "utils.h"
 #include "../lib/build/include/bigint.h"
 #include "../lib/build/include/support.h"
+#include "heap.h"
+#include "instruction.h"
+#include "ir.h"
+#include "njvm.h"
+#include "opcode.h"
+#include "sda.h"
+#include "stack.h"
+#include "utils.h"
 
 void init(void);
 void execute(char *file_name);

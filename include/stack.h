@@ -3,10 +3,9 @@
 
 #include <malloc.h>
 #include <stdio.h>
-#include <malloc.h>
 
-#include "njvm.h"
 #include "../lib/build/include/bigint.h"
+#include "njvm.h"
 
 void initialize_stack(void);
 void push(Immediate immediate);
