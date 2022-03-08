@@ -1,8 +1,9 @@
 #include "stack.h"
 
 void initialize_stack() {
+    unsigned int bytes = vm.stack.memory * 1024;
     vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
-    vm.stack.data = malloc(vm.stack.memory * 1024);
+    vm.stack.data = malloc(bytes);
     if (!vm.stack.data && vm.stack.size) perror("malloc(vm.stack.data)");
 }
 

@@ -1,6 +1,7 @@
 #include "heap.h"
 
 void initialize_heap() {
-    vm.heap.data = malloc(vm.heap.memory * 1024);
+    unsigned int bytes = vm.heap.memory * 1024;
+    vm.heap.data = malloc(bytes);
     if (!vm.heap.data) perror("malloc(vm.heap.data)");
 }

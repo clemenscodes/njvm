@@ -153,7 +153,7 @@ void execute_instruction(Bytecode bytecode) {
             break;
         default:
             fprintf(stderr, "Unknown opcode %d\n", opcode);
-            halt_instruction();
+            exit(1);
     }
 }
 
