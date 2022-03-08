@@ -20,7 +20,6 @@
 
 typedef int StackPointer;
 typedef int FramePointer;
-typedef int *ReturnValueRegister;
 typedef int *Breakpoint;
 
 typedef union {
@@ -28,12 +27,12 @@ typedef union {
         Immediate value;
 } StackValue;
 
-typedef struct StackSlot {
+typedef struct {
     bool is_obj_ref;
     StackValue u;
 } StackSlot;
 
-typedef struct Stack {
+typedef struct {
     unsigned int memory;
     StackPointer sp;
     FramePointer fp;
@@ -41,23 +40,23 @@ typedef struct Stack {
     StackSlot *data;
 } Stack;
 
-typedef struct Heap {
+typedef struct {
+    size_t size;
+    ObjRef *data;
+} StaticDataArea;
+
+typedef struct {
     unsigned int memory;
     ObjRef *data;
 } Heap;
 
-typedef struct InstructionRegister {
+typedef struct {
     ProgramCounter pc;
     size_t size;
     Bytecode *data;
 } InstructionRegister;
 
-typedef struct StaticDataArea {
-    size_t size;
-    ObjRef *data;
-} StaticDataArea;
-
-typedef struct NinjaVM {
+typedef struct {
     Stack stack;
     StaticDataArea sda;
     Heap heap;
