@@ -4,5 +4,6 @@
 #include "njvm.h"
 
 void initialize_heap(void);
+ObjRef alloc(unsigned int bytes);
 
 #endif

@@ -9,6 +9,7 @@
 #include "../lib/build/include/support.h"
 #include "bytecode.h"
 #include "instruction.h"
+#include "heap.h"
 #include "macros.h"
 #include "njvm.h"
 

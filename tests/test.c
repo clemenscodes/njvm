@@ -1,6 +1,10 @@
 #include "include/test.h"
 
 int main() {
+    vm.stack.memory = 64;
+    vm.heap.memory = 8192;
+    initialize_heap();
+    initialize_stack();
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_encode_opcode),
         cmocka_unit_test(test_decode_opcode),

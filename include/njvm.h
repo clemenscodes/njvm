@@ -45,8 +45,12 @@ typedef struct {
 } StaticDataArea;
 
 typedef struct {
-    size_t memory;
-    ObjRef *data;
+    unsigned int memory;
+    unsigned int bytes;
+    unsigned int available;
+    unsigned char *active;
+    unsigned char *passive;
+    unsigned char *next;
 } Heap;
 
 typedef struct {

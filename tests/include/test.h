@@ -9,5 +9,6 @@
 #include "sda_test.h"
 #include "stack_test.h"
 #include "utils_test.h"
+#include "heap_test.h"
 
 #endif

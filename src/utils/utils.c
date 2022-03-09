@@ -91,11 +91,11 @@ char *read_line(void) {
     return line;
 }
 
-
-
 ObjRef new_composite_object(unsigned int num_obj_refs) {
     ObjRef obj_ref = malloc((sizeof(ObjRef) * num_obj_refs) + sizeof(int));
-    if (!obj_ref) fatalError("Failed to allocate memory for compound obj");
+    if (!obj_ref) {
+        fatalError("Failed to allocate memory for compound obj");
+    }
     obj_ref->size = num_obj_refs | MSB;
     return obj_ref;
 }
