@@ -16,10 +16,6 @@ void pop_global(Immediate immediate) {
     vm.sda.data[immediate] = pop_obj_ref();
 }
 
-void free_sda(void) {
-    free(vm.sda.data);
-}
-
 void print_sda(void) {
     if (!vm.sda.size) {
         printf("data[%04u]:\t[empty]\n", 0);

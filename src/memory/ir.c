@@ -15,10 +15,6 @@ void register_instruction(Opcode opcode, Immediate immediate) {
     vm.ir.pc++;
 }
 
-void free_ir(void) {
-    free(vm.ir.data);
-}
-
 void print_ir(void) {
     for (int i = 0; i < vm.ir.size; i++) {
         print_instruction(i);

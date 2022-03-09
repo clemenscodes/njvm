@@ -8,7 +8,7 @@ TEST_DIR="data/v$VERSION"
 REFERENCE_NJVM="$TEST_DIR/njvm"
 BUILD_NJVM="build/njvm"
 FAIL_FLAG=false
-# LEAK_FLAG=false
+LEAK_FLAG=false
 
 red() {
     printf "$RED%s$SET" "$1"
@@ -38,8 +38,8 @@ for bin in "$TEST_DIR"/*.bin; do
         printf "["
         green "OK" 
         printf "]"
-        grep -q "All heap blocks were freed" "$VALGRIND_LOG_FILE" || red " LEAKS MEMORY!"
-            # { red " LEAKS MEMORY!" && LEAK_FLAG=true; }
+        grep -q "All heap blocks were freed" "$VALGRIND_LOG_FILE" ||
+            { red " LEAKS MEMORY!" && LEAK_FLAG=true; }
         printf "\\n"
     else
         FAIL_FLAG=true
@@ -49,7 +49,7 @@ for bin in "$TEST_DIR"/*.bin; do
     fi
 done
 
-if [ $FAIL_FLAG = true ] #|| [ $LEAK_FLAG = true ]
+if [ $FAIL_FLAG = true ] || [ $LEAK_FLAG = true ]
 then
     exit 1
 fi
