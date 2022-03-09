@@ -1,7 +1,8 @@
 #include "gc.h"
 
 void run_gc(void) {
-    printf("Started garbage collector\n");
+    vm.gc.copied_objects = 0;
+    vm.gc.copied_bytes = 0;
 }
 
 void print_gc_stats(void) {

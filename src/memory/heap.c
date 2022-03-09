@@ -17,7 +17,11 @@ void initialize_heap() {
 
 void *alloc(unsigned int bytes) {
     if ((vm.heap.used + bytes) > vm.heap.available) {
-        fatalError("Error: heap is out of memory");
+        printf("GC triggered\n");
+        run_gc();
+        if ((vm.heap.used + bytes) > vm.heap.available) {
+            fatalError("Error: heap overflow");
+        }
     }
     void *p = vm.heap.next;
     vm.heap.next += bytes;
