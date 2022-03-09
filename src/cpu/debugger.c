@@ -13,9 +13,9 @@ void prompt(void) {
         printf("DEBUG: inspect, list, breakpoint, step, run, quit?\n");
         char *line = read_line();
         char c = line[0];
-        if (c == '\n' || c == ' ' || c == '\0') {
-            free(line);
+        if (c == '\n' || c == '\0') {
             line = read_line();
+            c = line[0];
         }
         switch (c) {
             case 'i':
@@ -111,7 +111,10 @@ void set_breakpoint(void) {
     else
         printf("DEBUG [breakpoint]: cleared\n");
     printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
-    if (!scanf("%i", &bp)) fatalError("Error: failed to read integer");
+    bigRead(stdin);
+    bip.op1 = bip.res;
+    bp = bigToInt();
+    if (!bp) fatalError("Error: failed to read integer");
     if (bp < -1) return;
     if (bp == -1) {
         vm.bp = NULL;

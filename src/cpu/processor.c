@@ -237,7 +237,7 @@ void popg_instruction(Immediate immediate) {
 }
 
 void asf_instruction(Immediate immediate) {
-    if ((vm.stack.size + immediate) >= MAX_ITEMS) fatalError("Error: stack overflow");
+    if ((vm.stack.size + immediate) >= vm.stack.max_items) fatalError("Error: stack overflow");
     if (immediate < 0) fatalError("Error: negative immediate for asf");
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
@@ -369,7 +369,8 @@ void putf_instruction(Immediate immediate) {
     if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
     unsigned int size = GET_ELEMENT_COUNT(record);
     if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
-    GET_REFS_PTR(record)[immediate] = new_field;
+    ObjRef *fields = GET_REFS_PTR(record);
+    fields[immediate] = new_field;
 }
 
 void newa_instruction(void) {
@@ -401,7 +402,8 @@ void putfa_instruction(void) {
     if (IS_PRIMITIVE(array)) fatalError("Not a compound object");
     unsigned int size = GET_ELEMENT_COUNT(array);
     if (index < 0 || size <= index) fatalError("Error: index out of bound");
-    GET_REFS_PTR(array)[index] = new_field;
+    ObjRef *fields = GET_REFS_PTR(array);
+    fields[index] = new_field;
 }
 
 void getsz_instruction(void) {

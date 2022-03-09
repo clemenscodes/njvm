@@ -16,8 +16,6 @@
 #include "stack.h"
 #include "utils.h"
 
-#define MAX_ITEMS 10000
-
 typedef int StackPointer;
 typedef int FramePointer;
 typedef int *Breakpoint;
@@ -33,7 +31,8 @@ typedef struct {
 } StackSlot;
 
 typedef struct {
-    unsigned int memory;
+    size_t memory;
+    size_t max_items;
     StackPointer sp;
     FramePointer fp;
     size_t size;
@@ -46,7 +45,7 @@ typedef struct {
 } StaticDataArea;
 
 typedef struct {
-    unsigned int memory;
+    size_t memory;
     ObjRef *data;
 } Heap;
 
