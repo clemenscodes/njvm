@@ -21,7 +21,7 @@ void run_gc(void) {
     // Set forward pointer to current next pointer in root object
     // Copy root object to current next pointer using memcpy
     // Increment next pointer with calculated root object size
-    // 
+    //
     // End Copy Phase
     //
     // Scan phase
@@ -34,10 +34,12 @@ void run_gc(void) {
     // Inspect newly copied object for further references and repeat
     //
     // End Scan phase
-    // 
-    // Purge passive heap
-    // 
-    // End GC
+    if (vm.gc.purge_flag) {
+        // Purge passive heap
+    }
+    if (vm.gc.stats_flag) {
+        print_gc_stats();
+    }
 }
 
 void print_gc_stats(void) {

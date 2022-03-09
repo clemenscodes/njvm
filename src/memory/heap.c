@@ -15,20 +15,20 @@ void initialize_heap() {
     vm.heap.next = vm.heap.begin = vm.heap.active;
 }
 
-void *alloc(unsigned int bytes) {
-    if ((vm.heap.used + bytes) > vm.heap.available) {
+void *alloc(size_t size) {
+    if ((vm.heap.used + size) > vm.heap.available) {
         printf("GC triggered\n");
         run_gc();
-        if ((vm.heap.used + bytes) > vm.heap.available) {
+        if ((vm.heap.used + size) > vm.heap.available) {
             fatalError("Error: heap overflow");
         }
     }
     void *p = vm.heap.next;
-    vm.heap.next += bytes;
+    vm.heap.next += size;
     if (!vm.heap.next) {
         fatalError("Error: failed calculating pointer to available memory");
     }
-    vm.heap.used += bytes;
+    vm.heap.used += size;
     vm.heap.size++;
     return p;
 }

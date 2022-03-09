@@ -4,7 +4,7 @@
 #include "njvm.h"
 
 void initialize_heap(void);
-void *alloc(unsigned int bytes);
+void *alloc(size_t size);
 void free_heap(void);
 
 #endif

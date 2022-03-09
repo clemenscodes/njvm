@@ -1,7 +1,7 @@
 #include "sda.h"
 
 void initialize_sda(void) {
-    vm.sda.data = (ObjRef *)alloc(vm.sda.size * sizeof(ObjRef));
+    vm.sda.data = alloc(vm.sda.size * sizeof(ObjRef));
     if (!vm.sda.data) {
         perror("malloc(vm.sda.data)");
     }

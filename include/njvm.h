@@ -35,11 +35,11 @@ typedef struct {
 } StackSlot;
 
 typedef struct {
+    size_t size;
     size_t memory;
     size_t max_items;
     StackPointer sp;
     FramePointer fp;
-    size_t size;
     StackSlot *data;
 } Stack;
 
@@ -49,11 +49,11 @@ typedef struct {
 } StaticDataArea;
 
 typedef struct {
+    size_t size;
     size_t memory;
     size_t bytes;
     size_t available;
     size_t used;
-    size_t size;
     void *begin;
     void *active;
     void *passive;

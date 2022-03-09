@@ -14,12 +14,10 @@ void init(char *bin) {
 void execute(char *bin) {
     printf("Ninja Virtual Machine started\n");
     Bytecode instruction = vm.ir.data[vm.ir.pc];
-    Instruction decoded = decode_instruction(instruction);
-    Opcode opcode = decoded.opcode;
+    Opcode opcode = decode_opcode(instruction);
     while (opcode != halt) {
         instruction = vm.ir.data[vm.ir.pc];
-        decoded = decode_instruction(instruction);
-        opcode = decoded.opcode;
+        opcode = decode_opcode(instruction);
         vm.ir.pc++;
         execute_instruction(instruction);
     }
@@ -164,12 +162,9 @@ void execute_instruction(Bytecode bytecode) {
 
 void halt_instruction(void) {
     run_gc();
-    if (vm.gc.stats_flag) {
-        print_gc_stats();
-    }
-    printf("Ninja Virtual Machine stopped\n");
     free_stack();
     free_heap();
+    printf("Ninja Virtual Machine stopped\n");
 }
 
 void pushc_instruction(Immediate immediate) {
