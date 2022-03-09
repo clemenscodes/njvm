@@ -6,6 +6,8 @@
 #include "njvm.h"
 #include "opcode.h"
 #include "processor.h"
+#include "bytecode.h"
+#include "instruction.h"
 #include "utils.h"
 
 void debug(char *bin);
@@ -15,5 +17,6 @@ void step(void);
 void next(void);
 void run(void);
 void set_breakpoint(void);
+void print_obj_ref(char *line);
 
 #endif

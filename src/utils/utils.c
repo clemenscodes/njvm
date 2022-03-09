@@ -5,7 +5,9 @@ void read_file(char *arg) {
     check_ninja_binary_format(fp, arg);
     check_ninja_version(fp, arg);
     size_t variable_count = check_ninja_variable_count(fp);
-    if (variable_count > 0) initialize_sda(variable_count);
+    if (variable_count > 0) {
+        initialize_sda(variable_count);
+    }
     read_instructions_into_ir(fp);
     close_file(fp);
 }
@@ -89,28 +91,7 @@ char *read_line(void) {
     return line;
 }
 
-void print_obj_ref(char *line) {
-    ObjRef obj_ref = (ObjRef)strtol(line, (char **)NULL, 16);
-    printf("ObjRef: %p\n", (void *)obj_ref);
-    char *type;
-    unsigned int size;
-    if (IS_PRIMITIVE(obj_ref)) {
-        type = "PRIMITIVE\0";
-        printf("Type: %s\n", type);
-        printf("Value: [");
-        bip.op1 = obj_ref;
-        bigPrint(stdout);
-        printf("]\n");
-    } else {
-        type = "COMPOUND\0";
-        size = GET_ELEMENT_COUNT(obj_ref);
-        printf("Type: %s\n", type);
-        printf("Fields: %u\n", size);
-        for (int i = 0; i < size; i++) {
-            printf("[%u] = %p\n", i, (void *)GET_REFS_PTR(obj_ref)[i]);
-        }
-    }
-}
+
 
 ObjRef new_composite_object(unsigned int num_obj_refs) {
     ObjRef obj_ref = malloc((sizeof(ObjRef) * num_obj_refs) + sizeof(int));

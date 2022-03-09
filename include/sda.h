@@ -5,6 +5,7 @@
 
 #include "njvm.h"
 #include "stack.h"
+#include "debugger.h"
 
 void initialize_sda(size_t variable_count);
 void push_global(Immediate immediate);

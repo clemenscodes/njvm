@@ -4,7 +4,9 @@ void initialize_ir(size_t instruction_count) {
     vm.ir.size = instruction_count;
     vm.ir.pc = 0;
     vm.ir.data = calloc(vm.ir.size, sizeof(Bytecode));
-    if (!vm.ir.data) perror("calloc(vm.ir.data)");
+    if (!vm.ir.data) {
+        perror("calloc(vm.ir.data)");
+    }
 }
 
 void register_instruction(Opcode opcode, Immediate immediate) {
@@ -18,7 +20,9 @@ void free_ir(void) {
 }
 
 void print_ir(void) {
-    for (int i = 0; i < vm.ir.size; i++) print_instruction(i);
+    for (int i = 0; i < vm.ir.size; i++) {
+        print_instruction(i);
+    }
 }
 
 void print_instruction(ProgramCounter pc) {

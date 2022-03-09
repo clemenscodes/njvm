@@ -14,8 +14,13 @@ void execute(char *arg) {
 }
 
 void work(void) {
-    while (1) {
-        Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Instruction decoded = decode_instruction(instruction);
+    Opcode opcode = decoded.opcode;
+    while (opcode != halt) {
+        instruction = vm.ir.data[vm.ir.pc];
+        decoded = decode_instruction(instruction);
+        opcode = decoded.opcode;
         vm.ir.pc++;
         execute_instruction(instruction);
     }
@@ -28,6 +33,7 @@ void execute_instruction(Bytecode bytecode) {
     switch (opcode) {
         case halt:
             halt_instruction();
+            break;
         case pushc:
             pushc_instruction(immediate);
             break;
@@ -161,9 +167,10 @@ void halt_instruction(void) {
     free_sda();
     free_ir();
     free_stack();
-    if (vm.bp) free(vm.bp);
+    if (vm.bp) {
+        free(vm.bp);
+    }
     printf("Ninja Virtual Machine stopped\n");
-    exit(0);
 }
 
 void pushc_instruction(Immediate immediate) {
@@ -218,7 +225,9 @@ void wrint_instruction(void) {
 
 void rdchr_instruction(void) {
     char read_character;
-    if (!scanf("%c", &read_character)) fatalError("Error: failed to read character");
+    if (!scanf("%c", &read_character)) {
+        fatalError("Error: failed to read character");
+    }
     bigFromInt((int)read_character);
     push_obj_ref(bip.res);
 }
@@ -237,8 +246,12 @@ void popg_instruction(Immediate immediate) {
 }
 
 void asf_instruction(Immediate immediate) {
-    if ((vm.stack.size + immediate) >= vm.stack.max_items) fatalError("Error: stack overflow");
-    if (immediate < 0) fatalError("Error: negative immediate for asf");
+    if ((vm.stack.size + immediate) >= vm.stack.max_items) {
+        fatalError("Error: stack overflow");
+    }
+    if (immediate < 0) {
+        fatalError("Error: negative immediate for asf");
+    }
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
@@ -311,12 +324,16 @@ void jump_instruction(Immediate immediate) {
 
 void brf_instruction(Immediate immediate) {
     bip.op1 = pop_obj_ref();
-    if (!bigToInt()) jump_instruction(immediate);
+    if (!bigToInt()) {
+        jump_instruction(immediate);
+    }
 }
 
 void brt_instruction(Immediate immediate) {
     bip.op1 = pop_obj_ref();
-    if (bigToInt() == 1) jump_instruction(immediate);
+    if (bigToInt() == 1) {
+        jump_instruction(immediate);
+    }
 }
 
 void call_instruction(Immediate immediate) {
@@ -329,14 +346,13 @@ void ret_instruction(void) {
 }
 
 void drop_instruction(Immediate immediate) {
-    for (int i = 0; i < immediate; i++) pop_obj_ref();
+    for (int i = 0; i < immediate; i++) {
+        pop_obj_ref();
+    }
 }
 
 void pushr_instruction(void) {
-    if (vm.rv)
-        push_obj_ref(vm.rv);
-    else
-        fatalError("Error: no value in return value register");
+    vm.rv ? push_obj_ref(vm.rv) : fatalError("Error: no value in return value register");
 }
 
 void popr_instruction(void) {
@@ -356,9 +372,13 @@ void new_instruction(Immediate immediate) {
 
 void getf_instruction(Immediate immediate) {
     ObjRef record = pop_obj_ref();
-    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
+    if (IS_PRIMITIVE(record)) {
+        fatalError("Primitive object has no fields");
+    }
     unsigned int size = GET_ELEMENT_COUNT(record);
-    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    if (immediate < 0 || size <= immediate) {
+        fatalError("Error: index out of bound");
+    }
     ObjRef field = GET_REFS_PTR(record)[immediate];
     push_obj_ref(field);
 }
@@ -366,16 +386,22 @@ void getf_instruction(Immediate immediate) {
 void putf_instruction(Immediate immediate) {
     ObjRef new_field = pop_obj_ref();
     ObjRef record = pop_obj_ref();
-    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
+    if (IS_PRIMITIVE(record)) {
+        fatalError("Primitive object has no fields");
+    }
     unsigned int size = GET_ELEMENT_COUNT(record);
-    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    if (immediate < 0 || size <= immediate) {
+        fatalError("Error: index out of bound");
+    }
     ObjRef *fields = GET_REFS_PTR(record);
     fields[immediate] = new_field;
 }
 
 void newa_instruction(void) {
     bip.op1 = pop_obj_ref();
-    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    if (!IS_PRIMITIVE(bip.op1)) {
+        fatalError("Object is not primitive");
+    }
     unsigned int size = bigToInt();
     ObjRef array = new_composite_object(size);
     push_obj_ref(array);
@@ -383,12 +409,18 @@ void newa_instruction(void) {
 
 void getfa_instruction(void) {
     bip.op1 = pop_obj_ref();
-    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    if (!IS_PRIMITIVE(bip.op1)) {
+        fatalError("Object is not primitive");
+    }
     Immediate index = bigToInt();
     ObjRef array = pop_obj_ref();
-    if (IS_PRIMITIVE(array)) fatalError("Primitive object has no fields");
+    if (IS_PRIMITIVE(array)) {
+        fatalError("Primitive object has no fields");
+    }
     unsigned int size = GET_ELEMENT_COUNT(array);
-    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    if (index < 0 || size <= index) {
+        fatalError("Error: index out of bound");
+    }
     ObjRef field = GET_REFS_PTR(array)[index];
     push_obj_ref(field);
 }
@@ -396,12 +428,18 @@ void getfa_instruction(void) {
 void putfa_instruction(void) {
     ObjRef new_field = pop_obj_ref();
     bip.op1 = pop_obj_ref();
-    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    if (!IS_PRIMITIVE(bip.op1)) {
+        fatalError("Object is not primitive");
+    }
     Immediate index = bigToInt();
     ObjRef array = pop_obj_ref();
-    if (IS_PRIMITIVE(array)) fatalError("Not a compound object");
+    if (IS_PRIMITIVE(array)) {
+        fatalError("Not a compound object");
+    }
     unsigned int size = GET_ELEMENT_COUNT(array);
-    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    if (index < 0 || size <= index) {
+        fatalError("Error: index out of bound");
+    }
     ObjRef *fields = GET_REFS_PTR(array);
     fields[index] = new_field;
 }

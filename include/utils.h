@@ -25,7 +25,6 @@ void read_instructions_into_ir(FILE *fp);
 size_t check_ninja_instruction_count(FILE *fp);
 size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
-void print_obj_ref(char *line);
 ObjRef new_composite_object(unsigned int num_obj_refs);
 
 #endif

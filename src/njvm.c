@@ -8,7 +8,9 @@ int njvm(int argc, char *argv[]) {
     char *code_file = NULL;
     for (i = 1; i <= argc; i++) {
         if (i == argc) {
-            if (!code_file_specified) fatalError("Error: no code file specified");
+            if (!code_file_specified) {
+                fatalError("Error: no code file specified");
+            }
             execute(code_file);
             exit(0);
         }
@@ -17,7 +19,10 @@ int njvm(int argc, char *argv[]) {
                 debug_mode_activated = 1;
                 continue;
             }
-            if (code_file_specified) debug(code_file);
+            if (code_file_specified) {
+                debug(code_file);
+                exit(0);
+            }
             debug_mode_activated = 1;
             continue;
         }
@@ -38,16 +43,24 @@ int njvm(int argc, char *argv[]) {
             exit(0);
         }
         if (!strcmp(argv[i], "--stack")) {
-            if (i >= argc - 1) continue;
+            if (i >= argc - 1) {
+                continue;
+            }
             int memory = strtol(argv[++i], (char **)NULL, 10);
-            if (memory <= 0) continue;
+            if (memory <= 0) {
+                continue;
+            }
             vm.stack.memory = memory;
             continue;
         }
         if (!strcmp(argv[i], "--heap")) {
-            if (i >= argc - 1) continue;
+            if (i >= argc - 1) {
+                continue;
+            }
             int memory = strtol(argv[++i], (char **)NULL, 10);
-            if (memory <= 0) continue;
+            if (memory <= 0) {
+                continue;
+            }
             vm.heap.memory = memory;
             continue;
         }
@@ -63,12 +76,17 @@ int njvm(int argc, char *argv[]) {
             printf("unknown command line argument '%s', try '%s --help'\n", argv[i], argv[0]);
             exit(1);
         }
-        if (code_file_specified) fatalError("Error: more than one code file specified");
+        if (code_file_specified) {
+            fatalError("Error: more than one code file specified");
+        }
         code_file = argv[i];
         code_file_specified = 1;
         if (debug_mode_activated) {
-            if (i < argc - 1) continue;
+            if (i < argc - 1) {
+                continue;
+            }
             debug(code_file);
+            exit(0);
         }
     }
     return 0;
