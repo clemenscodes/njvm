@@ -1,9 +1,9 @@
 #include "debugger.h"
 
 void debug(char *bin) {
+    init();
     read_file(bin);
     printf("DEBUG: file '%s' loaded (code size = %ld, data size = %ld)\n", bin, vm.ir.size, vm.sda.size);
-    init();
     prompt();
 }
 
@@ -96,7 +96,6 @@ void run(void) {
         if (vm.bp) {
             if (*vm.bp == vm.ir.pc) {
                 vm.bp = NULL;
-                free(vm.bp);
                 printf("DEBUG [breakpoint]: cleared\n");
                 prompt();
                 break;
@@ -131,7 +130,7 @@ void set_breakpoint(void) {
         printf("DEBUG [breakpoint]: now cleared\n");
         return;
     }
-    vm.bp = malloc(sizeof(int));
+    vm.bp = (int *)alloc(sizeof(int));
     if (!vm.bp) {
         perror("(malloc)");
     }

@@ -4,12 +4,13 @@ void init(void) {
     printf("Ninja Virtual Machine started\n");
     initialize_stack();
     initialize_heap();
+    vm.rv = (ObjRef)alloc(sizeof(ObjRef));
     vm.rv = NULL;
 }
 
 void execute(char *arg) {
-    read_file(arg);
     init();
+    read_file(arg);
     work();
 }
 
@@ -164,12 +165,8 @@ void execute_instruction(Bytecode bytecode) {
 }
 
 void halt_instruction(void) {
-    free_sda();
-    free_ir();
     free_stack();
-    if (vm.bp) {
-        free(vm.bp);
-    }
+    free_heap();
     printf("Ninja Virtual Machine stopped\n");
 }
 

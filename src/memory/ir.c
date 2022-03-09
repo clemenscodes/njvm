@@ -3,7 +3,7 @@
 void initialize_ir(size_t instruction_count) {
     vm.ir.size = instruction_count;
     vm.ir.pc = 0;
-    vm.ir.data = calloc(vm.ir.size, sizeof(Bytecode));
+    vm.ir.data = (Bytecode *)alloc(vm.ir.size * sizeof(Bytecode));
     if (!vm.ir.data) {
         perror("calloc(vm.ir.data)");
     }
