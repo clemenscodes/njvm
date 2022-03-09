@@ -48,6 +48,7 @@ typedef struct {
     unsigned int memory;
     unsigned int bytes;
     unsigned int available;
+    unsigned int used;
     unsigned char *active;
     unsigned char *passive;
     unsigned char *next;

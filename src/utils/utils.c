@@ -92,7 +92,7 @@ char *read_line(void) {
 }
 
 ObjRef new_composite_object(unsigned int num_obj_refs) {
-    ObjRef obj_ref = malloc((sizeof(ObjRef) * num_obj_refs) + sizeof(int));
+    ObjRef obj_ref = alloc((sizeof(ObjRef) * num_obj_refs) + sizeof(int));
     if (!obj_ref) {
         fatalError("Failed to allocate memory for compound obj");
     }

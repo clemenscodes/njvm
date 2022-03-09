@@ -11,18 +11,22 @@ void initialize_heap() {
         perror("malloc(vm.heap.passive)");
     }
     vm.heap.available = vm.heap.bytes / 2;
+    vm.heap.used = 0;
     vm.heap.next = vm.heap.active;
 }
 
 ObjRef alloc(unsigned int bytes) {
-    if ((vm.heap.available - bytes) < 0) {
+    if ((vm.heap.used + bytes) > vm.heap.available) {
         fatalError("Error: heap is out of memory");
     }
     ObjRef next = (ObjRef)vm.heap.next;
     if (!next) {
-        fatalError("Failed to allocate memory for compound object");
+        fatalError("Error: failed to allocate memory for compound object");
     }
-    vm.heap.next = vm.heap.active + bytes;
-    vm.heap.available -= bytes;
+    vm.heap.next += bytes;
+    if (!vm.heap.next) {
+        fatalError("Error: failed calculating next pointer to free memory");
+    }
+    vm.heap.used += bytes;
     return next;
 }
