@@ -15,6 +15,7 @@
 #include "sda.h"
 #include "stack.h"
 #include "utils.h"
+#include "gc.h"
 
 void init(char *bin);
 void execute(char *bin);

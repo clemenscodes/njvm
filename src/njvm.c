@@ -21,13 +21,13 @@ int njvm(int argc, char *argv[]) {
         if (!strcmp(argv[i], "--help")) {
             printf("usage: ./njvm [options] <code file>\n");
             printf("Options:\n");
-            printf("  --stack <n> \tset stack size to n KBytes (default: n = 64)\n");
-            printf("  --heap <n> \tset heap size to n KBytes (default: n = 8192)\n");
-            printf("  --gcstats \tshow garbage collection stats\n");
-            printf("  --gcpurge \tpurge old objects after collection\n");
-            printf("  --debug \tstart virtual machine in debug mode\n");
-            printf("  --version \tshow version and exit\n");
-            printf("  --help \tshow this help and exit\n");
+            printf("  --stack <n>\t   set stack size to n KBytes (default: n = 64)\n");
+            printf("  --heap <n>\t   set heap size to n KBytes (default: n = 8192)\n");
+            printf("  --gcstats\t   show garbage collection stats\n");
+            printf("  --gcpurge\t   purge old objects after collection\n");
+            printf("  --debug\t   start virtual machine in debug mode\n");
+            printf("  --version\t   show version and exit\n");
+            printf("  --help\t   show this help and exit\n");
             exit(0);
         }
         if (!strcmp(argv[i], "--version")) {

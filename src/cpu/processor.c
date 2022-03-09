@@ -163,9 +163,13 @@ void execute_instruction(Bytecode bytecode) {
 }
 
 void halt_instruction(void) {
+    run_gc();
+    if (vm.gc.stats_flag) {
+        print_gc_stats();
+    }
+    printf("Ninja Virtual Machine stopped\n");
     free_stack();
     free_heap();
-    printf("Ninja Virtual Machine stopped\n");
 }
 
 void pushc_instruction(Immediate immediate) {

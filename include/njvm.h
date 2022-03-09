@@ -53,6 +53,7 @@ typedef struct {
     size_t bytes;
     size_t available;
     size_t used;
+    size_t size;
     void *active;
     void *passive;
     unsigned char *next;
@@ -67,8 +68,6 @@ typedef struct {
 typedef struct {
     bool purge_flag;
     bool stats_flag;
-    size_t allocated_objects;
-    size_t allocated_bytes;
     size_t copied_objects;
     size_t copied_bytes;
 } GarbageCollector;

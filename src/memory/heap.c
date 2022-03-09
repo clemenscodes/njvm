@@ -3,7 +3,7 @@
 void initialize_heap() {
     vm.heap.bytes = vm.heap.memory * 1024;
     vm.heap.available = vm.heap.bytes / 2;
-    vm.heap.used = 0;
+    vm.heap.used = vm.heap.size = 0;
     vm.heap.active = malloc(vm.heap.available);
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");
@@ -25,6 +25,7 @@ void *alloc(unsigned int bytes) {
         fatalError("Error: failed calculating pointer to available memory");
     }
     vm.heap.used += bytes;
+    vm.heap.size++;
     return p;
 }
 

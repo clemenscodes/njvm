@@ -23,6 +23,7 @@ set(SOURCES
     src/cpu/debugger.c 
     src/cpu/opcode.c 
     src/cpu/immediate.c 
+    src/cpu/gc.c 
     src/memory/ir.c 
     src/memory/stack.c
     src/memory/sda.c
