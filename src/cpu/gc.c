@@ -3,6 +3,13 @@
 void run_gc(void) {
     vm.gc.copied_objects = 0;
     vm.gc.copied_bytes = 0;
+    if (vm.heap.active == vm.heap.begin) {
+        vm.heap.next = vm.heap.active = vm.heap.passive;
+        vm.heap.passive = vm.heap.begin;
+    } else {
+        vm.heap.passive = vm.heap.active;
+        vm.heap.next = vm.heap.active = vm.heap.begin;
+    }
 }
 
 void print_gc_stats(void) {

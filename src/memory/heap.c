@@ -12,7 +12,7 @@ void initialize_heap() {
     if (!vm.heap.passive) {
         perror("malloc(vm.heap.passive)");
     }
-    vm.heap.next = vm.heap.active;
+    vm.heap.next = vm.heap.begin = vm.heap.active;
 }
 
 void *alloc(unsigned int bytes) {

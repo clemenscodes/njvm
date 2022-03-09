@@ -54,14 +54,15 @@ typedef struct {
     size_t available;
     size_t used;
     size_t size;
+    void *begin;
     void *active;
     void *passive;
     unsigned char *next;
 } Heap;
 
 typedef struct {
-    ProgramCounter pc;
     size_t size;
+    ProgramCounter pc;
     Bytecode *data;
 } InstructionRegister;
 
