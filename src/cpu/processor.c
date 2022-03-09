@@ -1,20 +1,18 @@
 #include "processor.h"
 
-void init(void) {
-    printf("Ninja Virtual Machine started\n");
+void init(char *bin) {
     initialize_stack();
     initialize_heap();
+    read_file(bin);
+    initialize_sda();
     vm.rv = (ObjRef)alloc(sizeof(ObjRef));
     vm.rv = NULL;
+    vm.debugger.activated ? debug(bin) : execute(bin);
+    exit(0);
 }
 
-void execute(char *arg) {
-    init();
-    read_file(arg);
-    work();
-}
-
-void work(void) {
+void execute(char *bin) {
+    printf("Ninja Virtual Machine started\n");
     Bytecode instruction = vm.ir.data[vm.ir.pc];
     Instruction decoded = decode_instruction(instruction);
     Opcode opcode = decoded.opcode;

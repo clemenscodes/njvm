@@ -16,11 +16,9 @@
 #include "stack.h"
 #include "utils.h"
 
-void init(void);
-void execute(char *file_name);
+void init(char *bin);
+void execute(char *bin);
 void execute_instruction(Bytecode bytecode);
-void work(void);
-void shutdown(void);
 void halt_instruction(void);
 void pushc_instruction(Immediate immediate);
 void add_instruction(void);

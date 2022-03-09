@@ -20,6 +20,10 @@ typedef int StackPointer;
 typedef int FramePointer;
 typedef int *Breakpoint;
 
+typedef struct {
+    bool activated;
+} Debugger;
+
 typedef union {
     ObjRef obj_ref;
     Immediate value;
@@ -45,13 +49,13 @@ typedef struct {
 } StaticDataArea;
 
 typedef struct {
-    unsigned int memory;
-    unsigned int bytes;
-    unsigned int available;
-    unsigned int used;
-    unsigned char *next;
+    size_t memory;
+    size_t bytes;
+    size_t available;
+    size_t used;
     void *active;
     void *passive;
+    unsigned char *next;
 } Heap;
 
 typedef struct {
@@ -61,12 +65,23 @@ typedef struct {
 } InstructionRegister;
 
 typedef struct {
+    bool purge_flag;
+    bool stats_flag;
+    size_t allocated_objects;
+    size_t allocated_bytes;
+    size_t copied_objects;
+    size_t copied_bytes;
+} GarbageCollector;
+
+typedef struct {
     Stack stack;
     StaticDataArea sda;
     Heap heap;
     InstructionRegister ir;
     Breakpoint bp;
     ObjRef rv;
+    GarbageCollector gc;
+    Debugger debugger;
 } NinjaVM;
 
 extern NinjaVM vm;

@@ -4,26 +4,18 @@ NinjaVM vm;
 
 int njvm(int argc, char *argv[]) {
     vm.stack.memory = 64, vm.heap.memory = 8192;
-    int i, code_file_specified = 0, debug_mode_activated = 0;
+    vm.debugger.activated = false;
+    bool code_flag = false;
     char *code_file = NULL;
-    for (i = 1; i <= argc; i++) {
+    for (int i = 1; i <= argc; i++) {
         if (i == argc) {
-            if (!code_file_specified) {
+            if (!code_flag) {
                 fatalError("Error: no code file specified");
             }
-            execute(code_file);
-            exit(0);
+            init(code_file);
         }
         if (!strcmp(argv[i], "--debug")) {
-            if (i < argc - 1) {
-                debug_mode_activated = 1;
-                continue;
-            }
-            if (code_file_specified) {
-                debug(code_file);
-                exit(0);
-            }
-            debug_mode_activated = 1;
+            vm.debugger.activated = true;
             continue;
         }
         if (!strcmp(argv[i], "--help")) {
@@ -65,29 +57,26 @@ int njvm(int argc, char *argv[]) {
             continue;
         }
         if (!strcmp(argv[i], "--gcstats")) {
-            printf("--gcstats option set\n");
+            vm.gc.stats_flag = true;
             continue;
         }
         if (!strcmp(argv[i], "--gcpurge")) {
-            printf("--gcpurge option set\n");
+            vm.gc.purge_flag = true;
             continue;
         }
         if (!strncmp("-", argv[i], strlen("-"))) {
             printf("unknown command line argument '%s', try '%s --help'\n", argv[i], argv[0]);
             exit(1);
         }
-        if (code_file_specified) {
+        if (code_flag) {
             fatalError("Error: more than one code file specified");
         }
         code_file = argv[i];
-        code_file_specified = 1;
-        if (debug_mode_activated) {
-            if (i < argc - 1) {
-                continue;
-            }
-            debug(code_file);
-            exit(0);
+        code_flag = true;
+        if (i < argc - 1) {
+            continue;
         }
+        init(code_file);
     }
     return 0;
 }

@@ -7,7 +7,7 @@
 #include "stack.h"
 #include "debugger.h"
 
-void initialize_sda(size_t variable_count);
+void initialize_sda(void);
 void push_global(Immediate immediate);
 void pop_global(Immediate immediate);
 void print_sda(void);
