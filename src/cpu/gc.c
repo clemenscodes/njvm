@@ -64,9 +64,9 @@ void run_gc(void) {
     }
 }
 
-void *copy_obj_ref(ObjRef obj_ref) {
+// void *copy_obj_ref(ObjRef obj_ref) {
 
-}
+// }
 
 void print_gc_stats(void) {
     printf("Garbage Collector:\n");

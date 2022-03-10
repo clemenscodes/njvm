@@ -8,7 +8,9 @@
 #define IS_PRIMITIVE(obj_ref) (((obj_ref)->size & MSB) == 0)
 #define GET_ELEMENT_COUNT(obj_ref) ((obj_ref)->size & ~MSB)
 #define GET_REFS_PTR(obj_ref) ((ObjRef *)(obj_ref)->data)
-#define GET_FORWARD_PTR(obj_ref) ((ObjRef *)(obj_ref)->size >> 8)
-#define SET_FORWARD_PTR(obj_ref, forward_pointer) ((obj_ref)->size = 3 << 62 | forward_pointer)
+#define FORWARD_PTR_MASK (~(0xFF<<56))
+#define MSB_AND_BH_MASK (3 << 62)
+#define GET_FORWARD_PTR(obj_ref) ((ObjRef *)(obj_ref)->size & FORWARD_PTR_MASK)
+#define SET_FORWARD_PTR(obj_ref, forward_pointer) ((obj_ref)->size = (MSB_AND_BH_MASK | forward_pointer))
 
 #endif
