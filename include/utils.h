@@ -27,6 +27,6 @@ size_t check_ninja_instruction_count(FILE *fp);
 size_t check_ninja_variable_count(FILE *fp);
 Bytecode seek_file(FILE *fp, int offset);
 ObjRef new_composite_object(unsigned int num_obj_refs);
-unsigned int get_obj_ref_bytes(ObjRef obj_ref);
+size_t get_obj_ref_bytes(ObjRef obj_ref);
 
 #endif

@@ -11,15 +11,24 @@ void run_gc(void) {
     }
     ObjRef *registers[5] = {&vm.rv, &bip.op1, &bip.op2, &bip.res, &bip.rem};
     for (int i = 0; i < 5; i++) {
+        if (!*registers[i]) {
+            continue;
+        }
         copy_obj_ref(*registers[i]);
     }
     for (int i = 0; i < vm.stack.size; i++) {
         StackSlot slot = vm.stack.data[i];
         if (slot.is_obj_ref) {
+            if (!slot.u.obj_ref) {
+                continue;
+            }
             copy_obj_ref(slot.u.obj_ref);
         }
     }
     for (int i = 0; i < vm.sda.size; i++) {
+        if (!vm.sda.data[i]) {
+            continue;
+        }
         copy_obj_ref(vm.sda.data[i]);
     }
     // Scan phase
@@ -38,17 +47,18 @@ void run_gc(void) {
     }
 }
 
-void copy_obj_ref(ObjRef obj_ref) {
-    collect_obj_ref_stats(obj_ref);
-    // Set broken heart flag in root object
-    // Set forward pointer to current next pointer in root object
-    // Copy root object to current next pointer using memcpy
-    // Increment next pointer with calculated root object size
-}
-
-void collect_obj_ref_stats(ObjRef obj_ref) {
+ObjRef copy_obj_ref(ObjRef obj_ref) {
+    size_t bytes = get_obj_ref_bytes(obj_ref);
     vm.gc.copied_objects++;
-    vm.gc.copied_bytes += get_obj_ref_bytes(obj_ref);
+    vm.gc.copied_bytes += bytes;
+    ObjRef new_obj_ref = memcpy(vm.heap.next, obj_ref, bytes);
+    if (!new_obj_ref) {
+        fatalError("Error: failed copying memory");
+    }
+    vm.heap.used += bytes;
+    vm.heap.size ++;
+    vm.heap.next += bytes;
+    return new_obj_ref;
 }
 
 void print_gc_stats(void) {
