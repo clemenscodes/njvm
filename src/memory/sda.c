@@ -8,10 +8,16 @@ void initialize_sda(void) {
 }
 
 void push_global(Immediate immediate) {
+    if (immediate >= vm.sda.size || immediate < 0)  {
+        fatalError("Error: sda index out of bound");
+    }
     push_obj_ref(vm.sda.data[immediate]);
 }
 
 void pop_global(Immediate immediate) {
+    if (immediate >= vm.sda.size || immediate < 0)  {
+        fatalError("Error: sda index out of bound");
+    }
     vm.sda.data[immediate] = pop_obj_ref();
 }
 

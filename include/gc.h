@@ -6,5 +6,6 @@
 
 void run_gc(void);
 void print_gc_stats(void);
+void *copy_obj_ref(ObjRef obj_ref);
 
 #endif

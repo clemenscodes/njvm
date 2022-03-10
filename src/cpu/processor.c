@@ -5,8 +5,7 @@ void init(char *bin) {
     initialize_heap();
     read_file(bin);
     initialize_sda();
-    vm.rv = (ObjRef)alloc(sizeof(ObjRef));
-    vm.rv = NULL;
+    vm.rv = alloc(sizeof(ObjRef));
     vm.debugger.activated ? debug(bin) : execute(bin);
     exit(0);
 }
@@ -164,6 +163,7 @@ void halt_instruction(void) {
     run_gc();
     free_stack();
     free_heap();
+    free_ir();
     printf("Ninja Virtual Machine stopped\n");
 }
 

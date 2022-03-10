@@ -16,6 +16,7 @@
 
 void initialize_ir(size_t instruction_count);
 void register_instruction(Opcode opcode, Immediate immediate);
+void free_ir(void);
 void print_ir(void);
 void print_instruction(ProgramCounter pc);
 
