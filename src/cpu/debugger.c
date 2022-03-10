@@ -148,20 +148,22 @@ void print_obj_ref(ObjRef obj_ref) {
     }
     printf("ObjRef: %p\n", (void *)obj_ref);
     char *type;
-    unsigned int size;
+    unsigned int bytes = get_obj_ref_bytes(obj_ref);
     if (IS_PRIMITIVE(obj_ref)) {
         type = "PRIMITIVE\0";
         printf("Type: %s\n", type);
+        printf("Bytes: %u\n", bytes);
         printf("Value: [");
         bip.op1 = obj_ref;
         bigPrint(stdout);
         printf("]\n");
     } else {
         type = "COMPOUND\0";
-        size = GET_ELEMENT_COUNT(obj_ref);
+        unsigned int fields = GET_ELEMENT_COUNT(obj_ref);
         printf("Type: %s\n", type);
-        printf("Fields: %u\n", size);
-        for (int i = 0; i < size; i++) {
+        printf("Bytes: %u\n", bytes);
+        printf("Fields: %u\n", fields);
+        for (int i = 0; i < fields; i++) {
             printf("[%u] = %p\n", i, (void *)GET_REFS_PTR(obj_ref)[i]);
         }
     }

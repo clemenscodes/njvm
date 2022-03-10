@@ -71,6 +71,9 @@ typedef struct {
     bool stats_flag;
     size_t copied_objects;
     size_t copied_bytes;
+    size_t root_objects_found;
+    size_t root_bytes_found;
+    size_t collections;
 } GarbageCollector;
 
 typedef struct {

@@ -99,3 +99,10 @@ ObjRef new_composite_object(unsigned int num_obj_refs) {
     obj_ref->size = num_obj_refs | MSB;
     return obj_ref;
 }
+
+unsigned int get_obj_ref_bytes(ObjRef obj_ref) {
+    if (!obj_ref) {
+        return 0;
+    }
+    return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(int) : GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef) + sizeof(int);
+}
