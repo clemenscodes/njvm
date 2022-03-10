@@ -42,7 +42,8 @@ void prompt(void) {
                     case 'o': {
                         printf("object reference?\n");
                         line = read_line();
-                        print_obj_ref(line);
+                        ObjRef obj_ref = (ObjRef)strtol(line, (char **)NULL, 16);
+                        print_obj_ref(obj_ref);
                         free(line);
                         continue;
                     }
@@ -141,8 +142,7 @@ void set_breakpoint(void) {
     printf("DEBUG [breakpoint]: now set at %d\n", *vm.bp);
 }
 
-void print_obj_ref(char *line) {
-    ObjRef obj_ref = (ObjRef)strtol(line, (char **)NULL, 16);
+void print_obj_ref(ObjRef obj_ref) {
     if (!obj_ref) {
         return;
     }

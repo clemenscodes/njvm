@@ -74,14 +74,14 @@ typedef struct {
 } GarbageCollector;
 
 typedef struct {
+    InstructionRegister ir;
+    ObjRef rv;
     Stack stack;
     StaticDataArea sda;
     Heap heap;
-    InstructionRegister ir;
-    Breakpoint bp;
-    ObjRef rv;
     GarbageCollector gc;
     Debugger debugger;
+    Breakpoint bp;
 } NinjaVM;
 
 extern NinjaVM vm;

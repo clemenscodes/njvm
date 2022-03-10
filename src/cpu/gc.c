@@ -10,10 +10,26 @@ void run_gc(void) {
         vm.heap.next = vm.heap.active = vm.heap.begin;
     }
     vm.heap.used = vm.heap.size = 0;
-    // Copy phase
-    // Check RV, BIP, Stack, SDA for Root objects
-    // For root object: copy_obj_ref()
-    //
+    if (vm.rv) {
+        // copy_obj_ref(vm.rv)
+    }
+    ObjRef *iterable_bip[4] = {&bip.op1, &bip.op2, &bip.res, &bip.rem};
+    for (int i = 0; i < 4; i++) {
+        // copy_obj_ref(*iterable_bip[i]);
+        print_obj_ref(*iterable_bip[i]);
+    }
+    for (int i = 0; i < vm.stack.size; i++) {
+        StackSlot slot = vm.stack.data[i];
+        if (slot.is_obj_ref) {
+            // copy_obj_ref(slot.u.obj_ref);
+        }
+    }
+    for (int i = 0; i < vm.sda.size; i++) {
+        // The compiler shouldnt know how big an objref is though
+        // Works for primitive objects
+        // But for compound objects?
+        // copy_obj_ref(vm.sda.data[i]);
+    }
     // copy_obj_ref():
     // Calculate bytes of object
     // Increment copy counter, copied byte counter

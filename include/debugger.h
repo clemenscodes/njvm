@@ -17,6 +17,6 @@ void step(void);
 void next(void);
 void run(void);
 void set_breakpoint(void);
-void print_obj_ref(char *line);
+void print_obj_ref(ObjRef obj_ref);
 
 #endif

@@ -4,8 +4,7 @@ NinjaVM vm;
 
 int njvm(int argc, char *argv[]) {
     vm.stack.memory = 64, vm.heap.memory = 8192;
-    vm.debugger.activated = false;
-    bool code_flag = false;
+    bool code_flag = vm.debugger.activated = false;
     char *code_file = NULL;
     for (int i = 1; i <= argc; i++) {
         if (i == argc) {
