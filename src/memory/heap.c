@@ -4,15 +4,12 @@ void initialize_heap() {
     vm.heap.bytes = vm.heap.memory * 1024;
     vm.heap.available = vm.heap.bytes / 2;
     vm.heap.used = vm.heap.size = 0;
-    vm.heap.active = malloc(vm.heap.available);
+    vm.heap.active = malloc(vm.heap.bytes);
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");
     }
-    vm.heap.passive = malloc(vm.heap.available);
-    if (!vm.heap.passive) {
-        perror("malloc(vm.heap.passive)");
-    }
     vm.heap.next = vm.heap.begin = vm.heap.active;
+    vm.heap.passive = vm.heap.next + vm.heap.available;
 }
 
 void *alloc(size_t size) {
@@ -34,6 +31,5 @@ void *alloc(size_t size) {
 }
 
 void free_heap(void) {
-    free(vm.heap.active);
-    free(vm.heap.passive);
+    free(vm.heap.begin);
 }

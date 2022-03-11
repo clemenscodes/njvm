@@ -101,7 +101,7 @@ ObjRef new_composite_object(unsigned int num_obj_refs) {
 }
 
 size_t get_obj_ref_bytes(ObjRef obj_ref) {
-    if (!obj_ref) {
+    if (obj_ref == NULL) {
         return sizeof(ObjRef); // At least 8 bytes, even if its a null pointer
     }
     return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(int) : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);

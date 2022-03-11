@@ -54,9 +54,9 @@ typedef struct {
     size_t bytes;
     size_t available;
     size_t used;
-    void *begin;
-    void *active;
-    void *passive;
+    unsigned char *begin;
+    unsigned char *active;
+    unsigned char *passive;
     unsigned char *next;
 } Heap;
 
