@@ -1,6 +1,7 @@
 #include "gc.h"
 
 void run_gc(void) {
+    // printf("GC triggered\n");
     vm.gc.copied_objects = vm.gc.copied_bytes = vm.heap.used = vm.heap.size = 0;
     if (vm.heap.active == vm.heap.begin) {
         vm.heap.next = vm.heap.active = vm.heap.passive;
@@ -43,15 +44,16 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
         return obj_ref;
     }
     size_t bytes = get_obj_ref_bytes(obj_ref);
+    unsigned int size = get_obj_ref_size(obj_ref);
     vm.gc.copied_objects++;
     vm.gc.copied_bytes += bytes;
     ObjRef new_obj_ref;
     if (IS_PRIMITIVE(obj_ref)) {
-        new_obj_ref = newPrimObject(bytes);
+        new_obj_ref = newPrimObject(size);
     } else {
-        new_obj_ref = new_composite_object(bytes);
+        new_obj_ref = new_composite_object(size);
     }
-    if (!memcpy((unsigned char*)new_obj_ref->data, (unsigned char*)obj_ref->data, bytes)) {
+    if (!memcpy(new_obj_ref, obj_ref, bytes)) {
         fatalError("Error: failed copying memory");
     }
     // SET BROKEN HEART FLAG

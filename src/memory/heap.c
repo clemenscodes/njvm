@@ -4,7 +4,7 @@ void initialize_heap() {
     vm.heap.bytes = vm.heap.memory * 1024;
     vm.heap.available = vm.heap.bytes / 2;
     vm.heap.used = vm.heap.size = 0;
-    vm.heap.active = malloc(vm.heap.bytes);
+    vm.heap.active = calloc(vm.heap.bytes, 1);
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");
     }
@@ -14,7 +14,6 @@ void initialize_heap() {
 
 void *alloc(size_t size) {
     if ((vm.heap.used + size) > vm.heap.available) {
-        printf("GC triggered\n");
         run_gc();
         if ((vm.heap.used + size) > vm.heap.available) {
             fatalError("Error: heap overflow");

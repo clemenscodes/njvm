@@ -106,3 +106,10 @@ size_t get_obj_ref_bytes(ObjRef obj_ref) {
     }
     return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(int) : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);
 }
+
+size_t get_obj_ref_size(ObjRef obj_ref) {
+    if (obj_ref == NULL) {
+        return sizeof(ObjRef); // At least 8 bytes, even if its a null pointer
+    }
+    return IS_PRIMITIVE(obj_ref) ? obj_ref->size : (GET_ELEMENT_COUNT(obj_ref));
+}
