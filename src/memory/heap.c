@@ -24,6 +24,7 @@ void *alloc(size_t size) {
     if (!vm.heap.next) {
         fatalError("Error: failed calculating pointer to available memory");
     }
+    vm.heap.available -= size;
     vm.heap.used += size;
     vm.heap.size++;
     return p;

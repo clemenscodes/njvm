@@ -33,5 +33,17 @@ void test_initialize_heap(void **state) {
 }
 
 void test_alloc(void **state) {
-    assert_int_equal(0, 0);
+    initialize_heap(DEFAULT_HEAP_SIZE);
+    void *old_next_pointer = vm.heap.next;
+    void *old_passive = vm.heap.passive;
+    size_t old_available = vm.heap.available;
+    size_t size = 4;
+    ObjRef test_obj_ref = alloc(size);
+    assert_int_equal(vm.heap.available, old_available - size);
+    assert_int_equal(vm.heap.used, size);
+    assert_int_equal(vm.heap.size, 1);
+    assert_ptr_equal(old_next_pointer, vm.heap.active);
+    assert_ptr_equal(old_next_pointer, test_obj_ref);
+    assert_ptr_equal(vm.heap.next, old_next_pointer + size);
+    assert_ptr_equal(old_passive, vm.heap.passive);
 }

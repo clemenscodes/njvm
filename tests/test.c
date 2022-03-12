@@ -41,9 +41,17 @@ int main() {
     const struct CMUnitTest ir[] = {
         cmocka_unit_test(test_default_ir),
     };
+     const struct CMUnitTest utils[] = {
+        cmocka_unit_test(test_utils),
+    };
     const struct CMUnitTest stack[] = {
         cmocka_unit_test(test_default_stack),
         cmocka_unit_test(test_initialize_stack),
+    };
+    const struct CMUnitTest heap[] = {
+        cmocka_unit_test(test_default_heap),
+        cmocka_unit_test(test_initialize_heap),
+        cmocka_unit_test(test_alloc),
     };
     const struct CMUnitTest sda[] = {
         cmocka_unit_test(test_default_sda),
@@ -51,22 +59,14 @@ int main() {
     const struct CMUnitTest processor[] = {
         cmocka_unit_test(test_processor),
     };
-    const struct CMUnitTest utils[] = {
-        cmocka_unit_test(test_utils),
-    };
-    const struct CMUnitTest heap[] = {
-        cmocka_unit_test(test_default_heap),
-        cmocka_unit_test(test_initialize_heap),
-        cmocka_unit_test(test_alloc),
-    };
     int result = 0;
     result += cmocka_run_group_tests(opcode, NULL, NULL);
     result += cmocka_run_group_tests(instruction, NULL, NULL);
-    result += cmocka_run_group_tests(utils, setup, teardown);
     result += cmocka_run_group_tests(ir, setup, teardown);
+    result += cmocka_run_group_tests(utils, setup, teardown);
     result += cmocka_run_group_tests(stack, setup, teardown);
+    result += cmocka_run_group_tests(heap, setup, teardown);
     result += cmocka_run_group_tests(sda, setup, teardown);
     result += cmocka_run_group_tests(processor, setup, teardown);
-    result += cmocka_run_group_tests(heap, setup, teardown);
     return result;
 }
