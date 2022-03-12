@@ -11,4 +11,6 @@
 #include "utils_test.h"
 #include "heap_test.h"
 
+void test_setup(void);
+
 #endif

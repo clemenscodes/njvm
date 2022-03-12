@@ -37,6 +37,7 @@ typedef struct {
 typedef struct {
     size_t size;
     size_t memory;
+    size_t bytes;
     size_t max_items;
     StackPointer sp;
     FramePointer fp;
@@ -85,6 +86,16 @@ typedef struct {
 } NinjaVM;
 
 extern NinjaVM vm;
+
+NinjaVM default_ir(NinjaVM vm);
+NinjaVM default_rv(NinjaVM vm);
+NinjaVM default_stack(NinjaVM vm);
+NinjaVM default_sda(NinjaVM vm);
+NinjaVM default_heap(NinjaVM vm);
+NinjaVM default_gc(NinjaVM vm);
+NinjaVM default_debugger(NinjaVM vm);
+NinjaVM default_bp(NinjaVM vm);
+NinjaVM default_vm(void);
 
 int njvm(int argc, char *argv[]);
 

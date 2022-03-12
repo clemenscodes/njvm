@@ -1,7 +1,7 @@
 #ifndef _OPCODE_TEST_H
 #define _OPCODE_TEST_H
 
-#include "cmocka.h"
+#include "test.h"
 #include "opcode.h"
 
 void test_encode_opcode(void **state);

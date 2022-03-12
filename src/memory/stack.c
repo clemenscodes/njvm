@@ -1,10 +1,10 @@
 #include "stack.h"
 
 void initialize_stack() {
-    size_t bytes = vm.stack.memory * 1024;
-    vm.stack.max_items = bytes / sizeof(StackSlot);
+    vm.stack.bytes = vm.stack.memory * 1024;
+    vm.stack.max_items = vm.stack.bytes/ sizeof(StackSlot);
     vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
-    vm.stack.data = malloc(bytes);
+    vm.stack.data = malloc(vm.stack.bytes);
     if (!vm.stack.data && vm.stack.size) {
         perror("malloc(vm.stack.data)");
     }

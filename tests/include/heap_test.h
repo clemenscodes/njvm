@@ -1,7 +1,7 @@
 #ifndef _HEAP_TEST_H
 #define _HEAP_TEST_H
 
-#include "cmocka.h"
+#include "test.h"
 #include "heap.h"
 
 void test_initialize_heap(void **state);

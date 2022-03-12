@@ -1,10 +1,12 @@
 #include "include/test.h"
 
-int main() {
-    vm.stack.memory = 64;
-    vm.heap.memory = 8192;
+void test_setup(void) {
+    vm = default_vm();
     initialize_heap();
     initialize_stack();
+}
+
+int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_encode_opcode),
         cmocka_unit_test(test_decode_opcode),
@@ -16,6 +18,8 @@ int main() {
         cmocka_unit_test(test_sda),
         cmocka_unit_test(test_processor),
         cmocka_unit_test(test_utils),
+        cmocka_unit_test(test_initialize_heap),
+        cmocka_unit_test(test_alloc),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
