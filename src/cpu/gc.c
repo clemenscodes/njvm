@@ -1,8 +1,10 @@
 #include "gc.h"
 
-void run_gc(void) {
-    // printf("GC triggered\n");
+void nullify_heap_stats(void) {
     vm.gc.copied_objects = vm.gc.copied_bytes = vm.heap.used = vm.heap.size = 0;
+}
+
+void swap_heaps(void) {
     if (vm.heap.active == vm.heap.begin) {
         vm.heap.next = vm.heap.active = vm.heap.passive;
         vm.heap.passive = vm.heap.begin;
@@ -10,19 +12,40 @@ void run_gc(void) {
         vm.heap.passive = vm.heap.active;
         vm.heap.next = vm.heap.active = vm.heap.begin;
     }
+}
+
+void relocate_registers(void) {
     ObjRef *registers[5] = {&vm.rv, &bip.op1, &bip.op2, &bip.res, &bip.rem};
     for (int i = 0; i < 5; i++) {
         *registers[i] = copy_obj_ref(*registers[i]);
     }
+}
+
+void relocate_stack_objects(void) {
     for (int i = 0; i < vm.stack.size; i++) {
         StackSlot slot = vm.stack.data[i];
         if (slot.is_obj_ref) {
             slot.u.obj_ref = copy_obj_ref(slot.u.obj_ref);
         }
     }
+}
+
+void relocate_sda_objects(void) {
     for (int i = 0; i < vm.sda.size; i++) {
         vm.sda.data[i] = copy_obj_ref(vm.sda.data[i]);
     }
+}
+
+void collect_stats(ObjRef obj_ref, size_t bytes) {
+    vm.gc.copied_objects++;
+    vm.gc.copied_bytes += bytes;
+}
+void run_gc(void) {
+    nullify_heap_stats();
+    swap_heaps();
+    relocate_registers();
+    relocate_stack_objects();
+    relocate_sda_objects();
     // Scan phase
     // Check active heap for objects
     // Skip copied primitive objects
