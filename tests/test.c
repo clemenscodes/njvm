@@ -35,6 +35,11 @@ int main() {
         cmocka_unit_test(test_run_gc),
         cmocka_unit_test(test_copy_obj_ref),
         cmocka_unit_test(test_copy_obj_ref_returns_null),
+        cmocka_unit_test(test_nullify_heap_stats),
+        cmocka_unit_test(test_swap_heaps),
+        cmocka_unit_test(test_relocate_registers),
+        cmocka_unit_test(test_relocate_stack_objects),
+        cmocka_unit_test(test_relocate_sda_objects),
     };
     int result = 0;
     result += cmocka_run_group_tests(opcode, NULL, NULL);

@@ -6,8 +6,8 @@
 #include "njvm.h"
 #include "utils.h"
 
-void swap_heaps(void);
 void nullify_heap_stats(void);
+void swap_heaps(void);
 void relocate_registers(void);
 void relocate_stack_objects(void);
 void relocate_sda_objects(void);

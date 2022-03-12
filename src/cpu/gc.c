@@ -40,6 +40,7 @@ void collect_stats(ObjRef obj_ref, size_t bytes) {
     vm.gc.copied_objects++;
     vm.gc.copied_bytes += bytes;
 }
+
 void run_gc(void) {
     nullify_heap_stats();
     swap_heaps();
