@@ -1,7 +1,6 @@
 #ifndef _TEST_H
 #define _TEST_H
 
-#include "cmocka.h"
 #include "instruction_test.h"
 #include "ir_test.h"
 #include "opcode_test.h"
@@ -11,6 +10,7 @@
 #include "utils_test.h"
 #include "heap_test.h"
 
-void test_setup(void);
+static int setup(void **state);
+static int teardown(void **state);
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef _INSTRUCTION_TEST_H
 #define _INSTRUCTION_TEST_H
 
-#include "test.h"
+#include "cmocka.h"
 #include "instruction.h"
 
 void test_instruction(void **state);

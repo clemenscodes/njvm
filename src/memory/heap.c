@@ -1,9 +1,9 @@
 #include "heap.h"
 
-void initialize_heap() {
-    vm.heap.bytes = vm.heap.memory * 1024;
+void initialize_heap(unsigned int memory) {
+    vm.heap.memory = memory;
+    vm.heap.bytes = vm.heap.memory * KiB;
     vm.heap.available = vm.heap.bytes / 2;
-    vm.heap.used = vm.heap.size = 0;
     vm.heap.active = calloc(vm.heap.bytes, 1);
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");

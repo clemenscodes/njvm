@@ -15,8 +15,8 @@ NinjaVM default_rv(NinjaVM vm) {
 
 NinjaVM default_stack(NinjaVM vm) {
     vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
-    vm.stack.memory = 64;
-    vm.stack.bytes = vm.stack.memory * 1024;
+    vm.stack.memory = DEFAULT_STACK_SIZE;
+    vm.stack.bytes = vm.stack.memory * KiB;
     vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
     vm.stack.data = NULL;
     return vm;
@@ -30,8 +30,8 @@ NinjaVM default_sda(NinjaVM vm) {
 
 NinjaVM default_heap(NinjaVM vm) {
     vm.heap.size = vm.heap.used = 0;
-    vm.heap.memory = 8192;
-    vm.heap.bytes = vm.heap.memory * 1024;
+    vm.heap.memory = DEFAULT_HEAP_SIZE;
+    vm.heap.bytes = vm.heap.memory * KiB;
     vm.heap.available = vm.heap.bytes / 2;
     vm.heap.next = vm.heap.begin = vm.heap.active = vm.heap.passive = NULL;
     return vm;
@@ -54,25 +54,6 @@ NinjaVM default_bp(NinjaVM vm) {
 }
 
 NinjaVM default_vm(void) {
-    bip.op1 = bip.op2 = bip.res = bip.rem = NULL;
-    if (vm.heap.begin) {
-        free(vm.heap.begin);
-    }
-    if (vm.stack.data) {
-        free(vm.stack.data);
-    }
-    if (vm.rv) {
-        free(vm.rv);
-    }
-    if (vm.bp) {
-        free(vm.bp);
-    }
-    if (vm.ir.data) {
-        free(vm.ir.data);
-    }
-    if (vm.sda.data) {
-        free(vm.sda.data);
-    }
     vm = default_ir(vm);
     vm = default_rv(vm);
     vm = default_stack(vm);
@@ -123,7 +104,7 @@ int njvm(int argc, char *argv[]) {
             if (memory <= 0) {
                 continue;
             }
-            vm.stack.memory = memory;
+            initialize_stack(memory);
             continue;
         }
         if (!strcmp(argv[i], "--heap")) {
@@ -134,7 +115,7 @@ int njvm(int argc, char *argv[]) {
             if (memory <= 0) {
                 continue;
             }
-            vm.heap.memory = memory;
+            initialize_heap(memory);
             continue;
         }
         if (!strcmp(argv[i], "--gcstats")) {

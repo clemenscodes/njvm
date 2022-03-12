@@ -3,7 +3,7 @@
 
 #include "njvm.h"
 
-void initialize_heap(void);
+void initialize_heap(unsigned int memory);
 void *alloc(size_t size);
 void free_heap(void);
 

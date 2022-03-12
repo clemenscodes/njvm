@@ -1,8 +1,6 @@
 #include "processor.h"
 
 void init(char *bin) {
-    initialize_stack();
-    initialize_heap();
     read_file(bin);
     initialize_sda();
     vm.rv = alloc(sizeof(ObjRef));

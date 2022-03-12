@@ -16,6 +16,10 @@
 #include "stack.h"
 #include "utils.h"
 
+#define DEFAULT_HEAP_SIZE 8192
+#define DEFAULT_STACK_SIZE 64
+#define KiB 1024
+
 typedef int StackPointer;
 typedef int FramePointer;
 typedef int *Breakpoint;

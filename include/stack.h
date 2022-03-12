@@ -7,7 +7,7 @@
 #include "../lib/build/include/bigint.h"
 #include "njvm.h"
 
-void initialize_stack(void);
+void initialize_stack(unsigned int memory);
 void push(Immediate immediate);
 void push_obj_ref(ObjRef obj_ref);
 Immediate pop(void);

@@ -1,7 +1,7 @@
 #include "include/utils_test.h"
 
 void test_utils(void **state) {
-    test_setup();
+    initialize_heap(DEFAULT_HEAP_SIZE);
     int set_size = 4;
     ObjRef obj_ref = new_composite_object(set_size);
     assert_false(IS_PRIMITIVE(obj_ref));
