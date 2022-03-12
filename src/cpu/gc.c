@@ -64,7 +64,7 @@ void run_gc(void) {
 }
 
 ObjRef copy_obj_ref(ObjRef obj_ref) {
-    if (obj_ref == NULL) {
+    if (!obj_ref) {
         return obj_ref;
     }
     size_t bytes = get_obj_ref_bytes(obj_ref);
