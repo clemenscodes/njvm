@@ -33,6 +33,8 @@ int main() {
     };
     const struct CMUnitTest gc[] = {
         cmocka_unit_test(test_run_gc),
+        cmocka_unit_test(test_copy_obj_ref),
+        cmocka_unit_test(test_copy_obj_ref_returns_null),
     };
     int result = 0;
     result += cmocka_run_group_tests(opcode, NULL, NULL);
