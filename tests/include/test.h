@@ -9,6 +9,8 @@
 #include "stack_test.h"
 #include "utils_test.h"
 #include "heap_test.h"
+#include "gc_test.h"
+#include "macros_test.h"
 
 static int setup(void **state);
 static int teardown(void **state);

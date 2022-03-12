@@ -1,33 +1,5 @@
 #include "include/test.h"
 
-static int setup(void **state) {
-    vm = default_vm();
-    return 0;
-}
-
-static int teardown(void **state) {
-    bip.op1 = bip.op2 = bip.res = bip.rem = NULL;
-    if (vm.heap.begin) {
-        free(vm.heap.begin);
-    }
-    if (vm.stack.data) {
-        free(vm.stack.data);
-    }
-    if (vm.rv) {
-        free(vm.rv);
-    }
-    if (vm.bp) {
-        free(vm.bp);
-    }
-    if (vm.ir.data) {
-        free(vm.ir.data);
-    }
-    if (vm.sda.data) {
-        free(vm.sda.data);
-    }
-    return 0;
-}
-
 int main() {
     const struct CMUnitTest opcode[] = {
         cmocka_unit_test(test_encode_opcode),
@@ -59,6 +31,9 @@ int main() {
     const struct CMUnitTest processor[] = {
         cmocka_unit_test(test_processor),
     };
+    const struct CMUnitTest gc[] = {
+        cmocka_unit_test(test_run_gc),
+    };
     int result = 0;
     result += cmocka_run_group_tests(opcode, NULL, NULL);
     result += cmocka_run_group_tests(instruction, NULL, NULL);
@@ -68,5 +43,34 @@ int main() {
     result += cmocka_run_group_tests(heap, setup, teardown);
     result += cmocka_run_group_tests(sda, setup, teardown);
     result += cmocka_run_group_tests(processor, setup, teardown);
+    result += cmocka_run_group_tests(gc, setup, teardown);
     return result;
+}
+
+static int setup(void **state) {
+    vm = default_vm();
+    return 0;
+}
+
+static int teardown(void **state) {
+    bip.op1 = bip.op2 = bip.res = bip.rem = NULL;
+    if (vm.heap.begin) {
+        free(vm.heap.begin);
+    }
+    if (vm.stack.data) {
+        free(vm.stack.data);
+    }
+    if (vm.rv) {
+        free(vm.rv);
+    }
+    if (vm.bp) {
+        free(vm.bp);
+    }
+    if (vm.ir.data) {
+        free(vm.ir.data);
+    }
+    if (vm.sda.data) {
+        free(vm.sda.data);
+    }
+    return 0;
 }

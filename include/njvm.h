@@ -1,6 +1,8 @@
 #ifndef _NJVM_H
 #define _NJVM_H
 
+#undef TESTS
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +17,7 @@
 #include "processor.h"
 #include "stack.h"
 #include "utils.h"
+#include "gc.h"
 
 #define DEFAULT_HEAP_SIZE 8192
 #define DEFAULT_STACK_SIZE 64

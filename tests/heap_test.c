@@ -34,8 +34,8 @@ void test_initialize_heap(void **state) {
 
 void test_alloc(void **state) {
     initialize_heap(DEFAULT_HEAP_SIZE);
-    void *old_next_pointer = vm.heap.next;
-    void *old_passive = vm.heap.passive;
+    unsigned char *old_next_pointer = vm.heap.next;
+    unsigned char *old_passive = vm.heap.passive;
     size_t old_available = vm.heap.available;
     size_t size = 4;
     ObjRef test_obj_ref = alloc(size);
