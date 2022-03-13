@@ -143,7 +143,7 @@ void set_breakpoint(void) {
 }
 
 void print_obj_ref(ObjRef obj_ref) {
-    if (!obj_ref) {
+    if (!obj_ref || !*(ObjRef *)obj_ref) {
         return;
     }
     printf("ObjRef: %p\n", (void *)obj_ref);

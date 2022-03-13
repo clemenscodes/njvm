@@ -15,9 +15,9 @@ void swap_heaps(void) {
 }
 
 void relocate_registers(void) {
-    ObjRef *registers[5] = {&vm.rv, &bip.op1, &bip.op2, &bip.res, &bip.rem};
+    ObjRef registers[5] = {vm.rv, bip.op1, bip.op2, bip.res, bip.rem};
     for (int i = 0; i < 5; i++) {
-        *registers[i] = copy_obj_ref(*registers[i]);
+        registers[i] = copy_obj_ref(registers[i]);
     }
 }
 
@@ -64,8 +64,8 @@ void run_gc(void) {
 }
 
 ObjRef copy_obj_ref(ObjRef obj_ref) {
-    if (!obj_ref) {
-        return obj_ref;
+    if (!obj_ref || !*(ObjRef *)obj_ref) {
+        return NULL;
     }
     size_t bytes = get_obj_ref_bytes(obj_ref);
     unsigned int size = get_obj_ref_size(obj_ref);

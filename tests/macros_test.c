@@ -75,11 +75,16 @@ void test_get_refs_ptr_macro(void **state) {
 
 void test_forward_ptr_mask_macro(void **state) {
     unsigned int forward_pointer_mask = FORWARD_PTR_MASK;
-    ObjRef test_obj_ref = new_composite_object(2);
-    print_obj_ref(test_obj_ref);
     print_memory_in_be_bytes(&forward_pointer_mask, 4);
+    ObjRef test_obj_ref = new_composite_object(1);
+    ObjRef test_primitive = newPrimObject(4);
+    GET_REFS_PTR(test_obj_ref)[0] = test_primitive;
+    print_obj_ref(test_obj_ref);
     print_memory_in_be_bytes(&test_obj_ref, 8);
     print_obj_ref_in_be_bytes(test_obj_ref);
+    print_obj_ref(test_primitive);
+    print_memory_in_be_bytes(&test_primitive, 8);
+    print_obj_ref_in_be_bytes(test_primitive);
 }
 
 void test_msb_and_bh_mask_macro(void **state) {}
