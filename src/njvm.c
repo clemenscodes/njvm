@@ -131,11 +131,7 @@ NinjaVM default_gc(NinjaVM vm) {
 
 NinjaVM default_debugger(NinjaVM vm) {
     vm.debugger.activated = false;
-    return vm;
-}
-
-NinjaVM default_bp(NinjaVM vm) {
-    vm.bp = NULL;
+    vm.debugger.bp = NULL;
     return vm;
 }
 
@@ -147,6 +143,5 @@ NinjaVM default_vm(void) {
     vm = default_heap(vm);
     vm = default_gc(vm);
     vm = default_debugger(vm);
-    vm = default_bp(vm);
     return vm;
 }

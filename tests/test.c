@@ -16,8 +16,8 @@ static int teardown(void **state) {
     if (vm.rv) {
         free(vm.rv);
     }
-    if (vm.bp) {
-        free(vm.bp);
+    if (vm.debugger.bp) {
+        free(vm.debugger.bp);
     }
     if (vm.ir.data) {
         free(vm.ir.data);

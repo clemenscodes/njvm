@@ -8,6 +8,7 @@
 
 #include "../lib/build/include/bigint.h"
 #include "debugger.h"
+#include "gc.h"
 #include "heap.h"
 #include "immediate.h"
 #include "opcode.h"
@@ -15,7 +16,6 @@
 #include "processor.h"
 #include "stack.h"
 #include "utils.h"
-#include "gc.h"
 
 #define NINJA_BINARY_FORMAT 0x46424a4e
 #define NINJA_BINARY_VERSION 0x00000008
@@ -26,9 +26,11 @@
 typedef int StackPointer;
 typedef int FramePointer;
 typedef int *Breakpoint;
+typedef ObjRef ReturnValueRegister;
 
 typedef struct {
     bool activated;
+    Breakpoint bp;
 } Debugger;
 
 typedef union {
@@ -83,13 +85,12 @@ typedef struct {
 
 typedef struct {
     InstructionRegister ir;
-    ObjRef rv;
+    ReturnValueRegister rv;
     Stack stack;
     StaticDataArea sda;
     Heap heap;
     GarbageCollector gc;
     Debugger debugger;
-    Breakpoint bp;
 } NinjaVM;
 
 extern NinjaVM vm;
@@ -103,7 +104,6 @@ NinjaVM default_sda(NinjaVM vm);
 NinjaVM default_heap(NinjaVM vm);
 NinjaVM default_gc(NinjaVM vm);
 NinjaVM default_debugger(NinjaVM vm);
-NinjaVM default_bp(NinjaVM vm);
 NinjaVM default_vm(void);
 
 #endif

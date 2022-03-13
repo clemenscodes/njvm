@@ -97,9 +97,9 @@ void step(void) {
 void run(void) {
     Opcode opcode = decode_instruction(vm.ir.data[vm.ir.pc]).opcode;
     while (opcode != halt) {
-        if (vm.bp) {
-            if (*vm.bp == vm.ir.pc) {
-                vm.bp = NULL;
+        if (vm.debugger.bp) {
+            if (*vm.debugger.bp == vm.ir.pc) {
+                vm.debugger.bp = NULL;
                 printf("DEBUG [breakpoint]: cleared\n");
                 prompt();
                 break;
@@ -113,8 +113,8 @@ void run(void) {
 }
 
 void set_breakpoint(void) {
-    if (vm.bp) {
-        printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.bp);
+    if (vm.debugger.bp) {
+        printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.debugger.bp);
     } else {
         printf("DEBUG [breakpoint]: cleared\n");
     }
@@ -129,17 +129,17 @@ void set_breakpoint(void) {
         return;
     }
     if (bp == -1) {
-        vm.bp = NULL;
-        free(vm.bp);
+        vm.debugger.bp = NULL;
+        free(vm.debugger.bp);
         printf("DEBUG [breakpoint]: now cleared\n");
         return;
     }
-    vm.bp = alloc(sizeof(int));
-    if (!vm.bp) {
+    vm.debugger.bp = alloc(sizeof(int));
+    if (!vm.debugger.bp) {
         perror("(malloc)");
     }
-    *vm.bp = bp;
-    printf("DEBUG [breakpoint]: now set at %d\n", *vm.bp);
+    *vm.debugger.bp = bp;
+    printf("DEBUG [breakpoint]: now set at %d\n", *vm.debugger.bp);
 }
 
 void print_obj_ref(ObjRef obj_ref) {
