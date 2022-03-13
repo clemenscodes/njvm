@@ -4,6 +4,8 @@
 #include "cmocka.h"
 #include "macros.h"
 
+const struct CMUnitTest macros_unit_tests[10];
+
 void test_immediate_macro(void **state);
 void test_sign_extend_macro(void **state);
 void test_msb_macro(void **state);

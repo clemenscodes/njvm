@@ -1,5 +1,10 @@
 #include "include/opcode_test.h"
 
+const struct CMUnitTest opcode_tests[] = {
+    cmocka_unit_test(test_encode_opcode),
+    cmocka_unit_test(test_decode_opcode),
+};
+
 void test_encode_opcode(void **state) {
     assert_int_equal(encode_opcode(halt), 0x00000000);
     assert_int_equal(encode_opcode(pushc), 0x01000000);

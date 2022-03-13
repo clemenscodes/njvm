@@ -1,72 +1,5 @@
 #include "include/test.h"
 
-int main() {
-    const struct CMUnitTest opcode[] = {
-        cmocka_unit_test(test_encode_opcode),
-        cmocka_unit_test(test_decode_opcode),
-    };
-    const struct CMUnitTest instruction[] = {
-        cmocka_unit_test(test_instruction),
-        cmocka_unit_test(test_encode_instruction),
-        cmocka_unit_test(test_decode_instruction),
-    };
-    const struct CMUnitTest ir[] = {
-        cmocka_unit_test(test_default_ir),
-    };
-    const struct CMUnitTest utils[] = {
-        cmocka_unit_test(test_utils),
-    };
-    const struct CMUnitTest macros[] = {
-        cmocka_unit_test(test_immediate_macro),
-        cmocka_unit_test(test_sign_extend_macro),
-        cmocka_unit_test(test_msb_macro),
-        cmocka_unit_test(test_broken_heart_macro),
-        cmocka_unit_test(test_is_primitive_macro),
-        cmocka_unit_test(test_get_element_count_macro),
-        cmocka_unit_test(test_get_refs_ptr_macro),
-        cmocka_unit_test(test_forward_ptr_mask_macro),
-        cmocka_unit_test(test_msb_and_bh_mask_macro),
-        cmocka_unit_test(test_get_forward_ptr_macro),
-    };
-    const struct CMUnitTest stack[] = {
-        cmocka_unit_test(test_default_stack),
-        cmocka_unit_test(test_initialize_stack),
-    };
-    const struct CMUnitTest heap[] = {
-        cmocka_unit_test(test_default_heap),
-        cmocka_unit_test(test_initialize_heap),
-        cmocka_unit_test(test_alloc),
-    };
-    const struct CMUnitTest sda[] = {
-        cmocka_unit_test(test_default_sda),
-    };
-    const struct CMUnitTest processor[] = {
-        cmocka_unit_test(test_processor),
-    };
-    const struct CMUnitTest gc[] = {
-        cmocka_unit_test(test_run_gc),
-        cmocka_unit_test(test_copy_obj_ref),
-        cmocka_unit_test(test_copy_obj_ref_returns_null),
-        cmocka_unit_test(test_nullify_heap_stats),
-        cmocka_unit_test(test_swap_heaps),
-        cmocka_unit_test(test_relocate_registers),
-        cmocka_unit_test(test_relocate_stack_objects),
-        cmocka_unit_test(test_relocate_sda_objects),
-    };
-    int result = 0;
-    result += cmocka_run_group_tests(opcode, NULL, NULL);
-    result += cmocka_run_group_tests(instruction, NULL, NULL);
-    result += cmocka_run_group_tests(ir, setup, teardown);
-    result += cmocka_run_group_tests(utils, setup, teardown);
-    result += cmocka_run_group_tests(macros, setup, teardown);
-    result += cmocka_run_group_tests(stack, setup, teardown);
-    result += cmocka_run_group_tests(heap, setup, teardown);
-    result += cmocka_run_group_tests(sda, setup, teardown);
-    result += cmocka_run_group_tests(processor, setup, teardown);
-    result += cmocka_run_group_tests(gc, setup, teardown);
-    return result;
-}
-
 static int setup(void **state) {
     vm = default_vm();
     return 0;
@@ -93,4 +26,19 @@ static int teardown(void **state) {
         free(vm.sda.data);
     }
     return 0;
+}
+
+int main() {
+    int result = 0;
+    result += cmocka_run_group_tests(opcode_unit_tests, NULL, NULL);
+    result += cmocka_run_group_tests(instruction_unit_tests, NULL, NULL);
+    result += cmocka_run_group_tests(ir_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(utils_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(macros_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(stack_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(heap_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(sda_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(processor_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(gc_unit_tests, setup, teardown);
+    return result;
 }

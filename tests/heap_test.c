@@ -1,5 +1,11 @@
 #include "include/heap_test.h"
 
+const struct CMUnitTest heap_unit_tests[] = {
+    cmocka_unit_test(test_default_heap),
+    cmocka_unit_test(test_initialize_heap),
+    cmocka_unit_test(test_alloc),
+};
+
 void test_default_heap(void **state) {
     assert_int_equal(vm.heap.memory, DEFAULT_HEAP_SIZE);
     assert_int_equal(vm.heap.bytes, vm.heap.memory * KiB);

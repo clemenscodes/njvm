@@ -1,5 +1,11 @@
 #include "include/instruction_test.h"
 
+const struct CMUnitTest instruction_unit_tests[] = {
+    cmocka_unit_test(test_instruction),
+    cmocka_unit_test(test_encode_instruction),
+    cmocka_unit_test(test_decode_instruction),
+};
+
 void test_instruction(void **state) {
     Opcode opcode = pushc;
     Immediate immediate = 1;

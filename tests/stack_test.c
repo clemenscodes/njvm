@@ -1,5 +1,10 @@
 #include "include/stack_test.h"
 
+const struct CMUnitTest stack_unit_tests[] = {
+    cmocka_unit_test(test_default_stack),
+    cmocka_unit_test(test_initialize_stack),
+};
+
 void test_default_stack(void **state) {
     assert_int_equal(vm.stack.size, 0);
     assert_int_equal(vm.stack.sp, 0);
