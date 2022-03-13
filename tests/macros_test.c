@@ -36,13 +36,10 @@ void test_msb_macro(void **state) {
     int msb = MSB;
     assert_int_not_equal(test, msb);
     print_memory_in_le_bytes(&msb, sizeof(int));
-    print_memory_in_le_bits(&msb, sizeof(int));
     print_memory_in_le_bytes(&test, sizeof(int));
-    print_memory_in_le_bits(&test, sizeof(int));
     test |= MSB;
     assert_int_equal(test, msb + 1);
     print_memory_in_le_bytes(&test, sizeof(int));
-    print_memory_in_le_bits(&test, sizeof(int));
 }
 
 void test_broken_heart_macro(void **state) {
@@ -51,13 +48,10 @@ void test_broken_heart_macro(void **state) {
     assert_int_not_equal(test, broken_heart);
     assert_int_equal(broken_heart, 0x40000000);
     print_memory_in_le_bytes(&broken_heart, sizeof(int));
-    print_memory_in_le_bits(&broken_heart, sizeof(int));
     print_memory_in_le_bytes(&test, sizeof(int));
-    print_memory_in_le_bits(&test, sizeof(int));
     test |= BROKEN_HEART;
     assert_int_equal(test, (broken_heart | MSB) + 1);
     print_memory_in_le_bytes(&test, sizeof(int));
-    print_memory_in_le_bits(&test, sizeof(int));
 }
 
 void test_is_primitive_macro(void **state) {
@@ -81,11 +75,11 @@ void test_get_refs_ptr_macro(void **state) {
 
 void test_forward_ptr_mask_macro(void **state) {
     unsigned int forward_pointer_mask = FORWARD_PTR_MASK;
-    print_memory_in_be_bits(&forward_pointer_mask, 4);
-    ObjRef test_obj_ref = new_composite_object(1);
-    printf("ObjRef: %p\n", (void *)test_obj_ref);
+    ObjRef test_obj_ref = new_composite_object(2);
+    print_obj_ref(test_obj_ref);
+    print_memory_in_be_bytes(&forward_pointer_mask, 4);
     print_memory_in_be_bytes(&test_obj_ref, 8);
-    print_memory_in_be_bits(&test_obj_ref, 8);
+    print_obj_ref_in_be_bytes(test_obj_ref);
 }
 
 void test_msb_and_bh_mask_macro(void **state) {}

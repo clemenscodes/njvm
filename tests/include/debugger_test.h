@@ -4,7 +4,7 @@
 #include "cmocka.h"
 #include "debugger.h"
 
-const struct CMUnitTest debugger_unit_tests[16];
+const struct CMUnitTest debugger_unit_tests[12];
 
 void test_debug(void **state);
 void test_prompt(void **state);
@@ -16,11 +16,7 @@ void test_set_breakpoint(void **state);
 void test_print_obj_ref(void **state);
 void test_print_memory_in_be_bytes(void **state);
 void test_print_memory_in_le_bytes(void **state);
-void test_print_memory_in_be_bits(void **state);
-void test_print_memory_in_le_bits(void **state);
 void test_print_obj_ref_in_be_bytes(void **state);
 void test_print_obj_ref_in_le_bytes(void **state);
-void test_print_obj_ref_in_be_bits(void **state);
-void test_print_obj_ref_in_le_bits(void **state);
 
 #endif
