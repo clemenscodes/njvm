@@ -13,6 +13,7 @@
 #include "macros_test.h"
 #include "immediate_test.h"
 #include "debugger_test.h"
+#include "support_test.h"
 
 static int setup(void **state);
 static int teardown(void **state);

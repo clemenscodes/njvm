@@ -20,6 +20,9 @@ void *alloc(size_t size) {
         }
     }
     void *p = vm.heap.next;
+    if (!p) {
+        fatalError("Error: could not determine free memory");
+    }
     vm.heap.next += size;
     if (!vm.heap.next) {
         fatalError("Error: failed calculating pointer to available memory");
