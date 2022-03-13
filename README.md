@@ -21,6 +21,10 @@
 
 ### Flags
 
+    --stack <n>  set stack size to n KBytes (default: n = 64)
+    --heap <n>   set heap size to n KBytes (default: n = 8192)
+    --gcstats    show garbage collection stats
+    --gcpurge    purge old objects after collection
     --debug      start virtual machine in debug mode
     --version    show version and exit
     --help       show this help and exit

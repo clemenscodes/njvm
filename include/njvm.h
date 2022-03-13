@@ -1,8 +1,6 @@
 #ifndef _NJVM_H
 #define _NJVM_H
 
-#undef TESTS
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,6 +92,8 @@ typedef struct {
 
 extern NinjaVM vm;
 
+int njvm(int argc, char *argv[]);
+
 NinjaVM default_ir(NinjaVM vm);
 NinjaVM default_rv(NinjaVM vm);
 NinjaVM default_stack(NinjaVM vm);
@@ -103,7 +103,5 @@ NinjaVM default_gc(NinjaVM vm);
 NinjaVM default_debugger(NinjaVM vm);
 NinjaVM default_bp(NinjaVM vm);
 NinjaVM default_vm(void);
-
-int njvm(int argc, char *argv[]);
 
 #endif

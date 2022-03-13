@@ -2,69 +2,6 @@
 
 NinjaVM vm;
 
-NinjaVM default_ir(NinjaVM vm) {
-    vm.ir.size = vm.ir.pc = 0;
-    vm.ir.data = NULL;
-    return vm;
-}
-
-NinjaVM default_rv(NinjaVM vm) {
-    vm.rv = NULL;
-    return vm;
-}
-
-NinjaVM default_stack(NinjaVM vm) {
-    vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
-    vm.stack.memory = DEFAULT_STACK_SIZE;
-    vm.stack.bytes = vm.stack.memory * KiB;
-    vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
-    vm.stack.data = NULL;
-    return vm;
-}
-
-NinjaVM default_sda(NinjaVM vm) {
-    vm.sda.size = 0;
-    vm.sda.data = NULL;
-    return vm;
-}
-
-NinjaVM default_heap(NinjaVM vm) {
-    vm.heap.size = vm.heap.used = 0;
-    vm.heap.memory = DEFAULT_HEAP_SIZE;
-    vm.heap.bytes = vm.heap.memory * KiB;
-    vm.heap.available = vm.heap.bytes / 2;
-    vm.heap.next = vm.heap.begin = vm.heap.active = vm.heap.passive = NULL;
-    return vm;
-}
-
-NinjaVM default_gc(NinjaVM vm) {
-    vm.gc.purge_flag = vm.gc.stats_flag = false;
-    vm.gc.copied_objects = vm.gc.copied_bytes = 0;
-    return vm;
-}
-
-NinjaVM default_debugger(NinjaVM vm) {
-    vm.debugger.activated = false;
-    return vm;
-}
-
-NinjaVM default_bp(NinjaVM vm) {
-    vm.bp = NULL;
-    return vm;
-}
-
-NinjaVM default_vm(void) {
-    vm = default_ir(vm);
-    vm = default_rv(vm);
-    vm = default_stack(vm);
-    vm = default_sda(vm);
-    vm = default_heap(vm);
-    vm = default_gc(vm);
-    vm = default_debugger(vm);
-    vm = default_bp(vm);
-    return vm;
-}
-
 int njvm(int argc, char *argv[]) {
     vm = default_vm();
     bool code_flag = false;
@@ -142,3 +79,67 @@ int njvm(int argc, char *argv[]) {
     }
     return 0;
 }
+
+NinjaVM default_ir(NinjaVM vm) {
+    vm.ir.size = vm.ir.pc = 0;
+    vm.ir.data = NULL;
+    return vm;
+}
+
+NinjaVM default_rv(NinjaVM vm) {
+    vm.rv = NULL;
+    return vm;
+}
+
+NinjaVM default_stack(NinjaVM vm) {
+    vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
+    vm.stack.memory = DEFAULT_STACK_SIZE;
+    vm.stack.bytes = vm.stack.memory * KiB;
+    vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
+    vm.stack.data = NULL;
+    return vm;
+}
+
+NinjaVM default_sda(NinjaVM vm) {
+    vm.sda.size = 0;
+    vm.sda.data = NULL;
+    return vm;
+}
+
+NinjaVM default_heap(NinjaVM vm) {
+    vm.heap.size = vm.heap.used = 0;
+    vm.heap.memory = DEFAULT_HEAP_SIZE;
+    vm.heap.bytes = vm.heap.memory * KiB;
+    vm.heap.available = vm.heap.bytes / 2;
+    vm.heap.next = vm.heap.begin = vm.heap.active = vm.heap.passive = NULL;
+    return vm;
+}
+
+NinjaVM default_gc(NinjaVM vm) {
+    vm.gc.purge_flag = vm.gc.stats_flag = false;
+    vm.gc.copied_objects = vm.gc.copied_bytes = 0;
+    return vm;
+}
+
+NinjaVM default_debugger(NinjaVM vm) {
+    vm.debugger.activated = false;
+    return vm;
+}
+
+NinjaVM default_bp(NinjaVM vm) {
+    vm.bp = NULL;
+    return vm;
+}
+
+NinjaVM default_vm(void) {
+    vm = default_ir(vm);
+    vm = default_rv(vm);
+    vm = default_stack(vm);
+    vm = default_sda(vm);
+    vm = default_heap(vm);
+    vm = default_gc(vm);
+    vm = default_debugger(vm);
+    vm = default_bp(vm);
+    return vm;
+}
+
