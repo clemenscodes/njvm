@@ -86,5 +86,9 @@ void test_forward_ptr_mask_macro(void **state) {
     print_obj_ref_in_be_bytes(test_primitive);
 }
 
-void test_msb_and_bh_mask_macro(void **state) {}
+void test_msb_and_bh_mask_macro(void **state) {
+    int mask = MSB_AND_BH_MASK;
+    print_memory_in_be_bytes(&mask, 4);
+}
+
 void test_get_forward_ptr_macro(void **state) {}

@@ -50,11 +50,11 @@ void print_heap_objects(void) {
 }
 
 void print_heap_bytes(void) {
-    int j = 0;
-    unsigned char *pp = vm.heap.active;
-    while (j < vm.heap.used) {
-        print_memory_in_be_bytes(pp, 4);
-        pp += 4;
-        j += 4;
+    int i = 0;
+    unsigned char *p = vm.heap.active;
+    while (i < vm.heap.used) {
+        print_memory_in_be_bytes(p, 4);
+        p += 4;
+        i += 4;
     }
 }
