@@ -17,6 +17,8 @@
 #include "utils.h"
 #include "gc.h"
 
+#define NINJA_BINARY_FORMAT 0x46424a4e
+#define NINJA_BINARY_VERSION 0x00000008
 #define DEFAULT_HEAP_SIZE 8192
 #define DEFAULT_STACK_SIZE 64
 #define KiB 1024

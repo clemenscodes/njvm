@@ -3,7 +3,7 @@
 GREEN="\\033[0;32m"
 RED="\\033[0;31m"
 SET="\\033[0m"
-VERSION="$(grep NINJA_BINARY_VERSION include/utils.h | tail -c2)"
+VERSION="$(grep NINJA_BINARY_VERSION include/njvm.h | tail -c2)"
 TEST_DIR="data/v$VERSION"
 REFERENCE_NJVM="$TEST_DIR/njvm"
 BUILD_NJVM="build/njvm"

@@ -31,7 +31,7 @@ jobs:
     - name: Package
       id: package
       run: |
-        PROJECT_VERSION="$(grep NINJA_BINARY_VERSION include/utils.h | tail -c2)"
+        PROJECT_VERSION="$(grep NINJA_BINARY_VERSION include/njvm.h | tail -c2)"
         PKG_NAME="njvm_v${PROJECT_VERSION}.tar.gz"
         tar -C ${{github.workspace}}/build -czf "${PKG_NAME}" njvm
         echo ::set-output name=PKG_NAME::${PKG_NAME}

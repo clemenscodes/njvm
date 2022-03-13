@@ -96,7 +96,10 @@ NinjaVM default_stack(NinjaVM vm) {
     vm.stack.memory = DEFAULT_STACK_SIZE;
     vm.stack.bytes = vm.stack.memory * KiB;
     vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
-    vm.stack.data = NULL;
+    vm.stack.data = malloc(vm.stack.bytes);
+    if (!vm.stack.data && vm.stack.size) {
+        perror("malloc(vm.stack.data)");
+    }
     return vm;
 }
 
@@ -111,7 +114,12 @@ NinjaVM default_heap(NinjaVM vm) {
     vm.heap.memory = DEFAULT_HEAP_SIZE;
     vm.heap.bytes = vm.heap.memory * KiB;
     vm.heap.available = vm.heap.bytes / 2;
-    vm.heap.next = vm.heap.begin = vm.heap.active = vm.heap.passive = NULL;
+    vm.heap.active = calloc(vm.heap.bytes, 1);
+    if (!vm.heap.active) {
+        perror("malloc(vm.heap.active)");
+    }
+    vm.heap.next = vm.heap.begin = vm.heap.active;
+    vm.heap.passive = vm.heap.next + vm.heap.available;
     return vm;
 }
 
@@ -142,4 +150,3 @@ NinjaVM default_vm(void) {
     vm = default_bp(vm);
     return vm;
 }
-
