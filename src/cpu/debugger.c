@@ -143,10 +143,10 @@ void set_breakpoint(void) {
 }
 
 void print_obj_ref(ObjRef obj_ref) {
+    printf("ObjRef: %p\n", (void *)obj_ref);
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return;
     }
-    printf("ObjRef: %p\n", (void *)obj_ref);
     char *type;
     unsigned int bytes = get_obj_ref_bytes(obj_ref);
     if (IS_PRIMITIVE(obj_ref)) {

@@ -62,7 +62,7 @@ typedef struct {
     size_t bytes;
     size_t available;
     size_t used;
-    unsigned char *begin;
+    void *begin;
     unsigned char *active;
     unsigned char *passive;
     unsigned char *next;

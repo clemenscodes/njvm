@@ -30,6 +30,7 @@ void *alloc(size_t size) {
     vm.heap.available -= size;
     vm.heap.used += size;
     vm.heap.size++;
+    printf("ObjRef: %p\n", (void *)p);
     return p;
 }
 
@@ -38,11 +39,14 @@ void free_heap(void) {
 }
 
 void print_heap(void) {
+    printf("Total heap size: %ld\n", vm.heap.used);
     int i = 0;
     unsigned char *p = vm.heap.begin;
+    size_t bytes = get_obj_ref_bytes((ObjRef)p);
     while (i < vm.heap.used) {
-        print_memory_in_be_bytes(p, 4);
-        p += 4;
-        i += 4;
+        print_obj_ref((ObjRef)p);
+        p += bytes;
+        i += bytes;
+        bytes = get_obj_ref_bytes((ObjRef)p);
     }
 }

@@ -66,6 +66,6 @@ void test_print_heap(void **state) {
     newPrimObject(4);
     new_composite_object(1);
     newPrimObject(8);
-    new_composite_object(1);
+    new_composite_object(7);
     print_heap();
 }
