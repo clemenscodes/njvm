@@ -178,6 +178,14 @@ void print_memory_in_le_bytes(void *ptr, int bytes) {
     printf("\n");
 }
 
+void print_memory_in_be_bytes(void *ptr, int bytes) {
+    unsigned char *address = ptr;
+    for (int i = bytes - 1; i >= 0; i--) {
+        printf("%02hhX ", address[i]);
+    }
+    printf("\n");
+}
+
 void print_memory_in_be_bits(void *ptr, int bytes) {
     long long *address = ptr;
     int bits = bytes * 8;
@@ -200,6 +208,11 @@ void print_memory_in_le_bits(void *ptr, int bytes) {
         printf("%lld", *address >> i & 1);
     }
     printf("\n");
+}
+
+void print_obj_ref_in_be_bytes(ObjRef obj_ref) {
+    size_t bytes = get_obj_ref_bytes(obj_ref);
+    print_memory_in_be_bytes(obj_ref, bytes);
 }
 
 void print_obj_ref_in_le_bytes(ObjRef obj_ref) {

@@ -7,10 +7,10 @@ const struct CMUnitTest macros_unit_tests[] = {
     cmocka_unit_test(test_broken_heart_macro),
     cmocka_unit_test(test_is_primitive_macro),
     cmocka_unit_test(test_get_element_count_macro),
-    cmocka_unit_test(test_forward_ptr_mask_macro),
+    cmocka_unit_test(test_get_refs_ptr_macro),
     cmocka_unit_test(test_msb_and_bh_mask_macro),
     cmocka_unit_test(test_get_forward_ptr_macro),
-    cmocka_unit_test(test_get_refs_ptr_macro),
+    cmocka_unit_test(test_forward_ptr_mask_macro),
 };
 
 void test_immediate_macro(void **state) {
@@ -79,6 +79,14 @@ void test_get_refs_ptr_macro(void **state) {
     assert_ptr_equal((ObjRef *)test_obj_ref->data, test_obj_ref_refs);
 }
 
-void test_forward_ptr_mask_macro(void **state) {}
+void test_forward_ptr_mask_macro(void **state) {
+    unsigned int forward_pointer_mask = FORWARD_PTR_MASK;
+    print_memory_in_be_bits(&forward_pointer_mask, 4);
+    ObjRef test_obj_ref = new_composite_object(1);
+    printf("ObjRef: %p\n", (void *)test_obj_ref);
+    print_memory_in_be_bytes(&test_obj_ref, 8);
+    print_memory_in_be_bits(&test_obj_ref, 8);
+}
+
 void test_msb_and_bh_mask_macro(void **state) {}
 void test_get_forward_ptr_macro(void **state) {}
