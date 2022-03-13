@@ -36,3 +36,13 @@ void *alloc(size_t size) {
 void free_heap(void) {
     free(vm.heap.begin);
 }
+
+void print_heap(void) {
+    int i = 0;
+    unsigned char *p = vm.heap.begin;
+    while (i < vm.heap.used) {
+        print_memory_in_be_bytes(p, 4);
+        p += 4;
+        i += 4;
+    }
+}

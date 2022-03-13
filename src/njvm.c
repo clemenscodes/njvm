@@ -114,7 +114,7 @@ NinjaVM default_heap(NinjaVM vm) {
     vm.heap.memory = DEFAULT_HEAP_SIZE;
     vm.heap.bytes = vm.heap.memory * KiB;
     vm.heap.available = vm.heap.bytes / 2;
-    vm.heap.active = calloc(vm.heap.bytes, 1);
+    vm.heap.active = malloc(vm.heap.bytes);
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");
     }

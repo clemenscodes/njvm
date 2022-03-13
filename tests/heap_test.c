@@ -4,6 +4,7 @@ const struct CMUnitTest heap_unit_tests[] = {
     cmocka_unit_test(test_default_heap),
     cmocka_unit_test(test_initialize_heap),
     cmocka_unit_test(test_alloc),
+    cmocka_unit_test(test_print_heap),
 };
 
 void test_default_heap(void **state) {
@@ -58,4 +59,13 @@ void test_alloc(void **state) {
     assert_ptr_equal(old_next_pointer, test_obj_ref);
     assert_ptr_equal(vm.heap.next, old_next_pointer + size);
     assert_ptr_equal(old_passive, vm.heap.passive);
+}
+
+void test_print_heap(void **state) {
+    vm = default_vm();
+    newPrimObject(4);
+    new_composite_object(1);
+    newPrimObject(8);
+    new_composite_object(1);
+    print_heap();
 }

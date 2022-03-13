@@ -6,5 +6,6 @@
 void initialize_heap(unsigned int memory);
 void *alloc(size_t size);
 void free_heap(void);
+void print_heap(void);
 
 #endif
