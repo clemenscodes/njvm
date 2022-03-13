@@ -44,6 +44,8 @@ set(TESTS
     tests/heap_test.c 
     tests/gc_test.c 
     tests/macros_test.c 
+    tests/debugger_test.c 
+    tests/immediate_test.c 
 )
 
 set(TEST_HEADERS
@@ -59,6 +61,8 @@ set(TEST_HEADERS
     tests/include/heap_test.h
     tests/include/gc_test.h
     tests/include/macros_test.h
+    tests/include/debugger_test.h
+    tests/include/immediate_test.h 
 )
 
 add_custom_target(libbigint COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)

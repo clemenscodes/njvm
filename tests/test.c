@@ -31,6 +31,7 @@ static int teardown(void **state) {
 int main() {
     int result = 0;
     result += cmocka_run_group_tests(opcode_unit_tests, NULL, NULL);
+    result += cmocka_run_group_tests(immediate_unit_tests, NULL, NULL);
     result += cmocka_run_group_tests(instruction_unit_tests, NULL, NULL);
     result += cmocka_run_group_tests(ir_unit_tests, setup, teardown);
     result += cmocka_run_group_tests(utils_unit_tests, setup, teardown);
@@ -40,5 +41,6 @@ int main() {
     result += cmocka_run_group_tests(sda_unit_tests, setup, teardown);
     result += cmocka_run_group_tests(processor_unit_tests, setup, teardown);
     result += cmocka_run_group_tests(gc_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(debugger_unit_tests, setup, teardown);
     return result;
 }
