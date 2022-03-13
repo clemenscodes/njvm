@@ -8,8 +8,8 @@
 #include "../lib/build/include/bigint.h"
 #include "../lib/build/include/support.h"
 #include "bytecode.h"
-#include "instruction.h"
 #include "heap.h"
+#include "instruction.h"
 #include "macros.h"
 #include "njvm.h"
 

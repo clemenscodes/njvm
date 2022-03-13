@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
+#include "debugger.h"
 #include "njvm.h"
 #include "stack.h"
-#include "debugger.h"
 
 void initialize_sda(void);
 void push_global(Immediate immediate);

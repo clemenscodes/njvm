@@ -7,6 +7,7 @@
 
 #include "../lib/build/include/bigint.h"
 #include "../lib/build/include/support.h"
+#include "gc.h"
 #include "heap.h"
 #include "instruction.h"
 #include "ir.h"
@@ -15,7 +16,6 @@
 #include "sda.h"
 #include "stack.h"
 #include "utils.h"
-#include "gc.h"
 
 void init(char *bin);
 void execute(char *bin);

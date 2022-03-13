@@ -28,11 +28,6 @@ typedef int FramePointer;
 typedef int *Breakpoint;
 typedef ObjRef ReturnValueRegister;
 
-typedef struct {
-    bool activated;
-    Breakpoint bp;
-} Debugger;
-
 typedef union {
     ObjRef obj_ref;
     Immediate value;
@@ -55,11 +50,6 @@ typedef struct {
 
 typedef struct {
     size_t size;
-    ObjRef *data;
-} StaticDataArea;
-
-typedef struct {
-    size_t size;
     size_t memory;
     size_t bytes;
     size_t available;
@@ -69,6 +59,11 @@ typedef struct {
     unsigned char *passive;
     unsigned char *next;
 } Heap;
+
+typedef struct {
+    size_t size;
+    ObjRef *data;
+} StaticDataArea;
 
 typedef struct {
     size_t size;
@@ -84,11 +79,16 @@ typedef struct {
 } GarbageCollector;
 
 typedef struct {
+    bool activated;
+    Breakpoint bp;
+} Debugger;
+
+typedef struct {
+    Stack stack;
+    Heap heap;
+    StaticDataArea sda;
     InstructionRegister ir;
     ReturnValueRegister rv;
-    Stack stack;
-    StaticDataArea sda;
-    Heap heap;
     GarbageCollector gc;
     Debugger debugger;
 } NinjaVM;
@@ -97,13 +97,13 @@ extern NinjaVM vm;
 
 int njvm(int argc, char *argv[]);
 
+NinjaVM default_vm(void);
+NinjaVM default_stack(NinjaVM vm);
+NinjaVM default_heap(NinjaVM vm);
+NinjaVM default_sda(NinjaVM vm);
 NinjaVM default_ir(NinjaVM vm);
 NinjaVM default_rv(NinjaVM vm);
-NinjaVM default_stack(NinjaVM vm);
-NinjaVM default_sda(NinjaVM vm);
-NinjaVM default_heap(NinjaVM vm);
 NinjaVM default_gc(NinjaVM vm);
 NinjaVM default_debugger(NinjaVM vm);
-NinjaVM default_vm(void);
 
 #endif

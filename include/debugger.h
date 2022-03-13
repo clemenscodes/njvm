@@ -3,11 +3,11 @@
 
 #include <stdio.h>
 
+#include "bytecode.h"
+#include "instruction.h"
 #include "njvm.h"
 #include "opcode.h"
 #include "processor.h"
-#include "bytecode.h"
-#include "instruction.h"
 #include "utils.h"
 
 void debug(char *bin);
