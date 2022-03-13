@@ -169,3 +169,50 @@ void print_obj_ref(ObjRef obj_ref) {
     }
     printf("---------------- end of object ----------------\n");
 }
+
+void print_memory_in_be_bytes(void *ptr, int bytes) {
+    unsigned char *address = ptr;
+    for (int i = 0; i < bytes; i++) {
+        printf("%02hhX ", address[i]);
+    }
+    printf("\n");
+}
+
+void print_memory_in_le_bits(void *ptr, int bytes) {
+    unsigned char *address = ptr;
+    int bits = bytes * 8;
+    for (int i = bits - 1; i >= 0; i--) {
+        if ((i % 8 == 7) && (i <= bits - 2)) {
+            printf(" ");
+        }
+        printf("%d", *address >> i & 1);
+    }
+    printf("\n");
+}
+
+void print_memory_in_be_bits(void *ptr, int bytes) {
+    unsigned char *address = ptr;
+    int bits = bytes * 8;
+    for (int i = 0; i < bits; i++) {
+        if ((i % 8 == 0) && (i != 0)) {
+            printf(" ");
+        }
+        printf("%d", *address >> i & 1);
+    }
+    printf("\n");
+}
+
+void print_obj_ref_in_be_bytes(ObjRef obj_ref) {
+    size_t bytes = get_obj_ref_bytes(obj_ref);
+    print_memory_in_be_bytes(obj_ref, bytes);
+}
+
+void print_obj_ref_in_be_bits(ObjRef obj_ref) {
+    size_t bytes = get_obj_ref_bytes(obj_ref);
+    print_memory_in_be_bits(obj_ref, bytes);
+}
+
+void print_obj_ref_in_le_bits(ObjRef obj_ref) {
+    size_t bytes = get_obj_ref_bytes(obj_ref);
+    print_memory_in_le_bits(obj_ref, bytes);
+}

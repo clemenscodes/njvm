@@ -41,7 +41,7 @@ int main() {
     result += cmocka_run_group_tests(sda_unit_tests, setup, teardown);
     result += cmocka_run_group_tests(processor_unit_tests, setup, teardown);
     result += cmocka_run_group_tests(gc_unit_tests, setup, teardown);
-    result += cmocka_run_group_tests(debugger_unit_tests, setup, teardown);
     result += cmocka_run_group_tests(support_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(debugger_unit_tests, setup, teardown);
     return result;
 }

@@ -18,5 +18,11 @@ void next(void);
 void run(void);
 void set_breakpoint(void);
 void print_obj_ref(ObjRef obj_ref);
+void print_memory_in_be_bytes(void *ptr, int bytes);
+void print_memory_in_be_bits(void *ptr, int bytes);
+void print_memory_in_le_bits(void *ptr, int bytes);
+void print_obj_ref_in_be_bytes(ObjRef obj_ref);
+void print_obj_ref_in_be_bits(ObjRef obj_ref);
+void print_obj_ref_in_le_bits(ObjRef obj_ref);
 
 #endif
