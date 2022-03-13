@@ -4,13 +4,13 @@ const struct CMUnitTest macros_unit_tests[] = {
     cmocka_unit_test(test_immediate_macro),
     cmocka_unit_test(test_sign_extend_macro),
     cmocka_unit_test(test_msb_macro),
+    cmocka_unit_test(test_broken_heart_macro),
     cmocka_unit_test(test_is_primitive_macro),
     cmocka_unit_test(test_get_element_count_macro),
-    cmocka_unit_test(test_get_refs_ptr_macro),
     cmocka_unit_test(test_forward_ptr_mask_macro),
     cmocka_unit_test(test_msb_and_bh_mask_macro),
     cmocka_unit_test(test_get_forward_ptr_macro),
-    cmocka_unit_test(test_broken_heart_macro),
+    cmocka_unit_test(test_get_refs_ptr_macro),
 };
 
 void test_immediate_macro(void **state) {
@@ -60,9 +60,25 @@ void test_broken_heart_macro(void **state) {
     print_memory_in_le_bits(&test, sizeof(int));
 }
 
-void test_is_primitive_macro(void **state) {}
-void test_get_element_count_macro(void **state) {}
-void test_get_refs_ptr_macro(void **state) {}
+void test_is_primitive_macro(void **state) {
+    ObjRef test_primitive_obj_ref = newPrimObject(4);
+    ObjRef test_composite_obj_ref = new_composite_object(4);
+    assert_true(IS_PRIMITIVE(test_primitive_obj_ref));
+    assert_false(IS_PRIMITIVE(test_composite_obj_ref));
+}
+
+void test_get_element_count_macro(void **state) {
+    size_t elements = 4;
+    ObjRef test_obj_ref = new_composite_object(elements);
+    assert_int_equal(elements, GET_ELEMENT_COUNT(test_obj_ref));
+}
+
+void test_get_refs_ptr_macro(void **state) {
+    ObjRef test_obj_ref = new_composite_object(2);
+    ObjRef *test_obj_ref_refs = GET_REFS_PTR(test_obj_ref);
+    assert_ptr_equal((ObjRef *)test_obj_ref->data, test_obj_ref_refs);
+}
+
 void test_forward_ptr_mask_macro(void **state) {}
 void test_msb_and_bh_mask_macro(void **state) {}
 void test_get_forward_ptr_macro(void **state) {}
