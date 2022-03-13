@@ -32,10 +32,17 @@ void test_sign_extend_macro(void **state) {
 }
 
 void test_msb_macro(void **state) {
+    int test = 1;
     int msb = MSB;
+    assert_int_not_equal(test, msb);
     print_memory_in_le_bytes(&msb, sizeof(int));
-    print_memory_in_be_bits(&msb, sizeof(int));
     print_memory_in_le_bits(&msb, sizeof(int));
+    print_memory_in_le_bytes(&test, sizeof(int));
+    print_memory_in_le_bits(&test, sizeof(int));
+    test |= MSB;
+    assert_int_equal(test, msb + 1);
+    print_memory_in_le_bytes(&test, sizeof(int));
+    print_memory_in_le_bits(&test, sizeof(int));
 }
 
 void test_broken_heart_macro(void **state) {}
