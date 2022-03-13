@@ -3,14 +3,14 @@
 const struct CMUnitTest macros_unit_tests[] = {
     cmocka_unit_test(test_immediate_macro),
     cmocka_unit_test(test_sign_extend_macro),
-    cmocka_unit_test(test_broken_heart_macro),
+    cmocka_unit_test(test_msb_macro),
     cmocka_unit_test(test_is_primitive_macro),
     cmocka_unit_test(test_get_element_count_macro),
     cmocka_unit_test(test_get_refs_ptr_macro),
     cmocka_unit_test(test_forward_ptr_mask_macro),
     cmocka_unit_test(test_msb_and_bh_mask_macro),
     cmocka_unit_test(test_get_forward_ptr_macro),
-    cmocka_unit_test(test_msb_macro),
+    cmocka_unit_test(test_broken_heart_macro),
 };
 
 void test_immediate_macro(void **state) {
@@ -45,7 +45,21 @@ void test_msb_macro(void **state) {
     print_memory_in_le_bits(&test, sizeof(int));
 }
 
-void test_broken_heart_macro(void **state) {}
+void test_broken_heart_macro(void **state) {
+    int test = 1 | MSB;
+    int broken_heart = BROKEN_HEART;
+    assert_int_not_equal(test, broken_heart);
+    assert_int_equal(broken_heart, 0x40000000);
+    print_memory_in_le_bytes(&broken_heart, sizeof(int));
+    print_memory_in_le_bits(&broken_heart, sizeof(int));
+    print_memory_in_le_bytes(&test, sizeof(int));
+    print_memory_in_le_bits(&test, sizeof(int));
+    test |= BROKEN_HEART;
+    assert_int_equal(test, (broken_heart | MSB) + 1);
+    print_memory_in_le_bytes(&test, sizeof(int));
+    print_memory_in_le_bits(&test, sizeof(int));
+}
+
 void test_is_primitive_macro(void **state) {}
 void test_get_element_count_macro(void **state) {}
 void test_get_refs_ptr_macro(void **state) {}
