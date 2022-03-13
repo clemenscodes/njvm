@@ -3,6 +3,9 @@
 
 #include "cmocka.h"
 #include "macros.h"
+#include "bytecode.h"
+#include "immediate.h"
+#include "debugger.h"
 
 const struct CMUnitTest macros_unit_tests[10];
 
