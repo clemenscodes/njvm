@@ -62,6 +62,4 @@ void test_copy_obj_ref_returns_null(void **state) {
     assert_null(copy_obj_ref(NULL));
 }
 
-void test_run_gc(void **state) {
-    assert_int_equal(0, 0);
-}
+void test_run_gc(void **state) {}
