@@ -36,7 +36,7 @@ void relocate_sda_objects(void) {
     }
 }
 
-void collect_stats(ObjRef obj_ref, size_t bytes) {
+void collect_stats(size_t bytes) {
     vm.gc.copied_objects++;
     vm.gc.copied_bytes += bytes;
 }
@@ -67,11 +67,11 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return NULL;
     }
-    size_t bytes = get_obj_ref_bytes(obj_ref);
-    unsigned int size = get_obj_ref_size(obj_ref);
-    vm.gc.copied_objects++;
-    vm.gc.copied_bytes += bytes;
     ObjRef new_obj_ref;
+    size_t bytes = get_obj_ref_bytes(obj_ref),
+           size = get_obj_ref_size(obj_ref),
+           forward_pointer = vm.heap.used;
+    collect_stats(bytes);
     if (IS_PRIMITIVE(obj_ref)) {
         new_obj_ref = newPrimObject(size);
     } else {
@@ -80,8 +80,8 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
     if (!memcpy(new_obj_ref, obj_ref, bytes)) {
         fatalError("Error: failed copying memory");
     }
-    // SET BROKEN HEART FLAG
-    // SET FORWARD POINTER
+    set_broken_heart(obj_ref);
+    set_forward_pointer(obj_ref, forward_pointer);
     return new_obj_ref;
 }
 

@@ -8,9 +8,8 @@ const struct CMUnitTest macros_unit_tests[] = {
     cmocka_unit_test(test_is_primitive_macro),
     cmocka_unit_test(test_get_element_count_macro),
     cmocka_unit_test(test_get_refs_ptr_macro),
-    cmocka_unit_test(test_msb_and_bh_mask_macro),
-    cmocka_unit_test(test_get_forward_ptr_macro),
-    cmocka_unit_test(test_forward_ptr_mask_macro),
+    cmocka_unit_test(test_copied_mask_macro),
+    cmocka_unit_test(test_is_copied_macro),
 };
 
 void test_immediate_macro(void **state) {
@@ -61,6 +60,20 @@ void test_is_primitive_macro(void **state) {
     assert_false(IS_PRIMITIVE(test_composite_obj_ref));
 }
 
+void test_is_copied_macro(void **state) {
+    ObjRef test_primitive_obj_ref = newPrimObject(4);
+    print_memory_in_be_bits(test_primitive_obj_ref, 4);
+    print_memory_in_be_bytes(test_primitive_obj_ref, 4);
+    unsigned copied_mask = COPIED_MASK;
+    print_memory_in_be_bits(&copied_mask, 4);
+    print_memory_in_be_bytes(&copied_mask, 4);
+    assert_false(IS_COPIED(test_primitive_obj_ref));
+    test_primitive_obj_ref->size = COPIED_MASK;
+    print_memory_in_be_bits(test_primitive_obj_ref, 4);
+    print_memory_in_be_bytes(test_primitive_obj_ref, 4);
+    assert_true(IS_COPIED(test_primitive_obj_ref));
+}
+
 void test_get_element_count_macro(void **state) {
     size_t elements = 4;
     ObjRef test_obj_ref = new_composite_object(elements);
@@ -73,8 +86,8 @@ void test_get_refs_ptr_macro(void **state) {
     assert_ptr_equal((ObjRef *)test_obj_ref->data, test_obj_ref_refs);
 }
 
-void test_forward_ptr_mask_macro(void **state) {
-    unsigned int forward_pointer_mask = FORWARD_PTR_MASK;
+void test_copied_mask_macro(void **state) {
+    unsigned int forward_pointer_mask = COPIED_MASK;
     print_memory_in_be_bytes(&forward_pointer_mask, 4);
     ObjRef test_obj_ref = new_composite_object(1);
     ObjRef test_primitive = newPrimObject(4);
@@ -85,10 +98,3 @@ void test_forward_ptr_mask_macro(void **state) {
     print_obj_ref_in_be_bytes(test_obj_ref);
     print_obj_ref_in_be_bytes(test_primitive);
 }
-
-void test_msb_and_bh_mask_macro(void **state) {
-    int mask = MSB_AND_BH_MASK;
-    print_memory_in_be_bytes(&mask, 4);
-}
-
-void test_get_forward_ptr_macro(void **state) {}

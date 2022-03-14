@@ -26,5 +26,7 @@ void print_obj_ref_in_be_bytes(ObjRef obj_ref);
 void print_obj_ref_in_le_bytes(ObjRef obj_ref);
 void print_obj_ref_in_be_bits(ObjRef obj_ref);
 void print_obj_ref_in_le_bits(ObjRef obj_ref);
+void print_memory_in_be_bits(void *ptr, int bytes);
+void print_memory_in_le_bits(void *ptr, int bytes);
 
 #endif
