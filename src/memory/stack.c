@@ -1,6 +1,6 @@
 #include "stack.h"
 
-void initialize_stack(unsigned int memory) {
+void initialize_stack(unsigned memory) {
     vm.stack.memory = memory;
     vm.stack.bytes = vm.stack.memory * KiB;
     vm.stack.max_items = vm.stack.bytes/ sizeof(StackSlot);

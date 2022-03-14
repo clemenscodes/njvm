@@ -1,9 +1,12 @@
 #include "heap.h"
 
-void initialize_heap(unsigned int memory) {
+void initialize_heap(unsigned memory) {
     vm.heap.memory = memory;
     vm.heap.bytes = vm.heap.memory * KiB;
     vm.heap.available = vm.heap.bytes / 2;
+    if (vm.heap.available > FORWARD_PTR_MASK) {
+        fatalError("Error: heap cannot address more than 2^30 bytes");
+    }
     vm.heap.active = calloc(vm.heap.bytes, 1);
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");
@@ -12,10 +15,10 @@ void initialize_heap(unsigned int memory) {
     vm.heap.passive = vm.heap.next + vm.heap.available;
 }
 
-void *alloc(size_t size) {
-    if ((vm.heap.used + size) > vm.heap.available) {
+void *alloc(unsigned bytes) {
+    if ((vm.heap.used + bytes) > vm.heap.available) {
         run_gc();
-        if ((vm.heap.used + size) > vm.heap.available) {
+        if ((vm.heap.used + bytes) > vm.heap.available) {
             fatalError("Error: heap overflow");
         }
     }
@@ -23,12 +26,12 @@ void *alloc(size_t size) {
     if (!p) {
         fatalError("Error: could not determine free memory");
     }
-    vm.heap.next += size;
+    vm.heap.next += bytes;
     if (!vm.heap.next) {
         fatalError("Error: failed calculating pointer to available memory");
     }
-    vm.heap.available -= size;
-    vm.heap.used += size;
+    vm.heap.available -= bytes;
+    vm.heap.used += bytes;
     vm.heap.size++;
     return p;
 }
