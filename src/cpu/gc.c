@@ -50,8 +50,8 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
            forward_pointer = vm.heap.used;
     ObjRef new_obj_ref = memcpy_obj_ref(obj_ref, bytes, size);
     collect_stats(bytes);
-    // set_broken_heart(obj_ref);
-    // set_forward_pointer(obj_ref, forward_pointer);
+    set_broken_heart(obj_ref);
+    set_forward_pointer(obj_ref, forward_pointer);
     return new_obj_ref;
 }
 

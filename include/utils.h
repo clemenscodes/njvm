@@ -28,5 +28,6 @@ unsigned get_obj_ref_bytes(ObjRef obj_ref);
 unsigned get_obj_ref_size(ObjRef obj_ref);
 void set_broken_heart(ObjRef obj_ref);
 void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer);
+ObjRef get_obj_ref_from_forward_pointer(ObjRef obj_ref);
 
 #endif

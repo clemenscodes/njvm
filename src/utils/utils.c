@@ -131,3 +131,13 @@ void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
     obj_ref->size &= ~FORWARD_PTR_MASK;
     obj_ref->size |= forward_pointer;
 }
+
+ObjRef get_obj_ref_from_forward_pointer(ObjRef obj_ref) {
+    if (!obj_ref || !*(ObjRef *)obj_ref) {
+        return NULL;
+    }
+    unsigned forward_pointer = GET_FORWARD_PTR(obj_ref);
+    unsigned char *p = vm.heap.active + forward_pointer;
+    ObjRef decoded_obj_ref = (ObjRef)p;
+    return decoded_obj_ref;
+}
