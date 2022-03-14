@@ -1,6 +1,6 @@
 #include "ir.h"
 
-void initialize_ir(size_t instruction_count) {
+void initialize_ir(unsigned instruction_count) {
     vm.ir.size = instruction_count;
     vm.ir.data = malloc(vm.ir.size * sizeof(Bytecode));
     if (!vm.ir.data) {

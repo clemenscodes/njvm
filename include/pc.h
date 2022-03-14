@@ -1,6 +1,6 @@
 #ifndef _PC_H
 #define _PC_H
 
-typedef int ProgramCounter;
+typedef unsigned ProgramCounter;
 
 #endif

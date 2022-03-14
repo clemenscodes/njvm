@@ -1,8 +1,6 @@
 #ifndef _INSTRUCTION_H
 #define _INSTRUCTION_H
 
-#include <stdint.h>
-
 #include "bytecode.h"
 #include "immediate.h"
 #include "ir.h"

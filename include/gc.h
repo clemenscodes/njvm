@@ -11,7 +11,7 @@ void swap_heaps(void);
 void relocate_registers(void);
 void relocate_stack_objects(void);
 void relocate_sda_objects(void);
-void collect_stats(size_t bytes);
+void collect_stats(unsigned bytes);
 void run_gc(void);
 ObjRef copy_obj_ref(ObjRef obj_ref);
 void print_gc_stats(void);

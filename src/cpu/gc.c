@@ -36,7 +36,7 @@ void relocate_sda_objects(void) {
     }
 }
 
-void collect_stats(size_t bytes) {
+void collect_stats(unsigned bytes) {
     vm.gc.copied_objects++;
     vm.gc.copied_bytes += bytes;
 }
