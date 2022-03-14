@@ -17,6 +17,6 @@ void test_is_primitive_macro(void **state);
 void test_is_copied_macro(void **state);
 void test_get_element_count_macro(void **state);
 void test_get_refs_ptr_macro(void **state);
-void test_copied_mask_macro(void **state);
+void test_forward_ptr_mask_macro(void **state);
 
 #endif

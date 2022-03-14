@@ -27,6 +27,6 @@ ObjRef new_composite_object(unsigned int num_obj_refs);
 size_t get_obj_ref_bytes(ObjRef obj_ref);
 size_t get_obj_ref_size(ObjRef obj_ref);
 void set_broken_heart(ObjRef obj_ref);
-void set_forward_pointer(ObjRef obj_ref, size_t forward_pointer);
+void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer);
 
 #endif

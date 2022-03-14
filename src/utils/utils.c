@@ -118,10 +118,15 @@ void set_broken_heart(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return;
     }
+    obj_ref->size |= BROKEN_HEART;
 }
 
-void set_forward_pointer(ObjRef obj_ref, size_t forward_pointer) {
+void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return;
     }
+    if (forward_pointer > FORWARD_PTR_MASK) {
+        fatalError("Error: address bigger than 2^30");
+    }
+    obj_ref->size |= forward_pointer;
 }

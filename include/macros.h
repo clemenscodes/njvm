@@ -6,9 +6,10 @@
 #define MSB (1 << (8 * sizeof(unsigned int) - 1))
 #define BROKEN_HEART (1 << (8 * sizeof(unsigned int) - 2))
 #define IS_PRIMITIVE(obj_ref) (((obj_ref)->size & MSB) == 0)
+#define IS_COPIED(obj_ref) (((obj_ref)->size & BROKEN_HEART) == BROKEN_HEART)
 #define GET_ELEMENT_COUNT(obj_ref) ((obj_ref)->size & ~MSB)
 #define GET_REFS_PTR(obj_ref) ((ObjRef *)(obj_ref)->data)
-#define COPIED_MASK ((3 << 30))
-#define IS_COPIED(obj_ref) (((obj_ref)->size & ~COPIED_MASK) == 0)
+#define FORWARD_PTR_MASK (~(3 << 30))
+#define GET_FORWARD_PTR(obj_ref) ((obj_ref)->size | FORWARD_PTR_MASK)
 
 #endif

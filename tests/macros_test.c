@@ -4,12 +4,13 @@ const struct CMUnitTest macros_unit_tests[] = {
     cmocka_unit_test(test_immediate_macro),
     cmocka_unit_test(test_sign_extend_macro),
     cmocka_unit_test(test_msb_macro),
-    cmocka_unit_test(test_broken_heart_macro),
     cmocka_unit_test(test_is_primitive_macro),
     cmocka_unit_test(test_get_element_count_macro),
     cmocka_unit_test(test_get_refs_ptr_macro),
-    cmocka_unit_test(test_copied_mask_macro),
+    cmocka_unit_test(test_forward_ptr_mask_macro),
+    cmocka_unit_test(test_broken_heart_macro),
     cmocka_unit_test(test_is_copied_macro),
+    cmocka_unit_test(test_forward_ptr_mask_macro),
 };
 
 void test_immediate_macro(void **state) {
@@ -46,11 +47,11 @@ void test_broken_heart_macro(void **state) {
     int broken_heart = BROKEN_HEART;
     assert_int_not_equal(test, broken_heart);
     assert_int_equal(broken_heart, 0x40000000);
-    print_memory_in_le_bytes(&broken_heart, sizeof(int));
-    print_memory_in_le_bytes(&test, sizeof(int));
+    print_memory_in_be_bytes(&broken_heart, sizeof(int));
+    print_memory_in_be_bytes(&test, sizeof(int));
     test |= BROKEN_HEART;
     assert_int_equal(test, (broken_heart | MSB) + 1);
-    print_memory_in_le_bytes(&test, sizeof(int));
+    print_memory_in_be_bytes(&test, sizeof(int));
 }
 
 void test_is_primitive_macro(void **state) {
@@ -64,11 +65,8 @@ void test_is_copied_macro(void **state) {
     ObjRef test_primitive_obj_ref = newPrimObject(4);
     print_memory_in_be_bits(test_primitive_obj_ref, 4);
     print_memory_in_be_bytes(test_primitive_obj_ref, 4);
-    unsigned copied_mask = COPIED_MASK;
-    print_memory_in_be_bits(&copied_mask, 4);
-    print_memory_in_be_bytes(&copied_mask, 4);
     assert_false(IS_COPIED(test_primitive_obj_ref));
-    test_primitive_obj_ref->size = COPIED_MASK;
+    test_primitive_obj_ref->size |= BROKEN_HEART;
     print_memory_in_be_bits(test_primitive_obj_ref, 4);
     print_memory_in_be_bytes(test_primitive_obj_ref, 4);
     assert_true(IS_COPIED(test_primitive_obj_ref));
@@ -86,9 +84,9 @@ void test_get_refs_ptr_macro(void **state) {
     assert_ptr_equal((ObjRef *)test_obj_ref->data, test_obj_ref_refs);
 }
 
-void test_copied_mask_macro(void **state) {
-    unsigned int forward_pointer_mask = COPIED_MASK;
-    print_memory_in_be_bytes(&forward_pointer_mask, 4);
+void test_forward_ptr_mask_macro(void **state) {
+    unsigned int forward_pointer_mask = FORWARD_PTR_MASK;
+    print_memory_in_be_bits(&forward_pointer_mask, 4);
     ObjRef test_obj_ref = new_composite_object(1);
     ObjRef test_primitive = newPrimObject(4);
     print_memory_in_be_bytes(&test_obj_ref, 8);
