@@ -67,11 +67,18 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return NULL;
     }
-    ObjRef new_obj_ref;
     unsigned bytes = get_obj_ref_bytes(obj_ref),
            size = get_obj_ref_size(obj_ref),
            forward_pointer = vm.heap.used;
+    ObjRef new_obj_ref = memcpy_obj_ref(obj_ref, bytes, size);
     collect_stats(bytes);
+    // set_broken_heart(obj_ref);
+    // set_forward_pointer(obj_ref, forward_pointer);
+    return new_obj_ref;
+}
+
+ObjRef memcpy_obj_ref(ObjRef obj_ref, unsigned bytes, unsigned size) {
+    ObjRef new_obj_ref;
     if (IS_PRIMITIVE(obj_ref)) {
         new_obj_ref = newPrimObject(size);
     } else {
@@ -80,8 +87,6 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
     if (!memcpy(new_obj_ref, obj_ref, bytes)) {
         fatalError("Error: failed copying memory");
     }
-    // set_broken_heart(obj_ref);
-    // set_forward_pointer(obj_ref, forward_pointer);
     return new_obj_ref;
 }
 

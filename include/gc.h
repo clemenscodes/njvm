@@ -12,6 +12,7 @@ void relocate_sda_objects(void);
 void collect_stats(unsigned bytes);
 void run_gc(void);
 ObjRef copy_obj_ref(ObjRef obj_ref);
+ObjRef memcpy_obj_ref(ObjRef obj_ref, unsigned bytes, unsigned size);
 void print_gc_stats(void);
 
 #endif
