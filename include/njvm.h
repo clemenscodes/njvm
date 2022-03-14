@@ -23,8 +23,8 @@
 #define DEFAULT_STACK_SIZE 64
 #define KiB 1024
 
-typedef int StackPointer;
-typedef int FramePointer;
+typedef unsigned StackPointer;
+typedef unsigned FramePointer;
 typedef int *Breakpoint;
 typedef ObjRef ReturnValueRegister;
 
@@ -39,21 +39,21 @@ typedef struct {
 } StackSlot;
 
 typedef struct {
-    size_t size;
-    size_t memory;
-    size_t bytes;
-    size_t max_items;
+    unsigned size;
+    unsigned memory;
+    unsigned bytes;
+    unsigned max_items;
     StackPointer sp;
     FramePointer fp;
     StackSlot *data;
 } Stack;
 
 typedef struct {
-    size_t size;
-    size_t memory;
-    size_t bytes;
-    size_t available;
-    size_t used;
+    unsigned size;
+    unsigned memory;
+    unsigned bytes;
+    unsigned available;
+    unsigned used;
     unsigned char *begin;
     unsigned char *active;
     unsigned char *passive;
@@ -61,12 +61,12 @@ typedef struct {
 } Heap;
 
 typedef struct {
-    size_t size;
+    unsigned size;
     ObjRef *data;
 } StaticDataArea;
 
 typedef struct {
-    size_t size;
+    unsigned size;
     ProgramCounter pc;
     Bytecode *data;
 } InstructionRegister;
@@ -74,8 +74,8 @@ typedef struct {
 typedef struct {
     bool purge_flag;
     bool stats_flag;
-    size_t copied_objects;
-    size_t copied_bytes;
+    unsigned copied_objects;
+    unsigned copied_bytes;
 } GarbageCollector;
 
 typedef struct {

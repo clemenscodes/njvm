@@ -4,7 +4,7 @@ void read_file(char *arg) {
     FILE *fp = open_file(arg);
     check_ninja_binary_format(fp, arg);
     check_ninja_version(fp, arg);
-    size_t variable_count = check_ninja_variable_count(fp);
+    unsigned variable_count = check_ninja_variable_count(fp);
     if (variable_count > 0) {
         vm.sda.size = variable_count;
     }
@@ -13,12 +13,12 @@ void read_file(char *arg) {
 }
 
 void read_instructions_into_ir(FILE *fp) {
-    size_t instruction_count = check_ninja_instruction_count(fp);
+    unsigned instruction_count = check_ninja_instruction_count(fp);
     initialize_ir(instruction_count);
     fseek(fp, 16, SEEK_SET);
-    size_t read_objects = fread(vm.ir.data, sizeof(Bytecode), instruction_count, fp);
+    unsigned read_objects = fread(vm.ir.data, sizeof(Bytecode), instruction_count, fp);
     if (read_objects != instruction_count) {
-        fprintf(stderr, "Error: Could only read [%lu] of [%ld] items.\n", read_objects, instruction_count);
+        fprintf(stderr, "Error: Could only read [%u] of [%u] items.\n", read_objects, instruction_count);
         close_file(fp);
         exit(1);
     }
@@ -33,7 +33,7 @@ FILE *open_file(char *arg) {
     return fp;
 }
 
-Bytecode seek_file(FILE *fp, int offset) {
+Bytecode seek_file(FILE *fp, unsigned offset) {
     Bytecode buffer;
     fseek(fp, offset, SEEK_SET);
     if (!fread(&buffer, sizeof(Bytecode), 1, fp)) {
@@ -61,7 +61,7 @@ void check_ninja_version(FILE *fp, char *arg) {
     }
 }
 
-size_t check_ninja_instruction_count(FILE *fp) {
+unsigned check_ninja_instruction_count(FILE *fp) {
     Bytecode buffer = seek_file(fp, 8);
     if (!buffer) {
         close_file(fp);
@@ -70,7 +70,7 @@ size_t check_ninja_instruction_count(FILE *fp) {
     return buffer;
 }
 
-size_t check_ninja_variable_count(FILE *fp) {
+unsigned check_ninja_variable_count(FILE *fp) {
     return seek_file(fp, 12);
 }
 
@@ -91,8 +91,8 @@ char *read_line(void) {
     return line;
 }
 
-ObjRef new_composite_object(unsigned int num_obj_refs) {
-    ObjRef obj_ref = alloc((sizeof(ObjRef) * num_obj_refs) + sizeof(int));
+ObjRef new_composite_object(unsigned num_obj_refs) {
+    ObjRef obj_ref = alloc((sizeof(ObjRef) * num_obj_refs) + sizeof(unsigned));
     if (!obj_ref) {
         fatalError("Failed to allocate memory for compound obj");
     }
@@ -100,14 +100,14 @@ ObjRef new_composite_object(unsigned int num_obj_refs) {
     return obj_ref;
 }
 
-size_t get_obj_ref_bytes(ObjRef obj_ref) {
+unsigned get_obj_ref_bytes(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return sizeof(ObjRef);
     }
-    return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(int) : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);
+    return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(unsigned) : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);
 }
 
-size_t get_obj_ref_size(ObjRef obj_ref) {
+unsigned get_obj_ref_size(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return sizeof(ObjRef);
     }

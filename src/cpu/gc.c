@@ -68,7 +68,7 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
         return NULL;
     }
     ObjRef new_obj_ref;
-    size_t bytes = get_obj_ref_bytes(obj_ref),
+    unsigned bytes = get_obj_ref_bytes(obj_ref),
            size = get_obj_ref_size(obj_ref),
            forward_pointer = vm.heap.used;
     collect_stats(bytes);
@@ -87,7 +87,7 @@ ObjRef copy_obj_ref(ObjRef obj_ref) {
 
 void print_gc_stats(void) {
     printf("Garbage Collector:\n");
-    printf("\t%ld objects (%ld bytes) allocated since last collection\n", vm.heap.size, vm.heap.used);
-    printf("\t%ld objects (%ld bytes) copied during this collection\n", vm.gc.copied_objects, vm.gc.copied_bytes);
-    printf("\t%ld of %ld bytes free after this collection\n", vm.heap.available - vm.heap.used, vm.heap.available);
+    printf("\t%u objects (%u bytes) allocated since last collection\n", vm.heap.size, vm.heap.used);
+    printf("\t%u objects (%u bytes) copied during this collection\n", vm.gc.copied_objects, vm.gc.copied_bytes);
+    printf("\t%u of %u  bytes free after this collection\n", vm.heap.available - vm.heap.used, vm.heap.available);
 }

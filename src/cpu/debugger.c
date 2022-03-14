@@ -2,10 +2,10 @@
 
 void debug(char *bin) {
     printf("DEBUG:\tfile\t:  '%s'\n", bin);
-    printf("\tcode\t:  %ld instructions\n", vm.ir.size);
-    printf("\tdata\t:  %ld objects\n", vm.sda.size);
-    printf("\tstack\t:  %ld slots\n", vm.stack.max_items);
-    printf("\theap\t:  2 * %ld bytes\n", vm.heap.available);
+    printf("\tcode\t:  %u instructions\n", vm.ir.size);
+    printf("\tdata\t:  %u objects\n", vm.sda.size);
+    printf("\tstack\t:  %u slots\n", vm.stack.max_items);
+    printf("\theap\t:  2 * %u bytes\n", vm.heap.available);
     printf("Ninja Virtual Machine started\n");
     prompt();
 }
