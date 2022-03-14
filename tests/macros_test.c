@@ -11,6 +11,7 @@ const struct CMUnitTest macros_unit_tests[] = {
     cmocka_unit_test(test_broken_heart_macro),
     cmocka_unit_test(test_is_copied_macro),
     cmocka_unit_test(test_forward_ptr_mask_macro),
+    cmocka_unit_test(test_get_forward_ptr_macro),
 };
 
 void test_immediate_macro(void **state) {
@@ -95,4 +96,17 @@ void test_forward_ptr_mask_macro(void **state) {
     GET_REFS_PTR(test_obj_ref)[0] = test_primitive;
     print_obj_ref_in_be_bytes(test_obj_ref);
     print_obj_ref_in_be_bytes(test_primitive);
+}
+
+void test_get_forward_ptr_macro(void **state) {
+    ObjRef test_obj_ref = new_composite_object(4);
+    print_memory_in_be_bits(test_obj_ref, 4);
+    unsigned test_forward_pointer = 3;
+    print_memory_in_be_bits(&test_forward_pointer, 4);
+    set_broken_heart(test_obj_ref);
+    set_forward_pointer(test_obj_ref, test_forward_pointer);
+    print_memory_in_be_bits(test_obj_ref, 4);
+    unsigned result = GET_FORWARD_PTR(test_obj_ref);
+    print_memory_in_be_bits(&result, 4);
+    assert_int_equal(result, test_forward_pointer);
 }
