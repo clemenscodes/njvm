@@ -12,6 +12,8 @@ const struct CMUnitTest utils_unit_tests[] = {
     cmocka_unit_test(test_new_composite_object),
     cmocka_unit_test(test_get_obj_ref_bytes),
     cmocka_unit_test(test_get_obj_ref_size),
+    cmocka_unit_test(test_set_broken_heart),
+    cmocka_unit_test(test_set_forward_pointer),
 };
 
 void test_read_file(void **state) {}
@@ -35,3 +37,24 @@ void test_new_composite_object(void **state) {
 }
 void test_get_obj_ref_bytes(void **state) {}
 void test_get_obj_ref_size(void **state) {}
+
+void test_set_broken_heart(void **state) {
+    ObjRef test_obj_ref = newPrimObject(6);
+    print_obj_ref_in_be_bits(test_obj_ref);
+    assert_false(IS_COPIED(test_obj_ref));
+    set_broken_heart(test_obj_ref);
+    print_obj_ref_in_be_bits(test_obj_ref);
+    assert_true(IS_COPIED(test_obj_ref));
+}
+
+void test_set_forward_pointer(void **state) {
+    vm = default_vm();
+    print_heap_bytes();
+    ObjRef test_obj_ref = new_composite_object(0);
+    print_memory_in_be_bits(test_obj_ref, 4);
+    unsigned forward_pointer = vm.heap.used;
+    print_memory_in_be_bits(&forward_pointer, 4);
+    printf("FP: %u\n", forward_pointer);
+    set_forward_pointer(test_obj_ref, forward_pointer);
+    print_memory_in_be_bits(test_obj_ref, 4);
+}

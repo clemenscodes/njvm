@@ -128,5 +128,6 @@ void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
     if (forward_pointer > FORWARD_PTR_MASK) {
         fatalError("Error: address bigger than 2^30");
     }
+    obj_ref->size &= ~FORWARD_PTR_MASK;
     obj_ref->size |= forward_pointer;
 }
