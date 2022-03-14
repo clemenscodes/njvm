@@ -41,6 +41,36 @@ void collect_stats(unsigned bytes) {
     vm.gc.copied_bytes += bytes;
 }
 
+ObjRef copy_obj_ref(ObjRef obj_ref) {
+    if (!obj_ref || !*(ObjRef *)obj_ref) {
+        return NULL;
+    }
+    unsigned bytes = get_obj_ref_bytes(obj_ref),
+           size = get_obj_ref_size(obj_ref),
+           forward_pointer = vm.heap.used;
+    ObjRef new_obj_ref = memcpy_obj_ref(obj_ref, bytes, size);
+    collect_stats(bytes);
+    // set_broken_heart(obj_ref);
+    // set_forward_pointer(obj_ref, forward_pointer);
+    return new_obj_ref;
+}
+
+ObjRef memcpy_obj_ref(ObjRef obj_ref, unsigned bytes, unsigned size) {
+    if (!obj_ref || !*(ObjRef *)obj_ref) {
+        return NULL;
+    }
+    ObjRef new_obj_ref;
+    if (IS_PRIMITIVE(obj_ref)) {
+        new_obj_ref = newPrimObject(size);
+    } else {
+        new_obj_ref = new_composite_object(size);
+    }
+    if (!memcpy(new_obj_ref, obj_ref, bytes)) {
+        fatalError("Error: failed copying memory");
+    }
+    return new_obj_ref;
+}
+
 void run_gc(void) {
     nullify_heap_stats();
     swap_heaps();
@@ -61,33 +91,6 @@ void run_gc(void) {
     if (vm.gc.stats_flag) {
         print_gc_stats();
     }
-}
-
-ObjRef copy_obj_ref(ObjRef obj_ref) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return NULL;
-    }
-    unsigned bytes = get_obj_ref_bytes(obj_ref),
-           size = get_obj_ref_size(obj_ref),
-           forward_pointer = vm.heap.used;
-    ObjRef new_obj_ref = memcpy_obj_ref(obj_ref, bytes, size);
-    collect_stats(bytes);
-    // set_broken_heart(obj_ref);
-    // set_forward_pointer(obj_ref, forward_pointer);
-    return new_obj_ref;
-}
-
-ObjRef memcpy_obj_ref(ObjRef obj_ref, unsigned bytes, unsigned size) {
-    ObjRef new_obj_ref;
-    if (IS_PRIMITIVE(obj_ref)) {
-        new_obj_ref = newPrimObject(size);
-    } else {
-        new_obj_ref = new_composite_object(size);
-    }
-    if (!memcpy(new_obj_ref, obj_ref, bytes)) {
-        fatalError("Error: failed copying memory");
-    }
-    return new_obj_ref;
 }
 
 void print_gc_stats(void) {

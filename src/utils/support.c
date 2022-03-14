@@ -6,9 +6,9 @@ void fatalError(char *msg) {
 }
 
 ObjRef newPrimObject(int dataSize) {
-    if (dataSize < 1) {
+    if (dataSize < 4) {
         printf("Bad data size: %d\n", dataSize);
-        fatalError("Error: at least 1 byte is required");
+        fatalError("Error: at least 4 bytes are required");
     }
     ObjRef obj_ref = alloc(dataSize + sizeof(Immediate));
     if (!obj_ref) {

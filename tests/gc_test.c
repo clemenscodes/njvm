@@ -9,6 +9,7 @@ const struct CMUnitTest gc_unit_tests[] = {
     cmocka_unit_test(test_relocate_registers),
     cmocka_unit_test(test_relocate_stack_objects),
     cmocka_unit_test(test_relocate_sda_objects),
+    cmocka_unit_test(test_memcpy_obj_ref),
 };
 
 void test_nullify_heap_stats(void **state) {
@@ -51,6 +52,14 @@ void test_copy_obj_ref(void **state) {
 
 void test_copy_obj_ref_returns_null(void **state) {
     assert_null(copy_obj_ref(NULL));
+}
+
+void test_memcpy_obj_ref(void **state) {
+    ObjRef test_obj_ref = new_composite_object(4);
+    unsigned bytes = get_obj_ref_bytes(test_obj_ref),
+             size = get_obj_ref_size(test_obj_ref);
+    ObjRef new_obj_ref = memcpy_obj_ref(test_obj_ref, bytes, size);
+    assert_memory_equal(test_obj_ref, new_obj_ref, bytes);
 }
 
 void test_run_gc(void **state) {}

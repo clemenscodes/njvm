@@ -4,7 +4,7 @@
 #include "cmocka.h"
 #include "gc.h"
 
-const struct CMUnitTest gc_unit_tests[8];
+const struct CMUnitTest gc_unit_tests[9];
 
 void test_run_gc(void **state);
 void test_copy_obj_ref(void **state);
@@ -14,5 +14,6 @@ void test_swap_heaps(void **state);
 void test_relocate_registers(void **state);
 void test_relocate_stack_objects(void **state);
 void test_relocate_sda_objects(void **state);
+void test_memcpy_obj_ref(void **state);
 
 #endif
