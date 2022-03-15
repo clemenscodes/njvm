@@ -119,6 +119,9 @@ void set_broken_heart(ObjRef obj_ref) {
         return;
     }
     obj_ref->size |= BROKEN_HEART;
+    if (!IS_COPIED(obj_ref)) {
+        fatalError("Error: failed setting broken heart flag");
+    }
 }
 
 void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
@@ -128,6 +131,9 @@ void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
     if (forward_pointer > FORWARD_PTR_MASK) {
         fatalError("Error: address bigger than 2^30");
     }
+    if (!IS_COPIED(obj_ref)) {
+        fatalError("Error: broken heart flag is not set, would corrupt the object");
+    }
     obj_ref->size &= ~FORWARD_PTR_MASK;
     obj_ref->size |= forward_pointer;
 }
@@ -135,6 +141,9 @@ void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
 ObjRef get_obj_ref_from_forward_pointer(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return NULL;
+    }
+    if (!IS_COPIED(obj_ref)) {
+        fatalError("Error: broken heart flag is not set, no valid forward pointer in object");
     }
     unsigned forward_pointer = GET_FORWARD_PTR(obj_ref);
     unsigned char *p = vm.heap.active + forward_pointer;

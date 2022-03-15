@@ -70,13 +70,14 @@ void test_set_forward_pointer(void **state) {
     unsigned forward_pointer = vm.heap.used;
     print_memory_in_be_bits(&forward_pointer, 4);
     printf("FP: %u\n", forward_pointer);
+    set_broken_heart(test_obj_ref);
     set_forward_pointer(test_obj_ref, forward_pointer);
     print_memory_in_be_bits(test_obj_ref, 4);
 }
 
 void test_get_obj_ref_from_forward_pointer(void **state) {
     ObjRef test_obj_ref = new_composite_object(2);
-    ObjRef new_obj_ref = copy_obj_ref(test_obj_ref);
+    ObjRef new_obj_ref = relocate(test_obj_ref);
     ObjRef forward_pointer_decoded_obj_ref = get_obj_ref_from_forward_pointer(test_obj_ref);
     assert_ptr_not_equal(test_obj_ref, new_obj_ref);
     assert_ptr_equal(forward_pointer_decoded_obj_ref, new_obj_ref);

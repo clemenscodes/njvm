@@ -1,15 +1,18 @@
 #include "include/gc_test.h"
 
 const struct CMUnitTest gc_unit_tests[] = {
-    cmocka_unit_test(test_run_gc),
-    cmocka_unit_test(test_copy_obj_ref),
-    cmocka_unit_test(test_copy_obj_ref_returns_null),
     cmocka_unit_test(test_nullify_heap_stats),
     cmocka_unit_test(test_swap_heaps),
     cmocka_unit_test(test_relocate_registers),
     cmocka_unit_test(test_relocate_stack_objects),
     cmocka_unit_test(test_relocate_sda_objects),
-    cmocka_unit_test(test_memcpy_obj_ref),
+    cmocka_unit_test(test_relocate),
+    cmocka_unit_test(test_relocate_returns_null),
+    cmocka_unit_test(test_collect_stats),
+    cmocka_unit_test(test_print_gc_stats),
+    cmocka_unit_test(test_purge_heap),
+    cmocka_unit_test(test_scan),
+    cmocka_unit_test(test_run_gc),
 };
 
 void test_nullify_heap_stats(void **state) {
@@ -44,22 +47,26 @@ void test_relocate_sda_objects(void **state) {
     relocate_sda_objects();
 }
 
-void test_copy_obj_ref(void **state) {
+void test_relocate(void **state) {
     // size_t size = 4;
     // ObjRef test_obj_ref = newPrimObject(size);
-    // ObjRef copied_obj_ref = copy_obj_ref(test_obj_ref);
+    // ObjRef copied_obj_ref = relocate(test_obj_ref);
 }
 
-void test_copy_obj_ref_returns_null(void **state) {
-    assert_null(copy_obj_ref(NULL));
+void test_relocate_returns_null(void **state) {
+    assert_null(relocate(NULL));
 }
 
-void test_memcpy_obj_ref(void **state) {
+void test_copy_obj_ref_to_free_memory(void **state) {
     ObjRef test_obj_ref = new_composite_object(4);
     unsigned bytes = get_obj_ref_bytes(test_obj_ref),
              size = get_obj_ref_size(test_obj_ref);
-    ObjRef new_obj_ref = memcpy_obj_ref(test_obj_ref, bytes, size);
+    ObjRef new_obj_ref = copy_obj_ref_to_free_memory(test_obj_ref, bytes, size);
     assert_memory_equal(test_obj_ref, new_obj_ref, bytes);
 }
 
+void test_collect_stats(void **state) {}
+void test_print_gc_stats(void **state) {}
+void test_purge_heap(void **state) {}
+void test_scan(void **state) {}
 void test_run_gc(void **state) {}
