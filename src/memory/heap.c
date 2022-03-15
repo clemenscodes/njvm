@@ -9,13 +9,13 @@ void initialize_heap(unsigned memory) {
     }
     vm.heap.active = calloc(vm.heap.bytes, sizeof(unsigned char*));
     if (!vm.heap.active) {
-        perror("malloc(vm.heap.active)");
+        perror("calloc(vm.heap.active)");
     }
     vm.heap.next = vm.heap.begin = vm.heap.active;
     vm.heap.passive = vm.heap.next + vm.heap.available;
 }
 
-void *alloc(unsigned bytes) {
+ObjRef alloc(unsigned bytes) {
     if ((vm.heap.used + bytes) > vm.heap.available) {
         if (!vm.gc.is_running) {
             run_gc();
@@ -34,17 +34,21 @@ void *alloc(unsigned bytes) {
     }
     vm.heap.used += bytes;
     vm.heap.size++;
-    return p;
+    return (ObjRef)p;
 }
 
 void free_heap(void) {
     free(vm.heap.begin);
 }
 
+void purge_heap_half(void *half) {
+    memset(half, 0, (size_t)vm.heap.available);
+}
+
 void print_heap_objects(void) {
     int i = 0;
     unsigned char *p = vm.heap.active;
-    size_t bytes = get_obj_ref_bytes((ObjRef)p);
+    unsigned bytes = get_obj_ref_bytes((ObjRef)p);
     while (i < vm.heap.used) {
         print_obj_ref((ObjRef)p);
         p += bytes;

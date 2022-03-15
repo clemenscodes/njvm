@@ -134,7 +134,7 @@ void set_breakpoint(void) {
         printf("DEBUG [breakpoint]: now cleared\n");
         return;
     }
-    vm.debugger.bp = alloc(sizeof(int));
+    vm.debugger.bp = malloc(sizeof(int));
     if (!vm.debugger.bp) {
         perror("(malloc)");
     }

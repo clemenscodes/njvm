@@ -24,7 +24,7 @@ for bin in "$TEST_DIR"/*.bin; do
     STDIN="$(cat "$TEST".in)"
     VALGRIND_LOG_FILE="$TEST.valgrind.out"
     echo > "$VALGRIND_LOG_FILE"
-    VALGRIND="valgrind --leak-check=full --show-leak-kinds=all -s --log-file=$VALGRIND_LOG_FILE"
+    VALGRIND="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s --log-file=$VALGRIND_LOG_FILE"
     EXEC_BUILD="$VALGRIND $BUILD_NJVM $bin"
     EXEC_REFERENCE="$REFERENCE_NJVM $bin"
     BUILD="$(echo "$STDIN" | $EXEC_BUILD)"

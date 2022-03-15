@@ -14,13 +14,10 @@ void swap_heaps(void) {
         vm.heap.passive = vm.heap.active;
         vm.heap.next = vm.heap.active = vm.heap.begin;
     }
+    purge_heap_half(vm.heap.active);
 }
 
 void relocate_registers(void) {
-    // ObjRef *registers[5] = {&vm.rv, &bip.op1, &bip.op2, &bip.res, &bip.rem};
-    // for (int i = 0; i < 5; i++) {
-    //     registers[i] = relocate(registers[i]);
-    // }
     vm.rv = relocate(vm.rv);
     bip.op1 = relocate(bip.op1);
     bip.op2 = relocate(bip.op2);
@@ -43,29 +40,29 @@ void relocate_stack_objects(void) {
     }
 }
 
-ObjRef relocate(ObjRef obj_ref) {
-    if (obj_ref == NULL) {
+ObjRef relocate(ObjRef orig) {
+    if (!orig) {
         return (ObjRef)NULL;
     }
-    if (IS_COPIED(obj_ref)) {
-        return get_obj_ref_from_forward_pointer(obj_ref);
+    if (IS_COPIED(orig)) {
+        return get_obj_ref_from_forward_pointer(orig);
     }
-    unsigned bytes = get_obj_ref_bytes(obj_ref),
-             size = get_obj_ref_size(obj_ref);
-    ObjRef new_obj_ref = copy_obj_ref_to_free_memory(obj_ref, bytes, size);
-    if (!new_obj_ref) {
+    unsigned bytes = get_obj_ref_bytes(orig),
+             size = get_obj_ref_size(orig);
+    ObjRef copy = copy_obj_ref_to_free_memory(orig, bytes, size);
+    if (!copy) {
         fatalError("Error: failed relocating object");
     }
-    return new_obj_ref;
+    return copy;
 }
 
 ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref, unsigned bytes, unsigned size) {
-    if ((void *)obj_ref == NULL) {
-        return NULL;
+    if (!obj_ref) {
+        return (ObjRef)NULL;
     }
     unsigned forward_pointer = vm.heap.used;
     ObjRef new_obj_ref = IS_PRIMITIVE(obj_ref) ? newPrimObject(size) : new_composite_object(size);
-    if (!memcpy(new_obj_ref, obj_ref, bytes)) {
+    if (!memcpy(new_obj_ref->data, obj_ref->data, bytes - sizeof(unsigned))) {
         fatalError("Error: failed copying memory");
     }
     set_broken_heart(obj_ref);
@@ -83,21 +80,19 @@ void scan(void) {
     unsigned char *scan = vm.heap.active;
     while (scan < vm.heap.next) {
         ObjRef obj_ref = (ObjRef)scan;
-        unsigned bytes = get_obj_ref_bytes(obj_ref);
         if (!IS_PRIMITIVE(obj_ref)) {
-            unsigned elements = GET_ELEMENT_COUNT(obj_ref);
             ObjRef *obj_refs = GET_REFS_PTR(obj_ref);
-            for (int i = 0; i < elements; i++) {
+            for (int i = 0; i < get_obj_ref_size(obj_ref); i++) {
                 obj_refs[i] = relocate(obj_refs[i]);
             }
         }
-        scan += bytes;
+        scan += get_obj_ref_bytes(obj_ref);
     }
 }
 
 void purge_heap(void) {
     if (vm.gc.purge_flag) {
-        vm.heap.passive = calloc(vm.heap.available, sizeof(unsigned char));
+        purge_heap_half(vm.heap.passive);
     }
 }
 

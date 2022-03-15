@@ -3,7 +3,6 @@
 void init(char *bin) {
     read_file(bin);
     initialize_sda();
-    vm.rv = alloc(sizeof(ObjRef));
     vm.debugger.activated ? debug(bin) : execute(bin);
     exit(0);
 }
@@ -251,7 +250,7 @@ void asf_instruction(Immediate immediate) {
     vm.stack.sp += immediate;
     for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
         vm.stack.data[i].is_obj_ref = true;
-        vm.stack.data[i].u.obj_ref = NULL;
+        vm.stack.data[i].u.obj_ref = (ObjRef)NULL;
     }
 }
 
@@ -365,10 +364,13 @@ void new_instruction(Immediate immediate) {
 
 void getf_instruction(Immediate immediate) {
     ObjRef record = pop_obj_ref();
-    if (IS_PRIMITIVE(record)) {
-        fatalError("Primitive object has no fields");
+    if (!record) {
+        fatalError("Error: object is not defined");
     }
-    unsigned int size = GET_ELEMENT_COUNT(record);
+    if (IS_PRIMITIVE(record)) {
+        fatalError("Error: not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(record);
     if (immediate < 0 || size <= immediate) {
         fatalError("Error: index out of bound");
     }
@@ -379,10 +381,13 @@ void getf_instruction(Immediate immediate) {
 void putf_instruction(Immediate immediate) {
     ObjRef new_field = pop_obj_ref();
     ObjRef record = pop_obj_ref();
-    if (IS_PRIMITIVE(record)) {
-        fatalError("Primitive object has no fields");
+    if (!record) {
+        fatalError("Error: object is not defined");
     }
-    unsigned int size = GET_ELEMENT_COUNT(record);
+    if (IS_PRIMITIVE(record)) {
+        fatalError("Error: not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(record);
     if (immediate < 0 || size <= immediate) {
         fatalError("Error: index out of bound");
     }
@@ -395,7 +400,7 @@ void newa_instruction(void) {
     if (!IS_PRIMITIVE(bip.op1)) {
         fatalError("Object is not primitive");
     }
-    unsigned int size = bigToInt();
+    unsigned size = bigToInt();
     ObjRef array = new_composite_object(size);
     push_obj_ref(array);
 }
@@ -407,10 +412,13 @@ void getfa_instruction(void) {
     }
     Immediate index = bigToInt();
     ObjRef array = pop_obj_ref();
-    if (IS_PRIMITIVE(array)) {
-        fatalError("Primitive object has no fields");
+    if (!array) {
+        fatalError("Error: object is not defined");
     }
-    unsigned int size = GET_ELEMENT_COUNT(array);
+    if (IS_PRIMITIVE(array)) {
+        fatalError("Error: not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(array);
     if (index < 0 || size <= index) {
         fatalError("Error: index out of bound");
     }
@@ -426,10 +434,13 @@ void putfa_instruction(void) {
     }
     Immediate index = bigToInt();
     ObjRef array = pop_obj_ref();
-    if (IS_PRIMITIVE(array)) {
-        fatalError("Not a compound object");
+    if (!array) {
+        fatalError("Error: object is not defined");
     }
-    unsigned int size = GET_ELEMENT_COUNT(array);
+    if (IS_PRIMITIVE(array)) {
+        fatalError("Error: not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(array);
     if (index < 0 || size <= index) {
         fatalError("Error: index out of bound");
     }

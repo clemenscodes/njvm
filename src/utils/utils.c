@@ -101,16 +101,16 @@ ObjRef new_composite_object(unsigned num_obj_refs) {
 }
 
 unsigned get_obj_ref_bytes(ObjRef obj_ref) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return sizeof(ObjRef);
-    }
+    // if (!obj_ref || !*(ObjRef *)obj_ref) {
+    //     return sizeof(ObjRef);
+    // }
     return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(unsigned) : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);
 }
 
 unsigned get_obj_ref_size(ObjRef obj_ref) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return sizeof(ObjRef);
-    }
+    // if (!obj_ref || !*(ObjRef *)obj_ref) {
+    //     return sizeof(ObjRef);
+    // }
     return IS_PRIMITIVE(obj_ref) ? obj_ref->size : (GET_ELEMENT_COUNT(obj_ref));
 }
 
@@ -125,9 +125,9 @@ void set_broken_heart(ObjRef obj_ref) {
 }
 
 void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return;
-    }
+    // if (!obj_ref || !*(ObjRef *)obj_ref) {
+    //     return;
+    // }
     if (forward_pointer > FORWARD_PTR_MASK) {
         fatalError("Error: address bigger than 2^30");
     }
@@ -139,9 +139,9 @@ void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
 }
 
 ObjRef get_obj_ref_from_forward_pointer(ObjRef obj_ref) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return NULL;
-    }
+    // if (!obj_ref || !*(ObjRef *)obj_ref) {
+    //     return (ObjRef)NULL;
+    // }
     if (!IS_COPIED(obj_ref)) {
         fatalError("Error: broken heart flag is not set, no valid forward pointer in object");
     }
