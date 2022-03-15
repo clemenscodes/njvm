@@ -11,5 +11,6 @@ void initialize_sda(void);
 void push_global(Immediate immediate);
 void pop_global(Immediate immediate);
 void print_sda(void);
+void free_sda(void);
 
 #endif

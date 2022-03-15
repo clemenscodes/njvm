@@ -162,6 +162,7 @@ void halt_instruction(void) {
     free_stack();
     free_heap();
     free_ir();
+    free_sda();
     printf("Ninja Virtual Machine stopped\n");
 }
 

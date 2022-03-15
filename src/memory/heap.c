@@ -7,7 +7,7 @@ void initialize_heap(unsigned memory) {
     if (vm.heap.available > FORWARD_PTR_MASK) {
         fatalError("Error: heap cannot address more than 2^30 bytes");
     }
-    vm.heap.active = calloc(vm.heap.bytes, 1);
+    vm.heap.active = calloc(vm.heap.bytes, sizeof(unsigned char*));
     if (!vm.heap.active) {
         perror("malloc(vm.heap.active)");
     }
@@ -17,12 +17,14 @@ void initialize_heap(unsigned memory) {
 
 void *alloc(unsigned bytes) {
     if ((vm.heap.used + bytes) > vm.heap.available) {
-        run_gc();
-        if ((vm.heap.used + bytes) > vm.heap.available) {
+        if (!vm.gc.is_running) {
+            run_gc();
+        }
+        if (((vm.heap.used + bytes) > vm.heap.available) && !vm.gc.is_running) {
             fatalError("Error: heap overflow");
         }
     }
-    void *p = vm.heap.next;
+    unsigned char *p = vm.heap.next;
     if (!p) {
         fatalError("Error: could not determine free memory");
     }
@@ -30,7 +32,6 @@ void *alloc(unsigned bytes) {
     if (!vm.heap.next) {
         fatalError("Error: failed calculating pointer to available memory");
     }
-    vm.heap.available -= bytes;
     vm.heap.used += bytes;
     vm.heap.size++;
     return p;

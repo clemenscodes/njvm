@@ -1,7 +1,7 @@
 #include "sda.h"
 
 void initialize_sda(void) {
-    vm.sda.data = alloc(vm.sda.size * sizeof(ObjRef));
+    vm.sda.data = calloc(vm.sda.size, sizeof(ObjRef));
     if (!vm.sda.data) {
         perror("malloc(vm.sda.data)");
     }
@@ -28,4 +28,8 @@ void print_sda(void) {
     for (int i = 0; i < vm.sda.size; i++) {
         printf("data[%04u]:\t[%p]\n", i, (void *)vm.sda.data[i]);
     }
+}
+
+void free_sda(void) {
+    free(vm.sda.data);
 }

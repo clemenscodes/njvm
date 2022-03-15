@@ -72,10 +72,14 @@ typedef struct {
 } InstructionRegister;
 
 typedef struct {
+    bool is_running;
     bool purge_flag;
     bool stats_flag;
+    unsigned collections;
     unsigned copied_objects;
     unsigned copied_bytes;
+    unsigned total_copied_objects;
+    unsigned total_copied_bytes;
 } GarbageCollector;
 
 typedef struct {

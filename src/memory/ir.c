@@ -2,7 +2,7 @@
 
 void initialize_ir(unsigned instruction_count) {
     vm.ir.size = instruction_count;
-    vm.ir.data = malloc(vm.ir.size * sizeof(Bytecode));
+    vm.ir.data = calloc(vm.ir.size, sizeof(Bytecode));
     if (!vm.ir.data) {
         perror("calloc(vm.ir.data)");
     }

@@ -4,7 +4,7 @@ void initialize_stack(unsigned memory) {
     vm.stack.memory = memory;
     vm.stack.bytes = vm.stack.memory * KiB;
     vm.stack.max_items = vm.stack.bytes/ sizeof(StackSlot);
-    vm.stack.data = malloc(vm.stack.bytes);
+    vm.stack.data = calloc(vm.stack.bytes, sizeof(unsigned char*));
     if (!vm.stack.data && vm.stack.size) {
         perror("malloc(vm.stack.data)");
     }

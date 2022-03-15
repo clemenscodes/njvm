@@ -1,6 +1,8 @@
 #include "gc.h"
 
 void nullify_heap_stats(void) {
+    vm.gc.total_copied_objects += vm.gc.copied_objects;
+    vm.gc.total_copied_bytes += vm.gc.copied_bytes;
     vm.gc.copied_objects = vm.gc.copied_bytes = vm.heap.used = vm.heap.size = 0;
 }
 
@@ -15,9 +17,20 @@ void swap_heaps(void) {
 }
 
 void relocate_registers(void) {
-    ObjRef registers[5] = {vm.rv, bip.op1, bip.op2, bip.res, bip.rem};
-    for (int i = 0; i < 5; i++) {
-        registers[i] = relocate(registers[i]);
+    // ObjRef *registers[5] = {&vm.rv, &bip.op1, &bip.op2, &bip.res, &bip.rem};
+    // for (int i = 0; i < 5; i++) {
+    //     registers[i] = relocate(registers[i]);
+    // }
+    vm.rv = relocate(vm.rv);
+    bip.op1 = relocate(bip.op1);
+    bip.op2 = relocate(bip.op2);
+    bip.res = relocate(bip.res);
+    bip.rem = relocate(bip.rem);
+}
+
+void relocate_sda_objects(void) {
+    for (int i = 0; i < vm.sda.size; i++) {
+        vm.sda.data[i] = relocate(vm.sda.data[i]);
     }
 }
 
@@ -30,15 +43,9 @@ void relocate_stack_objects(void) {
     }
 }
 
-void relocate_sda_objects(void) {
-    for (int i = 0; i < vm.sda.size; i++) {
-        vm.sda.data[i] = relocate(vm.sda.data[i]);
-    }
-}
-
 ObjRef relocate(ObjRef obj_ref) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return NULL;
+    if (obj_ref == NULL) {
+        return (ObjRef)NULL;
     }
     if (IS_COPIED(obj_ref)) {
         return get_obj_ref_from_forward_pointer(obj_ref);
@@ -53,7 +60,7 @@ ObjRef relocate(ObjRef obj_ref) {
 }
 
 ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref, unsigned bytes, unsigned size) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
+    if ((void *)obj_ref == NULL) {
         return NULL;
     }
     unsigned forward_pointer = vm.heap.used;
@@ -90,7 +97,7 @@ void scan(void) {
 
 void purge_heap(void) {
     if (vm.gc.purge_flag) {
-        vm.heap.passive = calloc(vm.heap.available, 1);
+        vm.heap.passive = calloc(vm.heap.available, sizeof(unsigned char));
     }
 }
 
@@ -104,12 +111,15 @@ void print_gc_stats(void) {
 }
 
 void run_gc(void) {
+    vm.gc.collections++;
+    vm.gc.is_running = true;
     nullify_heap_stats();
     swap_heaps();
     relocate_registers();
-    relocate_stack_objects();
     relocate_sda_objects();
+    relocate_stack_objects();
     scan();
     purge_heap();
     print_gc_stats();
+    vm.gc.is_running = false;
 }

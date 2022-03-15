@@ -124,7 +124,7 @@ NinjaVM default_heap(NinjaVM vm) {
 }
 
 NinjaVM default_gc(NinjaVM vm) {
-    vm.gc.purge_flag = vm.gc.stats_flag = false;
+    vm.gc.purge_flag = vm.gc.stats_flag = vm.gc.is_running = false;
     vm.gc.copied_objects = vm.gc.copied_bytes = 0;
     return vm;
 }
