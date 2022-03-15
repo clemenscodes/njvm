@@ -16,6 +16,10 @@ const struct CMUnitTest gc_unit_tests[] = {
 };
 
 void test_nullify_heap_stats(void **state) {
+    initialize_heap(DEFAULT_HEAP_SIZE);
+    new_composite_object(2);
+    new_composite_object(3);
+    new_composite_object(4);
     nullify_heap_stats();
     assert_int_equal(vm.heap.used, 0);
     assert_int_equal(vm.heap.size, 0);
@@ -27,11 +31,9 @@ void test_swap_heaps(void **state) {
     unsigned char *old_begin = vm.heap.begin;
     unsigned char *old_active = vm.heap.active;
     unsigned char *old_passive = vm.heap.passive;
-    unsigned char *old_next = vm.heap.next;
     swap_heaps();
     assert_ptr_equal(old_begin, vm.heap.passive);
     assert_ptr_equal(old_active, vm.heap.passive);
-    assert_ptr_equal(old_next, vm.heap.passive);
     assert_ptr_equal(old_passive, vm.heap.active);
 }
 

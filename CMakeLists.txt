@@ -20,14 +20,14 @@ set(SOURCES
     src/njvm.c 
     src/cpu/instruction.c 
     src/cpu/processor.c 
-    src/cpu/debugger.c 
     src/cpu/opcode.c 
     src/cpu/immediate.c 
-    src/cpu/gc.c 
+    src/memory/gc.c 
     src/memory/ir.c 
     src/memory/stack.c
     src/memory/sda.c
     src/memory/heap.c
+    src/utils/debugger.c 
     src/utils/utils.c
     src/utils/support.c
 )

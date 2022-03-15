@@ -36,11 +36,6 @@ void relocate_sda_objects(void) {
     }
 }
 
-void collect_stats(unsigned bytes) {
-    vm.gc.copied_objects++;
-    vm.gc.copied_bytes += bytes;
-}
-
 ObjRef relocate(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return NULL;
@@ -72,6 +67,11 @@ ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref, unsigned bytes, unsigned size
     set_broken_heart(obj_ref);
     set_forward_pointer(obj_ref, forward_pointer);
     return new_obj_ref;
+}
+
+void collect_stats(unsigned bytes) {
+    vm.gc.copied_objects++;
+    vm.gc.copied_bytes += bytes;
 }
 
 void scan(void) {
