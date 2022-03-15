@@ -33,9 +33,8 @@ void relocate_sda_objects(void) {
 
 void relocate_stack_objects(void) {
     for (int i = 0; i < vm.stack.size; i++) {
-        StackSlot slot = vm.stack.data[i];
-        if (slot.is_obj_ref) {
-            slot.u.obj_ref = relocate(slot.u.obj_ref);
+        if (vm.stack.data[i].is_obj_ref) {
+            vm.stack.data[i].u.obj_ref = relocate(vm.stack.data[i].u.obj_ref);
         }
     }
 }
