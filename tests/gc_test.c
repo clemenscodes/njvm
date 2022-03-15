@@ -11,12 +11,11 @@ const struct CMUnitTest gc_unit_tests[] = {
     cmocka_unit_test(test_collect_stats),
     cmocka_unit_test(test_print_gc_stats),
     cmocka_unit_test(test_purge_heap),
-    cmocka_unit_test(test_scan),
     cmocka_unit_test(test_run_gc),
+    cmocka_unit_test(test_scan),
 };
 
 void test_nullify_heap_stats(void **state) {
-    initialize_heap(DEFAULT_HEAP_SIZE);
     new_composite_object(2);
     new_composite_object(3);
     new_composite_object(4);
@@ -68,7 +67,7 @@ void test_copy_obj_ref_to_free_memory(void **state) {
 }
 
 void test_collect_stats(void **state) {}
+void test_scan(void **state) {}
 void test_print_gc_stats(void **state) {}
 void test_purge_heap(void **state) {}
-void test_scan(void **state) {}
 void test_run_gc(void **state) {}

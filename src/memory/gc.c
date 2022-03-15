@@ -40,6 +40,9 @@ ObjRef relocate(ObjRef obj_ref) {
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return NULL;
     }
+    if (IS_COPIED(obj_ref)) {
+        return get_obj_ref_from_forward_pointer(obj_ref);
+    }
     unsigned bytes = get_obj_ref_bytes(obj_ref),
              size = get_obj_ref_size(obj_ref);
     ObjRef new_obj_ref = copy_obj_ref_to_free_memory(obj_ref, bytes, size);
@@ -53,19 +56,14 @@ ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref, unsigned bytes, unsigned size
     if (!obj_ref || !*(ObjRef *)obj_ref) {
         return NULL;
     }
-    ObjRef new_obj_ref;
     unsigned forward_pointer = vm.heap.used;
-    if (IS_PRIMITIVE(obj_ref)) {
-        new_obj_ref = newPrimObject(size);
-    } else {
-        new_obj_ref = new_composite_object(size);
-    }
+    ObjRef new_obj_ref = IS_PRIMITIVE(obj_ref) ? newPrimObject(size) : new_composite_object(size);
     if (!memcpy(new_obj_ref, obj_ref, bytes)) {
         fatalError("Error: failed copying memory");
     }
-    collect_stats(bytes);
     set_broken_heart(obj_ref);
     set_forward_pointer(obj_ref, forward_pointer);
+    collect_stats(bytes);
     return new_obj_ref;
 }
 
@@ -75,20 +73,24 @@ void collect_stats(unsigned bytes) {
 }
 
 void scan(void) {
-    printf("Scanning\n");
-    // Scan phase
-    // Check active heap for objects
-    // Skip copied primitive objects
-    // Check references of compound objects
-    // If broken heart flag set, use forward pointer and update the reference
-    // Else copy_obj_ref()
-    // Set reference in object to forward pointer of copied object
-    // Inspect newly copied object for further references and repeat
+    unsigned char *scan = vm.heap.active;
+    while (scan < vm.heap.next) {
+        ObjRef obj_ref = (ObjRef)scan;
+        unsigned bytes = get_obj_ref_bytes(obj_ref);
+        if (!IS_PRIMITIVE(obj_ref)) {
+            unsigned elements = GET_ELEMENT_COUNT(obj_ref);
+            ObjRef *obj_refs = GET_REFS_PTR(obj_ref);
+            for (int i = 0; i < elements; i++) {
+                obj_refs[i] = relocate(obj_refs[i]);
+            }
+        }
+        scan += bytes;
+    }
 }
 
 void purge_heap(void) {
     if (vm.gc.purge_flag) {
-        // Purge passive heap
+        vm.heap.passive = calloc(vm.heap.available, 1);
     }
 }
 
