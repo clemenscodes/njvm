@@ -15,7 +15,7 @@ void initialize_heap(unsigned memory) {
     vm.heap.passive = vm.heap.next + vm.heap.available;
 }
 
-ObjRef alloc(unsigned bytes) {
+unsigned char *alloc(unsigned bytes) {
     if ((vm.heap.used + bytes) > vm.heap.available) {
         if (!vm.gc.is_running) {
             run_gc();
@@ -34,7 +34,7 @@ ObjRef alloc(unsigned bytes) {
     }
     vm.heap.used += bytes;
     vm.heap.size++;
-    return (ObjRef)p;
+    return p;
 }
 
 void free_heap(void) {

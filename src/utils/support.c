@@ -7,12 +7,11 @@ void fatalError(char *msg) {
 }
 
 ObjRef newPrimObject(int dataSize) {
-    if (dataSize < 1) {
-        printf("Bad data size: %d\n", dataSize);
-        fatalError("Error: at least 1 byte is required as data size");
+    if (dataSize < 0) {
+        fatalError("Error: no negative data size allowed");
     }
-    ObjRef obj_ref = alloc(dataSize + sizeof(Immediate));
-    if (!obj_ref) {
+    ObjRef obj_ref = (ObjRef)alloc(dataSize + sizeof(Immediate));
+    if (obj_ref == NULL) {
         fatalError("Error: failed to allocate memory for obj_ref");
     }
     obj_ref->size = dataSize;

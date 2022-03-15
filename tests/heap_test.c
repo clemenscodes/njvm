@@ -51,7 +51,7 @@ void test_alloc(void **state) {
     unsigned char *old_next_pointer = vm.heap.next;
     unsigned char *old_passive = vm.heap.passive;
     size_t size = 4;
-    ObjRef test_obj_ref = alloc(size);
+    ObjRef test_obj_ref = (ObjRef)alloc(size);
     assert_int_equal(vm.heap.used, size);
     assert_int_equal(vm.heap.size, 1);
     assert_ptr_equal(old_next_pointer, vm.heap.active);

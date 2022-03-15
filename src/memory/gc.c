@@ -40,27 +40,20 @@ void relocate_stack_objects(void) {
     }
 }
 
-ObjRef relocate(ObjRef orig) {
-    if (!orig) {
-        return (ObjRef)NULL;
+ObjRef relocate(ObjRef obj_ref) {
+    if (obj_ref == NULL) {
+        return NULL;
     }
-    if (IS_COPIED(orig)) {
-        return get_obj_ref_from_forward_pointer(orig);
-    }
-    unsigned bytes = get_obj_ref_bytes(orig),
-             size = get_obj_ref_size(orig);
-    ObjRef copy = copy_obj_ref_to_free_memory(orig, bytes, size);
-    if (!copy) {
-        fatalError("Error: failed relocating object");
-    }
-    return copy;
+    return IS_COPIED(obj_ref) ? get_obj_ref_from_forward_pointer(obj_ref) : copy_obj_ref_to_free_memory(obj_ref);
 }
 
-ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref, unsigned bytes, unsigned size) {
-    if (!obj_ref) {
-        return (ObjRef)NULL;
+ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref) {
+    if (obj_ref == NULL) {
+        return NULL;
     }
-    unsigned forward_pointer = vm.heap.used;
+    unsigned forward_pointer = vm.heap.used,
+             bytes = get_obj_ref_bytes(obj_ref),
+             size = get_obj_ref_size(obj_ref);
     ObjRef new_obj_ref = IS_PRIMITIVE(obj_ref) ? newPrimObject(size) : new_composite_object(size);
     if (!memcpy(new_obj_ref->data, obj_ref->data, bytes - sizeof(unsigned))) {
         fatalError("Error: failed copying memory");

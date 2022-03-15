@@ -10,7 +10,7 @@ void relocate_registers(void);
 void relocate_stack_objects(void);
 void relocate_sda_objects(void);
 ObjRef relocate(ObjRef obj_ref);
-ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref, unsigned bytes, unsigned size);
+ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref);
 void collect_stats(unsigned bytes);
 void print_gc_stats(void);
 void purge_heap(void);

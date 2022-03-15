@@ -144,8 +144,8 @@ void set_breakpoint(void) {
 
 void print_obj_ref(ObjRef obj_ref) {
     printf("ObjRef: %p\n", (void *)obj_ref);
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return;
+    if (obj_ref == NULL) {
+        fatalError("Error: cannot print null object");
     }
     char *type;
     unsigned bytes = get_obj_ref_bytes(obj_ref);

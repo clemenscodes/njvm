@@ -92,31 +92,31 @@ char *read_line(void) {
 }
 
 ObjRef new_composite_object(unsigned num_obj_refs) {
-    ObjRef obj_ref = alloc((sizeof(ObjRef) * num_obj_refs) + sizeof(unsigned));
-    if (!obj_ref) {
-        fatalError("Failed to allocate memory for compound obj");
+    ObjRef obj_ref = (ObjRef)alloc((sizeof(ObjRef) * num_obj_refs) + sizeof(unsigned));
+    if (obj_ref == NULL) {
+        fatalError("Error: failed to allocate memory for compound obj");
     }
     obj_ref->size = num_obj_refs | MSB;
     return obj_ref;
 }
 
 unsigned get_obj_ref_bytes(ObjRef obj_ref) {
-    // if (!obj_ref || !*(ObjRef *)obj_ref) {
-    //     return sizeof(ObjRef);
-    // }
+    if (obj_ref == NULL) {
+        fatalError("Error: failed to determine bytes for null object");
+    }
     return IS_PRIMITIVE(obj_ref) ? obj_ref->size + sizeof(unsigned) : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);
 }
 
 unsigned get_obj_ref_size(ObjRef obj_ref) {
-    // if (!obj_ref || !*(ObjRef *)obj_ref) {
-    //     return sizeof(ObjRef);
-    // }
+    if (obj_ref == NULL) {
+        fatalError("Error: failed to determine size for null object");
+    }
     return IS_PRIMITIVE(obj_ref) ? obj_ref->size : (GET_ELEMENT_COUNT(obj_ref));
 }
 
 void set_broken_heart(ObjRef obj_ref) {
-    if (!obj_ref || !*(ObjRef *)obj_ref) {
-        return;
+    if (obj_ref == NULL) {
+        fatalError("Error: cannot set broken heart flag on null object");
     }
     obj_ref->size |= BROKEN_HEART;
     if (!IS_COPIED(obj_ref)) {
@@ -125,9 +125,9 @@ void set_broken_heart(ObjRef obj_ref) {
 }
 
 void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
-    // if (!obj_ref || !*(ObjRef *)obj_ref) {
-    //     return;
-    // }
+    if (obj_ref == NULL) {
+        fatalError("Error: cannot set forward pointer on null object");
+    }
     if (forward_pointer > FORWARD_PTR_MASK) {
         fatalError("Error: address bigger than 2^30");
     }
@@ -139,9 +139,9 @@ void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
 }
 
 ObjRef get_obj_ref_from_forward_pointer(ObjRef obj_ref) {
-    // if (!obj_ref || !*(ObjRef *)obj_ref) {
-    //     return (ObjRef)NULL;
-    // }
+    if (obj_ref == NULL) {
+        fatalError("Error: cannot get forward pointer from null object");
+    }
     if (!IS_COPIED(obj_ref)) {
         fatalError("Error: broken heart flag is not set, no valid forward pointer in object");
     }

@@ -60,9 +60,8 @@ void test_relocate_returns_null(void **state) {
 
 void test_copy_obj_ref_to_free_memory(void **state) {
     ObjRef test_obj_ref = new_composite_object(4);
-    unsigned bytes = get_obj_ref_bytes(test_obj_ref),
-             size = get_obj_ref_size(test_obj_ref);
-    ObjRef new_obj_ref = copy_obj_ref_to_free_memory(test_obj_ref, bytes, size);
+    ObjRef new_obj_ref = copy_obj_ref_to_free_memory(test_obj_ref);
+    unsigned bytes = get_obj_ref_bytes(test_obj_ref);
     assert_memory_equal(test_obj_ref, new_obj_ref, bytes);
 }
 
