@@ -111,7 +111,7 @@ unsigned get_obj_ref_size(ObjRef obj_ref) {
     if (obj_ref == NULL) {
         fatalError("Error: failed to determine size for null object");
     }
-    return IS_PRIMITIVE(obj_ref) ? obj_ref->size : (GET_ELEMENT_COUNT(obj_ref));
+    return IS_PRIMITIVE(obj_ref) ? obj_ref->size : GET_ELEMENT_COUNT(obj_ref);
 }
 
 void set_broken_heart(ObjRef obj_ref) {

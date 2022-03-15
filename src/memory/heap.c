@@ -7,7 +7,7 @@ void initialize_heap(unsigned memory) {
     if (vm.heap.available > FORWARD_PTR_MASK) {
         fatalError("Error: heap cannot address more than 2^30 bytes");
     }
-    vm.heap.active = calloc(vm.heap.bytes, sizeof(unsigned char*));
+    vm.heap.active = calloc(vm.heap.bytes, sizeof(unsigned char));
     if (!vm.heap.active) {
         perror("calloc(vm.heap.active)");
     }
@@ -20,7 +20,7 @@ unsigned char *alloc(unsigned bytes) {
         if (!vm.gc.is_running) {
             run_gc();
         }
-        if (((vm.heap.used + bytes) > vm.heap.available) && !vm.gc.is_running) {
+        if ((vm.heap.used + bytes) > vm.heap.available) {
             fatalError("Error: heap overflow");
         }
     }
