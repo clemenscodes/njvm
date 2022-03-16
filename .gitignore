@@ -51,9 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 /njvm
-!test/**/*.out
-lectures
 .vscode
 lib/tst/testbip
 .gdb_history
-*.asm
+data/v7/*.asm
+data/v8/*.asm
