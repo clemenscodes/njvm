@@ -5,21 +5,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../lib/build/include/bigint.h"
+#include "../lib/build/include/support.h"
+#include "gc.h"
+#include "heap.h"
 #include "instruction.h"
 #include "ir.h"
-#include "opcode.h"
 #include "njvm.h"
+#include "opcode.h"
 #include "sda.h"
 #include "stack.h"
 #include "utils.h"
-#include "../lib/build/include/bigint.h"
-#include "../lib/build/include/support.h"
 
-void init(void);
-void execute(char *file_name);
+void init(char *bin);
+void execute(char *bin);
 void execute_instruction(Bytecode bytecode);
-void work(void);
-void shutdown(void);
 void halt_instruction(void);
 void pushc_instruction(Immediate immediate);
 void add_instruction(void);

@@ -1,17 +1,14 @@
 #ifndef _INSTRUCTION_H
 #define _INSTRUCTION_H
 
-#include <stdint.h>
-
-#include "opcode.h"
+#include "bytecode.h"
 #include "immediate.h"
 #include "ir.h"
-#include "bytecode.h"
-#include "njvm.h"
-
 #include "macros.h"
+#include "njvm.h"
+#include "opcode.h"
 
-typedef struct Instruction {
+typedef struct {
     Opcode opcode;
     Immediate immediate;
 } Instruction;

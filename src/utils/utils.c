@@ -4,19 +4,23 @@ void read_file(char *arg) {
     FILE *fp = open_file(arg);
     check_ninja_binary_format(fp, arg);
     check_ninja_version(fp, arg);
-    size_t variable_count = check_ninja_variable_count(fp);
-    if (variable_count > 0) initialize_sda(variable_count);
+    unsigned variable_count = check_ninja_variable_count(fp);
+    if (variable_count > 0) {
+        vm.sda.size = variable_count;
+    }
     read_instructions_into_ir(fp);
     close_file(fp);
 }
 
 void read_instructions_into_ir(FILE *fp) {
-    size_t instruction_count = check_ninja_instruction_count(fp);
+    unsigned instruction_count = check_ninja_instruction_count(fp);
     initialize_ir(instruction_count);
     fseek(fp, 16, SEEK_SET);
-    size_t read_objects = fread(vm.ir.data, sizeof(uint32_t), instruction_count, fp);
+    unsigned read_objects =
+        fread(vm.ir.data, sizeof(Bytecode), instruction_count, fp);
     if (read_objects != instruction_count) {
-        fprintf(stderr, "Error: Could only read [%lu] of [%ld] items.\n", read_objects, instruction_count);
+        fprintf(stderr, "Error: Could only read [%u] of [%u] items.\n",
+                read_objects, instruction_count);
         close_file(fp);
         exit(1);
     }
@@ -31,10 +35,10 @@ FILE *open_file(char *arg) {
     return fp;
 }
 
-Bytecode seek_file(FILE *fp, int offset) {
+Bytecode seek_file(FILE *fp, unsigned offset) {
     Bytecode buffer;
     fseek(fp, offset, SEEK_SET);
-    if (!fread(&buffer, sizeof(uint32_t), 1, fp)) {
+    if (!fread(&buffer, sizeof(Bytecode), 1, fp)) {
         perror("Error (fread)");
         exit(1);
     }
@@ -53,28 +57,30 @@ void check_ninja_binary_format(FILE *fp, char *arg) {
 void check_ninja_version(FILE *fp, char *arg) {
     Bytecode buffer = seek_file(fp, 4);
     if (!(buffer == NINJA_BINARY_VERSION)) {
-        fprintf(stderr, "Error: file '%s' does not have the correct Ninja version\n", arg);
+        fprintf(stderr,
+                "Error: file '%s' does not have the correct Ninja version\n",
+                arg);
         close_file(fp);
         exit(1);
     }
 }
 
-size_t check_ninja_instruction_count(FILE *fp) {
+unsigned check_ninja_instruction_count(FILE *fp) {
     Bytecode buffer = seek_file(fp, 8);
     if (!buffer) {
         close_file(fp);
-        fatalError("Error: no instructions");
+        fatalError("no instructions");
     }
     return buffer;
 }
 
-size_t check_ninja_variable_count(FILE *fp) {
+unsigned check_ninja_variable_count(FILE *fp) {
     return seek_file(fp, 12);
 }
 
 void close_file(FILE *fp) {
     if (fclose(fp)) {
-        perror("Error (fclose)");
+        perror("fclose");
         exit(1);
     }
 }
@@ -83,38 +89,70 @@ char *read_line(void) {
     char *line = NULL;
     size_t len = 0;
     if (!getline(&line, &len, stdin)) {
-        perror("(getline)");
+        perror("getline");
         exit(1);
     }
     return line;
 }
 
-void print_obj_ref(char *line) {
-    ObjRef obj_ref = (ObjRef)strtol(line, (char **)NULL, 16);
-    printf("ObjRef: %p\n", (void *)obj_ref);
-    char *type;
-    unsigned int size;
-    if (IS_PRIMITIVE(obj_ref)) {
-        type = "PRIMITIVE\0";
-        printf("Type: %s\n", type);
-        printf("Value: [");
-        bip.op1 = obj_ref;
-        bigPrint(stdout);
-        printf("]\n");
-    } else {
-        type = "COMPOUND\0";
-        size = GET_ELEMENT_COUNT(obj_ref);
-        printf("Type: %s\n", type);
-        printf("Fields: %u\n", size);
-        for (int i = 0; i < size; i++) {
-            printf("[%u] = %p\n", i, (void *)GET_REFS_PTR(obj_ref)[i]);
-        }
+ObjRef new_composite_object(unsigned num_obj_refs) {
+    ObjRef obj_ref = alloc((sizeof(ObjRef) * num_obj_refs) + sizeof(unsigned));
+    if (!obj_ref) {
+        fatalError("failed to allocate memory for compound obj");
+    }
+    obj_ref->size = num_obj_refs | MSB;
+    return obj_ref;
+}
+
+unsigned get_obj_ref_bytes(ObjRef obj_ref) {
+    if (!obj_ref) {
+        fatalError("failed to determine bytes for null object");
+    }
+    return IS_PRIMITIVE(obj_ref)
+               ? obj_ref->size + sizeof(unsigned)
+               : (GET_ELEMENT_COUNT(obj_ref) * sizeof(ObjRef)) + sizeof(int);
+}
+
+unsigned get_obj_ref_size(ObjRef obj_ref) {
+    if (!obj_ref) {
+        fatalError("failed to determine size for null object");
+    }
+    return IS_PRIMITIVE(obj_ref) ? obj_ref->size : GET_ELEMENT_COUNT(obj_ref);
+}
+
+void set_broken_heart(ObjRef obj_ref) {
+    if (!obj_ref) {
+        fatalError("cannot set broken heart flag on null object");
+    }
+    obj_ref->size |= BROKEN_HEART;
+    if (!IS_COPIED(obj_ref)) {
+        fatalError("failed setting broken heart flag");
     }
 }
 
-ObjRef new_composite_object(unsigned int num_obj_refs) {
-    ObjRef obj_ref = malloc((sizeof(ObjRef) * num_obj_refs) + sizeof(int));
-    if (!obj_ref) fatalError("Failed to allocate memory for compound obj");
-    obj_ref->size = num_obj_refs | MSB;
-    return obj_ref;
+void set_forward_pointer(ObjRef obj_ref, unsigned forward_pointer) {
+    if (!obj_ref) {
+        fatalError("cannot set forward pointer on null object");
+    }
+    if (forward_pointer > FORWARD_PTR_MASK) {
+        fatalError("address bigger than 2^30");
+    }
+    if (!IS_COPIED(obj_ref)) {
+        fatalError("broken heart flag is not set, would corrupt the object");
+    }
+    obj_ref->size &= ~FORWARD_PTR_MASK;
+    obj_ref->size |= forward_pointer;
+}
+
+ObjRef get_obj_ref_from_forward_pointer(ObjRef obj_ref) {
+    if (!obj_ref) {
+        fatalError("cannot get forward pointer from null object");
+    }
+    if (!IS_COPIED(obj_ref)) {
+        fatalError("broken heart is not set");
+    }
+    unsigned forward_pointer = GET_FORWARD_PTR(obj_ref);
+    unsigned char *p = vm.heap.active + forward_pointer;
+    ObjRef decoded_obj_ref = (ObjRef)p;
+    return decoded_obj_ref;
 }

@@ -3,13 +3,14 @@
 
 #include <stdint.h>
 
+#include "debugger.h"
 #include "njvm.h"
 #include "stack.h"
 
-void initialize_sda(size_t variable_count);
+void initialize_sda(void);
 void push_global(Immediate immediate);
 void pop_global(Immediate immediate);
-void free_sda(void);
 void print_sda(void);
+void free_sda(void);
 
 #endif

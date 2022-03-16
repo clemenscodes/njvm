@@ -1,0 +1,54 @@
+name: NinjaVM
+on:
+  push:
+    tags:
+      - '*'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize]
+env:
+  BUILD_TYPE: Release
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: RafikFarhad/clang-format-github-action@v2.0.0
+      with:
+        sources: "src/**/*.c,include/**/*.h,tests/**/*.c,tests/**/*.h"
+        style: file
+    - name: Install Valgrind
+      run: |
+        sudo apt-get update -y
+        sudo apt-get -y install valgrind
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    - name: Unit Tests
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}} --verbose
+    - name: Integration Tests
+      working-directory: ${{github.workspace}}
+      run: scripts/tests.sh
+    - name: Package
+      id: package
+      run: |
+        PROJECT_VERSION="$(grep NINJA_BINARY_VERSION include/njvm.h | tail -c2)"
+        PKG_NAME="njvm_v${PROJECT_VERSION}.tar.gz"
+        tar -C ${{github.workspace}}/build -czf "${PKG_NAME}" njvm
+        echo ::set-output name=PKG_NAME::${PKG_NAME}
+        echo ::set-output name=PKG_PATH::${PKG_NAME}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.package.outputs.PKG_NAME }}
+        path: ${{ steps.package.outputs.PKG_PATH }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/v')
+      with:
+        files: ${{ steps.package.outputs.PKG_PATH }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}

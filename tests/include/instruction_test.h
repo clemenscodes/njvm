@@ -4,10 +4,10 @@
 #include "cmocka.h"
 #include "instruction.h"
 
+const struct CMUnitTest instruction_unit_tests[3];
+
 void test_instruction(void **state);
 void test_encode_instruction(void **state);
 void test_decode_instruction(void **state);
-void test_immediate_macro(void **state);
-void test_sign_extend_macro(void **state);
 
 #endif

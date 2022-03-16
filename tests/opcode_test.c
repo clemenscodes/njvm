@@ -1,5 +1,10 @@
 #include "include/opcode_test.h"
 
+const struct CMUnitTest opcode_tests[] = {
+    cmocka_unit_test(test_encode_opcode),
+    cmocka_unit_test(test_decode_opcode),
+};
+
 void test_encode_opcode(void **state) {
     assert_int_equal(encode_opcode(halt), 0x00000000);
     assert_int_equal(encode_opcode(pushc), 0x01000000);
@@ -33,6 +38,16 @@ void test_encode_opcode(void **state) {
     assert_int_equal(encode_opcode(pushr), 0x1d000000);
     assert_int_equal(encode_opcode(popr), 0x1e000000);
     assert_int_equal(encode_opcode(dup), 0x1f000000);
+    assert_int_equal(encode_opcode(new), 0x20000000);
+    assert_int_equal(encode_opcode(getf), 0x21000000);
+    assert_int_equal(encode_opcode(putf), 0x22000000);
+    assert_int_equal(encode_opcode(newa), 0x23000000);
+    assert_int_equal(encode_opcode(getfa), 0x24000000);
+    assert_int_equal(encode_opcode(putfa), 0x25000000);
+    assert_int_equal(encode_opcode(getsz), 0x26000000);
+    assert_int_equal(encode_opcode(pushn), 0x27000000);
+    assert_int_equal(encode_opcode(refeq), 0x28000000);
+    assert_int_equal(encode_opcode(refne), 0x29000000);
 }
 
 void test_decode_opcode(void **state) {
@@ -68,4 +83,14 @@ void test_decode_opcode(void **state) {
     assert_int_equal(decode_opcode(0x1d000000), pushr);
     assert_int_equal(decode_opcode(0x1e000000), popr);
     assert_int_equal(decode_opcode(0x1f000000), dup);
+    assert_int_equal(decode_opcode(0x20000000), new);
+    assert_int_equal(decode_opcode(0x21000000), getf);
+    assert_int_equal(decode_opcode(0x22000000), putf);
+    assert_int_equal(decode_opcode(0x23000000), newa);
+    assert_int_equal(decode_opcode(0x24000000), getfa);
+    assert_int_equal(decode_opcode(0x25000000), putfa);
+    assert_int_equal(decode_opcode(0x26000000), getsz);
+    assert_int_equal(decode_opcode(0x27000000), pushn);
+    assert_int_equal(decode_opcode(0x28000000), refeq);
+    assert_int_equal(decode_opcode(0x29000000), refne);
 }

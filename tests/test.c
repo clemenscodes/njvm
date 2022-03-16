@@ -1,17 +1,47 @@
 #include "include/test.h"
 
+static int setup(void **state) {
+    vm = default_vm();
+    return 0;
+}
+
+static int teardown(void **state) {
+    bip.op1 = bip.op2 = bip.res = bip.rem = NULL;
+    if (vm.heap.begin) {
+        free(vm.heap.begin);
+    }
+    if (vm.stack.data) {
+        free(vm.stack.data);
+    }
+    if (vm.rv) {
+        free(vm.rv);
+    }
+    if (vm.debugger.bp) {
+        free(vm.debugger.bp);
+    }
+    if (vm.ir.data) {
+        free(vm.ir.data);
+    }
+    if (vm.sda.data) {
+        free(vm.sda.data);
+    }
+    return 0;
+}
+
 int main() {
-    const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_encode_opcode),
-        cmocka_unit_test(test_decode_opcode),
-        cmocka_unit_test(test_instruction),
-        cmocka_unit_test(test_encode_instruction),
-        cmocka_unit_test(test_decode_instruction),
-        cmocka_unit_test(test_ir),
-        cmocka_unit_test(test_stack),
-        cmocka_unit_test(test_sda),
-        cmocka_unit_test(test_processor),
-        cmocka_unit_test(test_utils),
-    };
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    int result = 0;
+    result += cmocka_run_group_tests(debugger_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(opcode_unit_tests, NULL, NULL);
+    result += cmocka_run_group_tests(immediate_unit_tests, NULL, NULL);
+    result += cmocka_run_group_tests(instruction_unit_tests, NULL, NULL);
+    result += cmocka_run_group_tests(ir_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(stack_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(sda_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(processor_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(support_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(heap_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(macros_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(utils_unit_tests, setup, teardown);
+    result += cmocka_run_group_tests(gc_unit_tests, setup, teardown);
+    return result;
 }

@@ -1,20 +1,19 @@
 #include "processor.h"
 
-void init(void) {
+void init(char *bin) {
+    read_file(bin);
+    initialize_sda();
+    vm.debugger.activated ? debug(bin) : execute(bin);
+    exit(0);
+}
+
+void execute(char *bin) {
     printf("Ninja Virtual Machine started\n");
-    initialize_stack();
-    vm.rv = NULL;
-}
-
-void execute(char *arg) {
-    read_file(arg);
-    init();
-    work();
-}
-
-void work(void) {
-    while (1) {
-        Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Bytecode instruction = vm.ir.data[vm.ir.pc];
+    Opcode opcode = decode_opcode(instruction);
+    while (opcode != halt) {
+        instruction = vm.ir.data[vm.ir.pc];
+        opcode = decode_opcode(instruction);
         vm.ir.pc++;
         execute_instruction(instruction);
     }
@@ -27,6 +26,7 @@ void execute_instruction(Bytecode bytecode) {
     switch (opcode) {
         case halt:
             halt_instruction();
+            break;
         case pushc:
             pushc_instruction(immediate);
             break;
@@ -152,17 +152,17 @@ void execute_instruction(Bytecode bytecode) {
             break;
         default:
             fprintf(stderr, "Unknown opcode %d\n", opcode);
-            halt_instruction();
+            exit(1);
     }
 }
 
 void halt_instruction(void) {
-    free_sda();
-    free_ir();
+    run_gc();
     free_stack();
-    if (vm.bp) free(vm.bp);
+    free_heap();
+    free_ir();
+    free_sda();
     printf("Ninja Virtual Machine stopped\n");
-    exit(0);
 }
 
 void pushc_instruction(Immediate immediate) {
@@ -217,7 +217,9 @@ void wrint_instruction(void) {
 
 void rdchr_instruction(void) {
     char read_character;
-    if (!scanf("%c", &read_character)) fatalError("Error: failed to read character");
+    if (!scanf("%c", &read_character)) {
+        fatalError("failed to read character");
+    }
     bigFromInt((int)read_character);
     push_obj_ref(bip.res);
 }
@@ -236,15 +238,19 @@ void popg_instruction(Immediate immediate) {
 }
 
 void asf_instruction(Immediate immediate) {
-    if ((vm.stack.size + immediate) >= MAX_ITEMS) fatalError("Error: stack overflow");
-    if (immediate < 0) fatalError("Error: negative immediate for asf");
+    if ((vm.stack.size + immediate) >= vm.stack.max_items) {
+        fatalError("stack overflow");
+    }
+    if (immediate < 0) {
+        fatalError("cannot allocate stack frame with negative immediate");
+    }
     push(vm.stack.fp);
     vm.stack.fp = vm.stack.sp;
     vm.stack.size += immediate;
     vm.stack.sp += immediate;
     for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
         vm.stack.data[i].is_obj_ref = true;
-        vm.stack.data[i].u.obj_ref = NULL;
+        vm.stack.data[i].u.obj_ref = (ObjRef)NULL;
     }
 }
 
@@ -310,12 +316,16 @@ void jump_instruction(Immediate immediate) {
 
 void brf_instruction(Immediate immediate) {
     bip.op1 = pop_obj_ref();
-    if (!bigToInt()) jump_instruction(immediate);
+    if (!bigToInt()) {
+        jump_instruction(immediate);
+    }
 }
 
 void brt_instruction(Immediate immediate) {
     bip.op1 = pop_obj_ref();
-    if (bigToInt() == 1) jump_instruction(immediate);
+    if (bigToInt() == 1) {
+        jump_instruction(immediate);
+    }
 }
 
 void call_instruction(Immediate immediate) {
@@ -328,14 +338,14 @@ void ret_instruction(void) {
 }
 
 void drop_instruction(Immediate immediate) {
-    for (int i = 0; i < immediate; i++) pop_obj_ref();
+    for (int i = 0; i < immediate; i++) {
+        pop_obj_ref();
+    }
 }
 
 void pushr_instruction(void) {
-    if (vm.rv)
-        push_obj_ref(vm.rv);
-    else
-        fatalError("Error: no value in return value register");
+    vm.rv ? push_obj_ref(vm.rv)
+          : fatalError("no value in return value register");
 }
 
 void popr_instruction(void) {
@@ -355,9 +365,16 @@ void new_instruction(Immediate immediate) {
 
 void getf_instruction(Immediate immediate) {
     ObjRef record = pop_obj_ref();
-    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
-    unsigned int size = GET_ELEMENT_COUNT(record);
-    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
+    if (!record) {
+        fatalError("object is not defined");
+    }
+    if (IS_PRIMITIVE(record)) {
+        fatalError("record is not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(record);
+    if (immediate < 0 || size <= immediate) {
+        fatalError("record index out of bound");
+    }
     ObjRef field = GET_REFS_PTR(record)[immediate];
     push_obj_ref(field);
 }
@@ -365,28 +382,47 @@ void getf_instruction(Immediate immediate) {
 void putf_instruction(Immediate immediate) {
     ObjRef new_field = pop_obj_ref();
     ObjRef record = pop_obj_ref();
-    if (IS_PRIMITIVE(record)) fatalError("Primitive object has no fields");
-    unsigned int size = GET_ELEMENT_COUNT(record);
-    if (immediate < 0 || size <= immediate) fatalError("Error: index out of bound");
-    GET_REFS_PTR(record)[immediate] = new_field;
+    if (!record) {
+        fatalError("record is not defined");
+    }
+    if (IS_PRIMITIVE(record)) {
+        fatalError("record is not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(record);
+    if (immediate < 0 || size <= immediate) {
+        fatalError("stack index out of bound");
+    }
+    ObjRef *fields = GET_REFS_PTR(record);
+    fields[immediate] = new_field;
 }
 
 void newa_instruction(void) {
     bip.op1 = pop_obj_ref();
-    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
-    unsigned int size = bigToInt();
+    if (!IS_PRIMITIVE(bip.op1)) {
+        fatalError("object is not primitive");
+    }
+    unsigned size = bigToInt();
     ObjRef array = new_composite_object(size);
     push_obj_ref(array);
 }
 
 void getfa_instruction(void) {
     bip.op1 = pop_obj_ref();
-    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    if (!IS_PRIMITIVE(bip.op1)) {
+        fatalError("not a primitive object");
+    }
     Immediate index = bigToInt();
     ObjRef array = pop_obj_ref();
-    if (IS_PRIMITIVE(array)) fatalError("Primitive object has no fields");
-    unsigned int size = GET_ELEMENT_COUNT(array);
-    if (index < 0 || size <= index) fatalError("Error: index out of bound");
+    if (!array) {
+        fatalError("array is not defined");
+    }
+    if (IS_PRIMITIVE(array)) {
+        fatalError("array is not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(array);
+    if (index < 0 || size <= index) {
+        fatalError("array index out of bound");
+    }
     ObjRef field = GET_REFS_PTR(array)[index];
     push_obj_ref(field);
 }
@@ -394,13 +430,23 @@ void getfa_instruction(void) {
 void putfa_instruction(void) {
     ObjRef new_field = pop_obj_ref();
     bip.op1 = pop_obj_ref();
-    if (!IS_PRIMITIVE(bip.op1)) fatalError("Object is not primitive");
+    if (!IS_PRIMITIVE(bip.op1)) {
+        fatalError("not a primitive object");
+    }
     Immediate index = bigToInt();
     ObjRef array = pop_obj_ref();
-    if (IS_PRIMITIVE(array)) fatalError("Not a compound object");
-    unsigned int size = GET_ELEMENT_COUNT(array);
-    if (index < 0 || size <= index) fatalError("Error: index out of bound");
-    GET_REFS_PTR(array)[index] = new_field;
+    if (!array) {
+        fatalError("array is not defined");
+    }
+    if (IS_PRIMITIVE(array)) {
+        fatalError("array is not a composite object");
+    }
+    unsigned size = GET_ELEMENT_COUNT(array);
+    if (index < 0 || size <= index) {
+        fatalError("array index out of bound");
+    }
+    ObjRef *fields = GET_REFS_PTR(array);
+    fields[index] = new_field;
 }
 
 void getsz_instruction(void) {
