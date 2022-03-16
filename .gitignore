@@ -56,3 +56,4 @@ lectures
 .vscode
 lib/tst/testbip
 .gdb_history
+*.asm
