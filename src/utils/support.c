@@ -2,8 +2,7 @@
 
 void fatalError(char *msg) {
     fprintf(stderr, "Error: %s\n", msg);
-    abort();
-    // exit(1);
+    exit(1);
 }
 
 ObjRef newPrimObject(int dataSize) {

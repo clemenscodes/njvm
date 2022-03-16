@@ -23,7 +23,7 @@ void prompt(void) {
         }
         switch (c) {
             case 'i': {
-                printf("DEBUG: [inspect]: stack, data, object?\n");
+                printf("DEBUG: [inspect]: stack, data, heap, object?\n");
                 line = read_line();
                 c = line[0];
                 switch (c) {
@@ -39,6 +39,13 @@ void prompt(void) {
                         print_sda();
                         printf(
                             "----------------- end of sda -----------------\n");
+                        continue;
+                    }
+                    case 'h': {
+                        free(line);
+                        print_heap_objects();
+                        printf(
+                            "----------------- end of heap -----------------\n");
                         continue;
                     }
                     case 'o': {
@@ -129,7 +136,7 @@ void set_breakpoint(void) {
     bip.op1 = bip.res;
     int bp = bigToInt();
     if (!bp) {
-        fatalError("Error: failed to read integer");
+        fatalError("failed to read integer");
     }
     if (bp < -1) {
         return;
@@ -150,8 +157,8 @@ void set_breakpoint(void) {
 
 void print_obj_ref(ObjRef obj_ref) {
     printf("ObjRef: %p\n", (void *)obj_ref);
-    if (obj_ref == NULL) {
-        fatalError("Error: cannot print null object");
+    if (!obj_ref) {
+        fatalError("cannot print null object");
     }
     char *type;
     unsigned bytes = get_obj_ref_bytes(obj_ref);

@@ -1,8 +1,6 @@
 #include "gc.h"
 
 void nullify_heap_stats(void) {
-    vm.gc.total_copied_objects += vm.gc.copied_objects;
-    vm.gc.total_copied_bytes += vm.gc.copied_bytes;
     vm.gc.copied_objects = vm.gc.copied_bytes = vm.heap.used = vm.heap.size = 0;
 }
 
@@ -17,11 +15,10 @@ void swap_heaps(void) {
 }
 
 void relocate_registers(void) {
-    vm.rv = relocate(vm.rv);
-    bip.op1 = relocate(bip.op1);
-    bip.op2 = relocate(bip.op2);
-    bip.res = relocate(bip.res);
-    bip.rem = relocate(bip.rem);
+    ObjRef *registers[5] = {&vm.rv, &bip.op1, &bip.op2, &bip.res, &bip.rem};
+    for (int i = 0; i < 5; i++) {
+        *registers[i] = relocate(*registers[i]);
+    }
 }
 
 void relocate_sda_objects(void) {
@@ -39,11 +36,9 @@ void relocate_stack_objects(void) {
 }
 
 ObjRef relocate(ObjRef obj_ref) {
-    if (!obj_ref) {
-        return NULL;
-    }
-    return IS_COPIED(obj_ref) ? get_obj_ref_from_forward_pointer(obj_ref)
-                              : copy_obj_ref_to_free_memory(obj_ref);
+    return !obj_ref             ? NULL
+           : IS_COPIED(obj_ref) ? get_obj_ref_from_forward_pointer(obj_ref)
+                                : copy_obj_ref_to_free_memory(obj_ref);
 }
 
 ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref) {
@@ -95,6 +90,8 @@ void print_gc_stats(void) {
                vm.heap.size, vm.heap.used);
         printf("\t%u objects (%u bytes) copied during this collection\n",
                vm.gc.copied_objects, vm.gc.copied_bytes);
+        printf("\t%u objects (%u bytes) copied in total\n",
+               vm.gc.total_copied_objects, vm.gc.total_copied_bytes);
         printf("\t%u of %u  bytes free after this collection\n",
                vm.heap.available - vm.heap.used, vm.heap.available);
     }
@@ -109,6 +106,8 @@ void run_gc(void) {
     relocate_sda_objects();
     relocate_stack_objects();
     scan();
+    vm.gc.total_copied_objects += vm.gc.copied_objects;
+    vm.gc.total_copied_bytes += vm.gc.copied_bytes;
     purge_heap();
     print_gc_stats();
     vm.gc.is_running = false;
