@@ -13,12 +13,12 @@
 #include "macros.h"
 #include "njvm.h"
 
-FILE *open_file(char *file_name);
-void read_file(char *file_name);
+FILE *open_file();
+void read_file();
 void close_file(FILE *fp);
 char *read_line(void);
-void check_ninja_binary_format(FILE *fp, char *arg);
-void check_ninja_version(FILE *fp, char *arg);
+void check_ninja_binary_format(FILE *fp);
+void check_ninja_version(FILE *fp);
 void read_instructions_into_ir(FILE *fp);
 unsigned check_ninja_instruction_count(FILE *fp);
 unsigned check_ninja_variable_count(FILE *fp);

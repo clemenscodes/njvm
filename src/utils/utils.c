@@ -1,9 +1,9 @@
 #include "utils.h"
 
-void read_file(char *arg) {
-    FILE *fp = open_file(arg);
-    check_ninja_binary_format(fp, arg);
-    check_ninja_version(fp, arg);
+void read_file() {
+    FILE *fp = open_file(vm.code_file);
+    check_ninja_binary_format(fp);
+    check_ninja_version(fp);
     unsigned variable_count = check_ninja_variable_count(fp);
     if (variable_count > 0) {
         vm.sda.size = variable_count;
@@ -26,10 +26,10 @@ void read_instructions_into_ir(FILE *fp) {
     }
 }
 
-FILE *open_file(char *arg) {
-    FILE *fp = fopen(arg, "r");
+FILE *open_file() {
+    FILE *fp = fopen(vm.code_file, "r");
     if (!fp) {
-        fprintf(stderr, "Error: cannot open code file '%s'\n", arg);
+        fprintf(stderr, "Error: cannot open code file '%s'\n", vm.code_file);
         exit(1);
     }
     return fp;
@@ -45,21 +45,21 @@ Bytecode seek_file(FILE *fp, unsigned offset) {
     return buffer;
 }
 
-void check_ninja_binary_format(FILE *fp, char *arg) {
+void check_ninja_binary_format(FILE *fp) {
     Bytecode buffer = seek_file(fp, 0);
     if (!(buffer == NINJA_BINARY_FORMAT)) {
-        fprintf(stderr, "Error: file '%s' is not a Ninja binary\n", arg);
+        fprintf(stderr, "Error: file '%s' is not a Ninja binary\n", vm.code_file);
         close_file(fp);
         exit(1);
     }
 }
 
-void check_ninja_version(FILE *fp, char *arg) {
+void check_ninja_version(FILE *fp) {
     Bytecode buffer = seek_file(fp, 4);
     if (!(buffer == NINJA_BINARY_VERSION)) {
         fprintf(stderr,
                 "Error: file '%s' does not have the correct Ninja version\n",
-                arg);
+                vm.code_file);
         close_file(fp);
         exit(1);
     }

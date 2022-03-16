@@ -10,7 +10,7 @@
 #include "processor.h"
 #include "utils.h"
 
-void debug(char *bin);
+void debug(void);
 void prompt(void);
 void inspect(void);
 void step(void);

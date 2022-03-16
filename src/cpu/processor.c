@@ -1,13 +1,13 @@
 #include "processor.h"
 
-void init(char *bin) {
-    read_file(bin);
+void init(void) {
+    read_file(vm.code_file);
     initialize_sda();
-    vm.debugger.activated ? debug(bin) : execute(bin);
+    vm.debugger.activated ? debug() : execute();
     exit(0);
 }
 
-void execute(char *bin) {
+void execute(void) {
     printf("Ninja Virtual Machine started\n");
     Bytecode instruction = vm.ir.data[vm.ir.pc];
     Opcode opcode = decode_opcode(instruction);
