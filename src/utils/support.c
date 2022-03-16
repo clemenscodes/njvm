@@ -1,18 +1,18 @@
 #include "utils.h"
 
 void fatalError(char *msg) {
-    fprintf(stderr, "%s\n", msg);
+    fprintf(stderr, "Error: %s\n", msg);
     abort();
     // exit(1);
 }
 
 ObjRef newPrimObject(int dataSize) {
-    if (dataSize < 0) {
-        fatalError("Error: no negative data size allowed");
+    if (dataSize < 4) {
+        fatalError("at least 4 bytes for primitive object are required");
     }
-    ObjRef obj_ref = (ObjRef)alloc(dataSize + sizeof(Immediate));
-    if (obj_ref == NULL) {
-        fatalError("Error: failed to allocate memory for obj_ref");
+    ObjRef obj_ref = alloc(dataSize + sizeof(Immediate));
+    if (!obj_ref) {
+        fatalError("failed to allocate memory for primitive object");
     }
     obj_ref->size = dataSize;
     return obj_ref;

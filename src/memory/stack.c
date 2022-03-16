@@ -3,16 +3,16 @@
 void initialize_stack(unsigned memory) {
     vm.stack.memory = memory;
     vm.stack.bytes = vm.stack.memory * KiB;
-    vm.stack.max_items = vm.stack.bytes/ sizeof(StackSlot);
-    vm.stack.data = calloc(vm.stack.bytes, sizeof(unsigned char));
+    vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
+    vm.stack.data = malloc(vm.stack.bytes);
     if (!vm.stack.data && vm.stack.size) {
-        perror("calloc(vm.stack.data)");
+        perror("malloc(vm.stack.data)");
     }
 }
 
 void push(Immediate immediate) {
     if (vm.stack.size >= vm.stack.max_items) {
-        fatalError("Error: stack overflow");
+        fatalError("stack overflow");
     }
     vm.stack.size++;
     vm.stack.data[vm.stack.sp].is_obj_ref = false;
@@ -22,7 +22,7 @@ void push(Immediate immediate) {
 
 void push_obj_ref(ObjRef obj_ref) {
     if (vm.stack.size >= vm.stack.max_items) {
-        fatalError("Error: stack overflow");
+        fatalError("stack overflow");
     }
     vm.stack.size++;
     vm.stack.data[vm.stack.sp].is_obj_ref = true;
@@ -37,7 +37,7 @@ Immediate pop(void) {
     vm.stack.sp--;
     vm.stack.size--;
     if (vm.stack.data[vm.stack.sp].is_obj_ref) {
-        fatalError("Error: slot is obj_ref");
+        fatalError("slot is object, but shouldn't be");
     }
     return vm.stack.data[vm.stack.sp].u.value;
 }
@@ -49,7 +49,7 @@ ObjRef pop_obj_ref(void) {
     vm.stack.sp--;
     vm.stack.size--;
     if (!vm.stack.data[vm.stack.sp].is_obj_ref) {
-        fatalError("Error: slot is not obj_ref");
+        fatalError("slot is object, but shouldn't be");
     }
     return vm.stack.data[vm.stack.sp].u.obj_ref;
 }
@@ -72,15 +72,20 @@ void print_stack(void) {
                 obj_ref = slot.u.obj_ref;
                 if (slot.u.obj_ref) {
                     if (IS_PRIMITIVE(obj_ref)) {
-                        printf("sp, fp --->\t%04d: (%s) \t%p ---> [", i, type, (void *)obj_ref);
+                        printf("sp, fp --->\t%04d: (%s) \t%p ---> [", i, type,
+                               (void *)obj_ref);
                         bip.op1 = obj_ref;
                         bigPrint(stdout);
                         printf("]\n");
                     } else {
-                        printf("sp, fp --->\t%04d: (%s) \t%p ---> (objref) -> size: [%u]\n", i, type, (void *)obj_ref, GET_ELEMENT_COUNT(obj_ref));
+                        printf("sp, fp --->\t%04d: (%s) \t%p ---> (objref) -> "
+                               "size: [%u]\n",
+                               i, type, (void *)obj_ref,
+                               GET_ELEMENT_COUNT(obj_ref));
                     }
                 } else {
-                    printf("sp, fp --->\t%04d: (%s) \t%p\n", i, type, (void *)obj_ref);
+                    printf("sp, fp --->\t%04d: (%s) \t%p\n", i, type,
+                           (void *)obj_ref);
                 }
             } else {
                 value = slot.u.value;
@@ -92,12 +97,16 @@ void print_stack(void) {
                 obj_ref = slot.u.obj_ref;
                 if (slot.u.obj_ref) {
                     if (IS_PRIMITIVE(obj_ref)) {
-                        printf("\t\t%04d: (%s) \t%p ---> [", i, type, (void *)obj_ref);
+                        printf("\t\t%04d: (%s) \t%p ---> [", i, type,
+                               (void *)obj_ref);
                         bip.op1 = obj_ref;
                         bigPrint(stdout);
                         printf("]\n");
                     } else {
-                        printf("\t\t%04d: (%s) \t%p ---> (objref) -> size: [%u]\n", i, type, (void *)obj_ref, GET_ELEMENT_COUNT(obj_ref));
+                        printf(
+                            "\t\t%04d: (%s) \t%p ---> (objref) -> size: [%u]\n",
+                            i, type, (void *)obj_ref,
+                            GET_ELEMENT_COUNT(obj_ref));
                     }
                 } else {
                     printf("\t\t%04d: (%s) \t%p\n", i, type, (void *)obj_ref);
@@ -115,15 +124,20 @@ void print_stack(void) {
                 obj_ref = vm.stack.data[fp].u.obj_ref;
                 if (slot.u.obj_ref) {
                     if (IS_PRIMITIVE(obj_ref)) {
-                        printf("fp \t --->\t%04d: (%s) \t%p ---> [", fp, type, (void *)obj_ref);
+                        printf("fp \t --->\t%04d: (%s) \t%p ---> [", fp, type,
+                               (void *)obj_ref);
                         bip.op1 = obj_ref;
                         bigPrint(stdout);
                         printf("]\n");
                     } else {
-                        printf("fp \t --->\t%04d: (%s) \t%p ---> (objref) -> size: [%u]\n", i, type, (void *)obj_ref, GET_ELEMENT_COUNT(obj_ref));
+                        printf("fp \t --->\t%04d: (%s) \t%p ---> (objref) -> "
+                               "size: [%u]\n",
+                               i, type, (void *)obj_ref,
+                               GET_ELEMENT_COUNT(obj_ref));
                     }
                 } else {
-                    printf("fp \t --->\t%04d: (%s) \t%p\n", fp, type, (void *)obj_ref);
+                    printf("fp \t --->\t%04d: (%s) \t%p\n", fp, type,
+                           (void *)obj_ref);
                 }
             } else {
                 value = vm.stack.data[fp].u.value;

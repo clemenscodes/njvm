@@ -30,19 +30,22 @@ void prompt(void) {
                     case 's': {
                         free(line);
                         print_stack();
-                        printf("---------------- end of stack ----------------\n");
+                        printf(
+                            "---------------- end of stack ----------------\n");
                         continue;
                     }
                     case 'd': {
                         free(line);
                         print_sda();
-                        printf("----------------- end of sda -----------------\n");
+                        printf(
+                            "----------------- end of sda -----------------\n");
                         continue;
                     }
                     case 'o': {
                         printf("object reference?\n");
                         line = read_line();
-                        ObjRef obj_ref = (ObjRef)strtol(line, (char **)NULL, 16);
+                        ObjRef obj_ref =
+                            (ObjRef)strtol(line, (char **)NULL, 16);
                         print_obj_ref(obj_ref);
                         free(line);
                         continue;
@@ -55,7 +58,8 @@ void prompt(void) {
             case 'l': {
                 free(line);
                 print_ir();
-                printf("---------------- end of instructions ----------------\n");
+                printf(
+                    "---------------- end of instructions ----------------\n");
                 continue;
             }
             case 'b': {
@@ -114,11 +118,13 @@ void run(void) {
 
 void set_breakpoint(void) {
     if (vm.debugger.bp) {
-        printf("DEBUG [breakpoint]: breakpoint is set at %d\n", *vm.debugger.bp);
+        printf("DEBUG [breakpoint]: breakpoint is set at %d\n",
+               *vm.debugger.bp);
     } else {
         printf("DEBUG [breakpoint]: cleared\n");
     }
-    printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
+    printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no "
+           "change?\n");
     bigRead(stdin);
     bip.op1 = bip.res;
     int bp = bigToInt();
@@ -229,4 +235,3 @@ void print_obj_ref_in_le_bits(ObjRef obj_ref) {
     unsigned bytes = get_obj_ref_bytes(obj_ref);
     print_memory_in_le_bits(obj_ref, bytes);
 }
-

@@ -1,22 +1,22 @@
 #include "sda.h"
 
 void initialize_sda(void) {
-    vm.sda.data = calloc(vm.sda.size, sizeof(ObjRef));
+    vm.sda.data = alloc(vm.sda.size * sizeof(ObjRef));
     if (!vm.sda.data) {
-        perror("malloc(vm.sda.data)");
+        perror("alloc(vm.sda.data)");
     }
 }
 
 void push_global(Immediate immediate) {
-    if (immediate >= vm.sda.size || immediate < 0)  {
-        fatalError("Error: sda index out of bound");
+    if (immediate >= vm.sda.size || immediate < 0) {
+        fatalError("static data area index out of bound");
     }
     push_obj_ref(vm.sda.data[immediate]);
 }
 
 void pop_global(Immediate immediate) {
-    if (immediate >= vm.sda.size || immediate < 0)  {
-        fatalError("Error: sda index out of bound");
+    if (immediate >= vm.sda.size || immediate < 0) {
+        fatalError("static data area index out of bound");
     }
     vm.sda.data[immediate] = pop_obj_ref();
 }

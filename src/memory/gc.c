@@ -14,7 +14,6 @@ void swap_heaps(void) {
         vm.heap.passive = vm.heap.active;
         vm.heap.next = vm.heap.active = vm.heap.begin;
     }
-    purge_heap_half(vm.heap.active);
 }
 
 void relocate_registers(void) {
@@ -40,22 +39,23 @@ void relocate_stack_objects(void) {
 }
 
 ObjRef relocate(ObjRef obj_ref) {
-    if (obj_ref == NULL) {
+    if (!obj_ref) {
         return NULL;
     }
-    return IS_COPIED(obj_ref) ? get_obj_ref_from_forward_pointer(obj_ref) : copy_obj_ref_to_free_memory(obj_ref);
+    return IS_COPIED(obj_ref) ? get_obj_ref_from_forward_pointer(obj_ref)
+                              : copy_obj_ref_to_free_memory(obj_ref);
 }
 
 ObjRef copy_obj_ref_to_free_memory(ObjRef obj_ref) {
-    if (obj_ref == NULL) {
+    if (!obj_ref) {
         return NULL;
     }
-    unsigned forward_pointer = vm.heap.used,
-             bytes = get_obj_ref_bytes(obj_ref),
+    unsigned forward_pointer = vm.heap.used, bytes = get_obj_ref_bytes(obj_ref),
              size = get_obj_ref_size(obj_ref);
-    ObjRef new_obj_ref = IS_PRIMITIVE(obj_ref) ? newPrimObject(size) : new_composite_object(size);
+    ObjRef new_obj_ref = IS_PRIMITIVE(obj_ref) ? newPrimObject(size)
+                                               : new_composite_object(size);
     if (!memcpy(new_obj_ref->data, obj_ref->data, bytes - sizeof(unsigned))) {
-        fatalError("Error: failed copying memory");
+        fatalError("failed copying memory");
     }
     set_broken_heart(obj_ref);
     set_forward_pointer(obj_ref, forward_pointer);
@@ -84,16 +84,19 @@ void scan(void) {
 
 void purge_heap(void) {
     if (vm.gc.purge_flag) {
-        purge_heap_half(vm.heap.passive);
+        vm.heap.passive = calloc(vm.heap.available, sizeof(unsigned char));
     }
 }
 
 void print_gc_stats(void) {
     if (vm.gc.stats_flag) {
         printf("Garbage Collector:\n");
-        printf("\t%u objects (%u bytes) allocated since last collection\n", vm.heap.size, vm.heap.used);
-        printf("\t%u objects (%u bytes) copied during this collection\n", vm.gc.copied_objects, vm.gc.copied_bytes);
-        printf("\t%u of %u  bytes free after this collection\n", vm.heap.available - vm.heap.used, vm.heap.available);
+        printf("\t%u objects (%u bytes) allocated since last collection\n",
+               vm.heap.size, vm.heap.used);
+        printf("\t%u objects (%u bytes) copied during this collection\n",
+               vm.gc.copied_objects, vm.gc.copied_bytes);
+        printf("\t%u of %u  bytes free after this collection\n",
+               vm.heap.available - vm.heap.used, vm.heap.available);
     }
 }
 

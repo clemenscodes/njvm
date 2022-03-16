@@ -9,7 +9,7 @@ int njvm(int argc, char *argv[]) {
     for (int i = 1; i <= argc; i++) {
         if (i == argc) {
             if (!code_flag) {
-                fatalError("Error: no code file specified");
+                fatalError("no code file specified");
             }
             init(code_file);
         }
@@ -20,8 +20,8 @@ int njvm(int argc, char *argv[]) {
         if (!strcmp(argv[i], "--help")) {
             printf("usage: ./njvm [options] <code file>\n");
             printf("Options:\n");
-            printf("  --stack <n>\t   set stack size to n KBytes (default: n = 64)\n");
-            printf("  --heap <n>\t   set heap size to n KBytes (default: n = 8192)\n");
+            printf("  --stack <n>\t   set stack size to n KiB (default: 64)\n");
+            printf("  --heap <n>\t   set heap size to n KiB (default: 8192)\n");
             printf("  --gcstats\t   show garbage collection stats\n");
             printf("  --gcpurge\t   purge old objects after collection\n");
             printf("  --debug\t   start virtual machine in debug mode\n");
@@ -30,7 +30,8 @@ int njvm(int argc, char *argv[]) {
             exit(0);
         }
         if (!strcmp(argv[i], "--version")) {
-            printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", NINJA_BINARY_VERSION, __DATE__, __TIME__);
+            printf("Ninja Virtual Machine version %d (compiled %s, %s)\n",
+                   NINJA_BINARY_VERSION, __DATE__, __TIME__);
             exit(0);
         }
         if (!strcmp(argv[i], "--stack")) {
@@ -64,11 +65,12 @@ int njvm(int argc, char *argv[]) {
             continue;
         }
         if (!strncmp("-", argv[i], strlen("-"))) {
-            printf("unknown command line argument '%s', try '%s --help'\n", argv[i], argv[0]);
+            printf("unknown command line argument '%s', try '%s --help'\n",
+                   argv[i], argv[0]);
             exit(1);
         }
         if (code_flag) {
-            fatalError("Error: more than one code file specified");
+            fatalError("more than one code file specified");
         }
         code_file = argv[i];
         code_flag = true;

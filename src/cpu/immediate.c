@@ -10,7 +10,7 @@ Bytecode encode_immediate(Immediate immediate) {
         Bytecode bytecode = SIGN_EXTEND(IMMEDIATE(immediate));
         return bytecode;
     } else {
-        fprintf(stderr, "Immediate value out of range");
+        fprintf(stderr, "Error: immediate value out of range");
         exit(1);
     }
 }
