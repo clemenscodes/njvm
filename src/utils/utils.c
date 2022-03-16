@@ -22,7 +22,8 @@ Bytecode seek_file(FILE *fp, unsigned offset) {
 void check_ninja_binary_format(FILE *fp) {
     Bytecode buffer = seek_file(fp, 0);
     if (!(buffer == NINJA_BINARY_FORMAT)) {
-        fprintf(stderr, "Error: file '%s' is not a Ninja binary\n", vm.code_file);
+        fprintf(stderr, "Error: file '%s' is not a Ninja binary\n",
+                vm.code_file);
         close_file(fp);
         exit(1);
     }
