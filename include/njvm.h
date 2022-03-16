@@ -21,7 +21,7 @@
 #define NINJA_BINARY_VERSION 0x00000008
 #define DEFAULT_HEAP_SIZE 8192
 #define DEFAULT_STACK_SIZE 64
-#define KiB 1024
+#define Ki 1024
 
 typedef unsigned StackPointer;
 typedef unsigned FramePointer;
@@ -76,6 +76,8 @@ typedef struct {
     bool purge_flag;
     bool stats_flag;
     unsigned collections;
+    unsigned objects_allocated;
+    unsigned bytes_allocated;
     unsigned copied_objects;
     unsigned copied_bytes;
     unsigned total_copied_objects;

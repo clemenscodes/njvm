@@ -96,7 +96,7 @@ NinjaVM default_rv(NinjaVM vm) {
 NinjaVM default_stack(NinjaVM vm) {
     vm.stack.size = vm.stack.sp = vm.stack.fp = 0;
     vm.stack.memory = DEFAULT_STACK_SIZE;
-    vm.stack.bytes = vm.stack.memory * KiB;
+    vm.stack.bytes = vm.stack.memory * Ki;
     vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
     vm.stack.data = malloc(vm.stack.bytes);
     if (!vm.stack.data && vm.stack.size) {
@@ -114,7 +114,7 @@ NinjaVM default_sda(NinjaVM vm) {
 NinjaVM default_heap(NinjaVM vm) {
     vm.heap.size = vm.heap.used = 0;
     vm.heap.memory = DEFAULT_HEAP_SIZE;
-    vm.heap.bytes = vm.heap.memory * KiB;
+    vm.heap.bytes = vm.heap.memory * Ki;
     vm.heap.available = vm.heap.bytes / 2;
     vm.heap.active = calloc(vm.heap.bytes, sizeof(unsigned char));
     if (!vm.heap.active) {
@@ -128,6 +128,7 @@ NinjaVM default_heap(NinjaVM vm) {
 NinjaVM default_gc(NinjaVM vm) {
     vm.gc.purge_flag = vm.gc.stats_flag = vm.gc.is_running = false;
     vm.gc.copied_objects = vm.gc.copied_bytes = 0;
+    vm.gc.bytes_allocated = vm.gc.objects_allocated = 0;
     return vm;
 }
 

@@ -87,17 +87,20 @@ void print_gc_stats(void) {
     if (vm.gc.stats_flag) {
         printf("Garbage Collector:\n");
         printf("\t%u objects (%u bytes) allocated since last collection\n",
-               vm.heap.size, vm.heap.used);
+               vm.gc.objects_allocated, vm.gc.bytes_allocated);
         printf("\t%u objects (%u bytes) copied during this collection\n",
                vm.gc.copied_objects, vm.gc.copied_bytes);
-        printf("\t%u objects (%u bytes) copied in total\n",
-               vm.gc.total_copied_objects, vm.gc.total_copied_bytes);
+        printf("\t%u objects (%u bytes) copied in %u total collections\n",
+               vm.gc.total_copied_objects, vm.gc.total_copied_bytes,
+               vm.gc.collections);
         printf("\t%u of %u  bytes free after this collection\n",
                vm.heap.available - vm.heap.used, vm.heap.available);
     }
 }
 
 void run_gc(void) {
+    vm.gc.bytes_allocated = vm.heap.used;
+    vm.gc.objects_allocated = vm.heap.size;
     vm.gc.collections++;
     vm.gc.is_running = true;
     nullify_heap_stats();

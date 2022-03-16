@@ -10,7 +10,7 @@ void test_default_stack(void **state) {
     assert_int_equal(vm.stack.sp, 0);
     assert_int_equal(vm.stack.fp, 0);
     assert_int_equal(vm.stack.memory, DEFAULT_STACK_SIZE);
-    assert_int_equal(vm.stack.bytes, vm.stack.memory * KiB);
+    assert_int_equal(vm.stack.bytes, vm.stack.memory * Ki);
     assert_int_equal(vm.stack.max_items, vm.stack.bytes / sizeof(StackSlot));
     assert_non_null(vm.stack.data);
 }
@@ -23,7 +23,7 @@ void test_initialize_stack(void **state) {
     assert_int_equal(vm.stack.sp, 0);
     assert_int_equal(vm.stack.fp, 0);
     assert_int_equal(vm.stack.memory, init_size);
-    assert_int_equal(vm.stack.bytes, init_size * KiB);
+    assert_int_equal(vm.stack.bytes, init_size * Ki);
     assert_int_equal(vm.stack.max_items, vm.stack.bytes / sizeof(StackSlot));
     assert_non_null(vm.stack.data);
 }

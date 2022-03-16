@@ -2,7 +2,7 @@
 
 void initialize_heap(unsigned memory) {
     vm.heap.memory = memory;
-    vm.heap.bytes = vm.heap.memory * KiB;
+    vm.heap.bytes = vm.heap.memory * Ki;
     vm.heap.available = vm.heap.bytes / 2;
     if (vm.heap.available > FORWARD_PTR_MASK) {
         fatalError("heap cannot address more than 2^30 bytes");

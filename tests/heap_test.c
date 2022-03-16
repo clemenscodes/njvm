@@ -10,7 +10,7 @@ const struct CMUnitTest heap_unit_tests[] = {
 
 void test_default_heap(void **state) {
     assert_int_equal(vm.heap.memory, DEFAULT_HEAP_SIZE);
-    assert_int_equal(vm.heap.bytes, vm.heap.memory * KiB);
+    assert_int_equal(vm.heap.bytes, vm.heap.memory * Ki);
     assert_int_equal(vm.heap.available, vm.heap.bytes / 2);
     assert_int_equal(vm.heap.used, 0);
     assert_int_equal(vm.heap.size, 0);
@@ -31,7 +31,7 @@ void test_initialize_heap(void **state) {
     size_t init_size = DEFAULT_HEAP_SIZE * factor;
     initialize_heap(init_size);
     assert_int_equal(vm.heap.memory, init_size);
-    assert_int_equal(vm.heap.bytes, init_size * KiB);
+    assert_int_equal(vm.heap.bytes, init_size * Ki);
     assert_int_equal(vm.heap.available, vm.heap.bytes / 2);
     assert_int_equal(vm.heap.used, 0);
     assert_int_equal(vm.heap.size, 0);

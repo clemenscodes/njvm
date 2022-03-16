@@ -2,7 +2,7 @@
 
 void initialize_stack(unsigned memory) {
     vm.stack.memory = memory;
-    vm.stack.bytes = vm.stack.memory * KiB;
+    vm.stack.bytes = vm.stack.memory * Ki;
     vm.stack.max_items = vm.stack.bytes / sizeof(StackSlot);
     vm.stack.data = malloc(vm.stack.bytes);
     if (!vm.stack.data && vm.stack.size) {
