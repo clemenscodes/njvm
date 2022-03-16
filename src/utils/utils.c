@@ -1,32 +1,6 @@
 #include "utils.h"
 
-void read_file() {
-    FILE *fp = open_file(vm.code_file);
-    check_ninja_binary_format(fp);
-    check_ninja_version(fp);
-    unsigned variable_count = check_ninja_variable_count(fp);
-    if (variable_count > 0) {
-        vm.sda.size = variable_count;
-    }
-    read_instructions_into_ir(fp);
-    close_file(fp);
-}
-
-void read_instructions_into_ir(FILE *fp) {
-    unsigned instruction_count = check_ninja_instruction_count(fp);
-    initialize_ir(instruction_count);
-    fseek(fp, 16, SEEK_SET);
-    unsigned read_objects =
-        fread(vm.ir.data, sizeof(Bytecode), instruction_count, fp);
-    if (read_objects != instruction_count) {
-        fprintf(stderr, "Error: Could only read [%u] of [%u] items.\n",
-                read_objects, instruction_count);
-        close_file(fp);
-        exit(1);
-    }
-}
-
-FILE *open_file() {
+FILE *open_code_file(void) {
     FILE *fp = fopen(vm.code_file, "r");
     if (!fp) {
         fprintf(stderr, "Error: cannot open code file '%s'\n", vm.code_file);
@@ -65,17 +39,17 @@ void check_ninja_version(FILE *fp) {
     }
 }
 
+unsigned check_ninja_variable_count(FILE *fp) {
+    return (unsigned)seek_file(fp, 12);
+}
+
 unsigned check_ninja_instruction_count(FILE *fp) {
     Bytecode buffer = seek_file(fp, 8);
     if (!buffer) {
         close_file(fp);
         fatalError("no instructions");
     }
-    return buffer;
-}
-
-unsigned check_ninja_variable_count(FILE *fp) {
-    return seek_file(fp, 12);
+    return (unsigned)buffer;
 }
 
 void close_file(FILE *fp) {

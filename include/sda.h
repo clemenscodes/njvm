@@ -7,7 +7,7 @@
 #include "njvm.h"
 #include "stack.h"
 
-void initialize_sda(void);
+void initialize_sda(unsigned instruction_count);
 void push_global(Immediate immediate);
 void pop_global(Immediate immediate);
 void print_sda(void);

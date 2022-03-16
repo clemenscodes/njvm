@@ -1,8 +1,21 @@
 #include "processor.h"
 
 void init(void) {
-    read_file(vm.code_file);
-    initialize_sda();
+    FILE *fp = open_code_file();
+    check_ninja_binary_format(fp);
+    check_ninja_version(fp);
+    unsigned vc = check_ninja_variable_count(fp),
+             ic = check_ninja_instruction_count(fp);
+    initialize_sda(vc);
+    initialize_ir(ic);
+    fseek(fp, 16, SEEK_SET);
+    unsigned read = fread(vm.ir.data, sizeof(Bytecode), ic, fp);
+    if (read != ic) {
+        fprintf(stderr, "Error: read [%u] of [%u] items.\n", read, ic);
+        close_file(fp);
+        exit(1);
+    }
+    close_file(fp);
     vm.debugger.activated ? debug() : execute();
     exit(0);
 }

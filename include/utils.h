@@ -13,16 +13,14 @@
 #include "macros.h"
 #include "njvm.h"
 
-FILE *open_file();
-void read_file();
-void close_file(FILE *fp);
-char *read_line(void);
+FILE *open_code_file(void);
+Bytecode seek_file(FILE *fp, unsigned offset);
 void check_ninja_binary_format(FILE *fp);
 void check_ninja_version(FILE *fp);
-void read_instructions_into_ir(FILE *fp);
 unsigned check_ninja_instruction_count(FILE *fp);
 unsigned check_ninja_variable_count(FILE *fp);
-Bytecode seek_file(FILE *fp, unsigned offset);
+void close_file(FILE *fp);
+char *read_line(void);
 ObjRef new_composite_object(unsigned num_obj_refs);
 unsigned get_obj_ref_bytes(ObjRef obj_ref);
 unsigned get_obj_ref_size(ObjRef obj_ref);
