@@ -90,6 +90,7 @@ typedef struct {
 } Debugger;
 
 typedef struct {
+    char *code_file;
     Stack stack;
     Heap heap;
     StaticDataArea sda;

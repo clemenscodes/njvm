@@ -1,6 +1,7 @@
 #include "sda.h"
 
-void initialize_sda(void) {
+void initialize_sda(unsigned instruction_count) {
+    vm.sda.size = instruction_count;
     vm.sda.data = malloc(vm.sda.size * sizeof(ObjRef));
     if (!vm.sda.data) {
         perror("malloc(vm.sda.data)");

@@ -1,7 +1,7 @@
 #include "debugger.h"
 
-void debug(char *bin) {
-    printf("DEBUG:\tfile\t:  '%s'\n", bin);
+void debug(void) {
+    printf("DEBUG:\tfile\t:  '%s'\n", vm.code_file);
     printf("\tcode\t:  %u instructions\n", vm.ir.size);
     printf("\tdata\t:  %u objects\n", vm.sda.size);
     printf("\tstack\t:  %u slots\n", vm.stack.max_items);

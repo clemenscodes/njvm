@@ -5,13 +5,12 @@ NinjaVM vm;
 int njvm(int argc, char *argv[]) {
     vm = default_vm();
     bool code_flag = false;
-    char *code_file = NULL;
     for (int i = 1; i <= argc; i++) {
         if (i == argc) {
             if (!code_flag) {
                 fatalError("no code file specified");
             }
-            init(code_file);
+            init();
         }
         if (!strcmp(argv[i], "--debug")) {
             vm.debugger.activated = true;
@@ -72,12 +71,12 @@ int njvm(int argc, char *argv[]) {
         if (code_flag) {
             fatalError("more than one code file specified");
         }
-        code_file = argv[i];
+        vm.code_file = argv[i];
         code_flag = true;
         if (i < argc - 1) {
             continue;
         }
-        init(code_file);
+        init();
     }
     return 0;
 }
@@ -139,6 +138,7 @@ NinjaVM default_debugger(NinjaVM vm) {
 }
 
 NinjaVM default_vm(void) {
+    vm.code_file = NULL;
     vm = default_ir(vm);
     vm = default_rv(vm);
     vm = default_stack(vm);
