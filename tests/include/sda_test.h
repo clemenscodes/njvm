@@ -1,7 +1,7 @@
 #ifndef _SDA_TEST_H
 #define _SDA_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "sda.h"
 
 const struct CMUnitTest sda_unit_tests[2];

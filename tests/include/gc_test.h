@@ -1,7 +1,7 @@
 #ifndef _GC_TEST_H
 #define _GC_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "gc.h"
 
 const struct CMUnitTest gc_unit_tests[13];

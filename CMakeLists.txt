@@ -65,7 +65,7 @@ set(TESTS
 )
 
 set(TEST_HEADERS
-    tests/include/cmocka.h
+    tests/include/cmocka/cmocka.h
     tests/include/test.h
     tests/include/opcode_test.h
     tests/include/instruction_test.h

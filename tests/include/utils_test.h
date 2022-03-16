@@ -1,7 +1,7 @@
 #ifndef _UTILS_TEST_H
 #define _UTILS_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "utils.h"
 
 const struct CMUnitTest utils_unit_tests[14];

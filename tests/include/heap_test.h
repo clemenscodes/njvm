@@ -1,7 +1,7 @@
 #ifndef _HEAP_TEST_H
 #define _HEAP_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "heap.h"
 
 const struct CMUnitTest heap_unit_tests[5];

@@ -1,7 +1,7 @@
 #ifndef _INSTRUCTION_TEST_H
 #define _INSTRUCTION_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "instruction.h"
 
 const struct CMUnitTest instruction_unit_tests[3];

@@ -1,7 +1,7 @@
 #ifndef _OPCODE_TEST_H
 #define _OPCODE_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "opcode.h"
 
 const struct CMUnitTest opcode_unit_tests[2];

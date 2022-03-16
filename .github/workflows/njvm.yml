@@ -14,9 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: RafikFarhad/clang-format-github-action@v2.0.0
+    - name: Format
+      uses: RafikFarhad/clang-format-github-action@v2.0.0
       with:
-        sources: "src/**/*.c,include/**/*.h,tests/**/*.c,tests/**/*.h"
+        sources: "src/**/*.c,include/**/*.h,tests/**/*.c,tests/*.h"
         style: file
     - name: Install Valgrind
       run: |
@@ -31,7 +32,7 @@ jobs:
       run: ctest -C ${{env.BUILD_TYPE}} --verbose
     - name: Integration Tests
       working-directory: ${{github.workspace}}
-      run: scripts/tests.sh
+      run: ./test
     - name: Package
       id: package
       run: |

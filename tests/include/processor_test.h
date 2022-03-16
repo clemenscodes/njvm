@@ -1,7 +1,7 @@
 #ifndef _PROCESSOR_TEST_H
 #define _PROCESSOR_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "processor.h"
 
 const struct CMUnitTest processor_unit_tests[45];
