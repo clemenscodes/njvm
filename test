@@ -19,7 +19,7 @@ green() {
 }
 
 for bin in "$TEST_DIR"/*.bin; do
-    printf "Testing %s " "$bin"
+    echo "Testing $bin"
     TEST=$(echo "$bin" | awk -F '.' '{print $1}')
     STDIN="$(cat "$TEST".in)"
     VALGRIND_LOG_FILE="$TEST.valgrind.out"
