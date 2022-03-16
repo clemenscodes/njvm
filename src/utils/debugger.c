@@ -44,8 +44,8 @@ void prompt(void) {
                     case 'h': {
                         free(line);
                         print_heap_objects();
-                        printf(
-                            "----------------- end of heap -----------------\n");
+                        printf("----------------- end of heap "
+                               "-----------------\n");
                         continue;
                     }
                     case 'o': {

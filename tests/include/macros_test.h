@@ -1,11 +1,11 @@
 #ifndef _MACROS_TEST_H
 #define _MACROS_TEST_H
 
-#include "cmocka.h"
-#include "macros.h"
 #include "bytecode.h"
-#include "immediate.h"
+#include "cmocka.h"
 #include "debugger.h"
+#include "immediate.h"
+#include "macros.h"
 
 const struct CMUnitTest macros_unit_tests[11];
 
