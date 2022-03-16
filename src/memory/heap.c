@@ -42,23 +42,19 @@ void free_heap(void) {
 }
 
 void print_heap_objects(void) {
-    int i = 0;
     unsigned char *p = vm.heap.active;
     unsigned bytes = get_obj_ref_bytes((ObjRef)p);
-    while (i < vm.heap.used) {
+    for (int i = 0; i < vm.heap.used; i += bytes) {
         print_obj_ref((ObjRef)p);
         p += bytes;
-        i += bytes;
         bytes = get_obj_ref_bytes((ObjRef)p);
     }
 }
 
 void print_heap_bytes(void) {
-    int i = 0;
     unsigned char *p = vm.heap.active;
-    while (i < vm.heap.used) {
+    for (int i = 0; i < vm.heap.used; i += 4) {
         print_memory_in_be_bytes(p, 4);
         p += 4;
-        i += 4;
     }
 }
