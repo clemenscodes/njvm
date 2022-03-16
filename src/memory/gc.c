@@ -36,7 +36,7 @@ void relocate_stack_objects(void) {
 }
 
 ObjRef relocate(ObjRef obj_ref) {
-    return !obj_ref             ? NULL
+    return (!obj_ref)           ? NULL
            : IS_COPIED(obj_ref) ? get_obj_ref_from_forward_pointer(obj_ref)
                                 : copy_obj_ref_to_free_memory(obj_ref);
 }
@@ -79,7 +79,7 @@ void scan(void) {
 
 void purge_heap(void) {
     if (vm.gc.purge_flag) {
-        vm.heap.passive = calloc(vm.heap.available, sizeof(unsigned char));
+        memset(vm.heap.passive, 0, vm.heap.available);
     }
 }
 
@@ -105,6 +105,7 @@ void run_gc(void) {
     vm.gc.is_running = true;
     nullify_heap_stats();
     swap_heaps();
+    memset(vm.heap.active, 0, vm.heap.available);
     relocate_registers();
     relocate_sda_objects();
     relocate_stack_objects();
