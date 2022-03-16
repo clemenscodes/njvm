@@ -12,12 +12,23 @@ env:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path:
+          - check: 'src'
+            exclude: ''
+          - check: 'tests'
+            exclude: 'cmocka'
+          - check: 'include'
+            exclude: ''
     steps:
     - uses: actions/checkout@v2
-    - uses: RafikFarhad/clang-format-github-action@v2.0.0
+    - name: Lint
+      uses: jidicula/clang-format-action@v4.5.0
       with:
-        sources: "src/**/*.c,include/**/*.h,tests/**/*.c,tests/**/*.h"
-        style: file
+        clang-format-version: '13'
+        check-path: ${{ matrix.path['check'] }}
+        exclude: ${{ matrix.path['exclude'] }}
     - name: Install Valgrind
       run: |
         sudo apt-get update -y
