@@ -1,7 +1,7 @@
 #ifndef _DEBUGGER_TEST_H
 #define _DEBUGGER_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "debugger.h"
 
 const struct CMUnitTest debugger_unit_tests[12];

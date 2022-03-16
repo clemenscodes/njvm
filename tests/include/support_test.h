@@ -2,7 +2,7 @@
 #define _SUPPORT_TEST_H
 
 #include "../lib/build/include/support.h"
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 
 const struct CMUnitTest support_unit_tests[2];
 

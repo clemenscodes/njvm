@@ -1,7 +1,7 @@
 #ifndef _STACK_TEST_H
 #define _STACK_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "stack.h"
 
 const struct CMUnitTest stack_unit_tests[2];

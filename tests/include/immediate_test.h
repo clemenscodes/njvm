@@ -1,7 +1,7 @@
 #ifndef _IMMEDIATE_TEST_H
 #define _IMMEDIATE_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "immediate.h"
 
 const struct CMUnitTest immediate_unit_tests[2];

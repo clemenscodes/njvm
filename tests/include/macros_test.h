@@ -2,7 +2,7 @@
 #define _MACROS_TEST_H
 
 #include "bytecode.h"
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "debugger.h"
 #include "immediate.h"
 #include "macros.h"

@@ -1,7 +1,7 @@
 #ifndef _IR_TEST_H
 #define _IR_TEST_H
 
-#include "cmocka.h"
+#include "cmocka/cmocka.h"
 #include "ir.h"
 
 const struct CMUnitTest ir_unit_tests[2];
