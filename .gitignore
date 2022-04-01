@@ -54,5 +54,3 @@ dkms.conf
 .vscode
 lib/tst/testbip
 .gdb_history
-data/v7/*.asm
-data/v8/*.asm
