@@ -263,7 +263,7 @@ void asf_instruction(Immediate immediate) {
     vm.stack.sp += immediate;
     for (int i = vm.stack.fp; i < vm.stack.sp; i++) {
         vm.stack.data[i].is_obj_ref = true;
-        vm.stack.data[i].u.obj_ref = (ObjRef)NULL;
+        vm.stack.data[i].u.obj_ref = NULL;
     }
 }
 
