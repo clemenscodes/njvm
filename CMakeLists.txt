@@ -66,6 +66,7 @@ set(TESTS
 
 set(TEST_HEADERS
     tests/include/cmocka/cmocka.h
+    tests/include/test.h
     tests/include/opcode_test.h
     tests/include/instruction_test.h
     tests/include/ir_test.h
@@ -79,7 +80,6 @@ set(TEST_HEADERS
     tests/include/debugger_test.h
     tests/include/immediate_test.h
     tests/include/support_test.h
-    tests/include/test.h
 )
 
 add_custom_target(libbigint COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
