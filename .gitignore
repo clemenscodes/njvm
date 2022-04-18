@@ -54,3 +54,4 @@ dkms.conf
 .vscode
 lib/tst/testbip
 .gdb_history
+/.cache
