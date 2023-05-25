@@ -10,8 +10,8 @@
 
 ### Compile
 
-    git clone https://github.com/clemenscodes/KSP.git
-    cd KSP 
+    git clone https://github.com/clemenscodes/njvm.git
+    cd njvm
     cmake -B build
     make -C build
 
